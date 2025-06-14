@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test App Status</title>
+</head>
+<body>
+    <h1>Testing Mail Craft Vite App</h1>
+    <p>This is a simple test to verify the app is accessible.</p>
+    <p>Visit: <a href="http://localhost:5173/" target="_blank">http://localhost:5173/</a></p>
+    
+    <script>
+        // Test if the app is running
+        fetch('http://localhost:5173/')
+            .then(response => {
+                if (response.ok) {
+                    document.body.innerHTML += '<p style="color: green;">✅ App is running successfully!</p>';
+                } else {
+                    document.body.innerHTML += '<p style="color: red;">❌ App returned error: ' + response.status + '</p>';
+                }
+            })
+            .catch(error => {
+                document.body.innerHTML += '<p style="color: red;">❌ Failed to connect to app: ' + error.message + '</p>';
+            });
+    </script>
+</body>
+</html>
