@@ -8,8 +8,10 @@ import { ImageUp, Link2 } from 'lucide-react';
 import type { ImageSettingsProps } from './types';
 import type { ImageBlockData } from '@/lib/types';
 import { alignmentOptions } from './constants';
+import { useWindowEditorAPI } from '@/hooks/useWindowEditorAPI';
 
 const ImageSettings: React.FC<ImageSettingsProps> = ({ block, onUpdate, onImageSelect }) => {
+  const { getImageBrowser } = useWindowEditorAPI();
   const [localSrc, setLocalSrc] = useState('');
   const [localAlt, setLocalAlt] = useState('');
   const [localImageAlign, setLocalImageAlign] = useState<'left' | 'center' | 'right'>('center');
@@ -68,13 +70,30 @@ const ImageSettings: React.FC<ImageSettingsProps> = ({ block, onUpdate, onImageS
       } 
     });
   };
-
   const handleSelectImage = () => {
-    if (onImageSelect) {
+    const imageBrowser = getImageBrowser();
+    
+    if (imageBrowser) {
+      // Use the window.editor image browser
+      imageBrowser()
+        .then((imageUrl) => {
+          if (imageUrl) {
+            setLocalSrc(imageUrl);
+            onUpdate({ src: imageUrl });
+          }
+        })
+        .catch((error) => {
+          console.error('Image browser error:', error);
+        });
+    } else if (onImageSelect) {
+      // Fallback to the legacy onImageSelect prop
       onImageSelect((imageUrl: string) => {
         setLocalSrc(imageUrl);
         onUpdate({ src: imageUrl });
       });
+    } else {
+      // No image selection available
+      console.warn('No image browser configured');
     }
   };
 
