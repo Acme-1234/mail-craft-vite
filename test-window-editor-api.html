@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Window Editor API Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: #2563eb;
+            color: white;
+            padding: 20px;
+        }
+        .controls {
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            background: #f9fafb;
+        }
+        .editor-container {
+            height: 600px;
+        }
+        .btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+        .btn:hover {
+            background: #1d4ed8;
+        }
+        .btn-secondary {
+            background: #6b7280;
+        }
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+        .btn-danger {
+            background: #dc2626;
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+        .control-group {
+            margin-bottom: 16px;
+        }
+        .control-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            font-weight: normal;
+        }
+        .checkbox-group input {
+            margin-right: 8px;
+        }
+        .output {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            padding: 12px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Window Editor API Test Page</h1>
+            <p>This page demonstrates the window.editor integration features for the Mail Craft editor.</p>
+        </div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label>Button Visibility Configuration:</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="showExportHtml" checked> Show Export HTML</label>
+                    <label><input type="checkbox" id="showExportJson" checked> Show Export JSON</label>
+                    <label><input type="checkbox" id="showImportJson" checked> Show Import JSON</label>
+                    <label><input type="checkbox" id="showPreview" checked> Show Preview</label>
+                    <label><input type="checkbox" id="showClear" checked> Show Clear</label>
+                    <label><input type="checkbox" id="showGetLinks" checked> Show Get Links</label>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label>Custom Handlers:</label>
+                <button class="btn btn-secondary" onclick="enableCustomHandlers()">Enable Custom Handlers</button>
+                <button class="btn btn-secondary" onclick="disableCustomHandlers()">Disable Custom Handlers</button>
+                <button class="btn btn-secondary" onclick="enableImageBrowser()">Enable Custom Image Browser</button>
+                <button class="btn btn-secondary" onclick="disableImageBrowser()">Disable Custom Image Browser</button>
+            </div>
+            
+            <div class="control-group">
+                <label>API Testing:</label>
+                <button class="btn" onclick="testGetHtml()">Get HTML</button>
+                <button class="btn" onclick="testGetJson()">Get JSON</button>
+                <button class="btn" onclick="testSetSampleData()">Set Sample Data</button>
+                <button class="btn" onclick="testGetLinks()">Get All Links</button>
+                <button class="btn btn-danger" onclick="testClearDocument()">Clear Document</button>
+                <button class="btn btn-secondary" onclick="applyConfiguration()">Apply Configuration</button>
+            </div>
+            
+            <div class="control-group">
+                <label>Output:</label>
+                <div id="output" class="output">Ready to test window.editor API...</div>
+            </div>
+        </div>
+        
+        <div class="editor-container">
+            <iframe src="/" style="width: 100%; height: 100%; border: none;"></iframe>
+        </div>
+    </div>
+
+    <script>
+        let customHandlersEnabled = false;
+        let imageBrowserEnabled = false;
+
+        function log(message) {
+            const output = document.getElementById('output');
+            const timestamp = new Date().toLocaleTimeString();
+            output.textContent += `[${timestamp}] ${message}\n`;
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function applyConfiguration() {
+            const iframe = document.querySelector('iframe');
+            const config = {
+                showExportHtml: document.getElementById('showExportHtml').checked,
+                showExportJson: document.getElementById('showExportJson').checked,
+                showImportJson: document.getElementById('showImportJson').checked,
+                showPreview: document.getElementById('showPreview').checked,
+                showClear: document.getElementById('showClear').checked,
+                showGetLinks: document.getElementById('showGetLinks').checked,
+            };
+
+            if (customHandlersEnabled) {
+                config.exportHtml = () => {
+                    log('Custom Export HTML handler called!');
+                    // Simulate custom export behavior
+                    setTimeout(() => {
+                        log('Custom HTML export completed');
+                    }, 1000);
+                };
+                
+                config.exportJson = () => {
+                    log('Custom Export JSON handler called!');
+                };
+                
+                config.importJson = () => {
+                    log('Custom Import JSON handler called!');
+                };
+                
+                config.preview = () => {
+                    log('Custom Preview handler called!');
+                };
+                
+                config.clear = () => {
+                    log('Custom Clear handler called!');
+                    if (confirm('Custom clear handler: Are you sure you want to clear the document?')) {
+                        iframe.contentWindow.editor?.clearDocument();
+                        log('Document cleared via custom handler');
+                    }
+                };
+                
+                config.getLinks = () => {
+                    log('Custom Get Links handler called!');
+                    const links = iframe.contentWindow.editor?.getAllLinks() || [];
+                    log(`Found ${links.length} links: ${JSON.stringify(links)}`);
+                };
+            }
+
+            if (imageBrowserEnabled) {
+                config.imageBrowser = () => {
+                    log('Custom image browser called!');
+                    return new Promise((resolve) => {
+                        // Simulate image browser dialog
+                        setTimeout(() => {
+                            const images = [
+                                'https://picsum.photos/600/400?random=1',
+                                'https://picsum.photos/600/400?random=2',
+                                'https://picsum.photos/600/400?random=3',
+                                'https://picsum.photos/600/400?random=4'
+                            ];
+                            const selectedImage = images[Math.floor(Math.random() * images.length)];
+                            log(`Image browser returned: ${selectedImage}`);
+                            resolve(selectedImage);
+                        }, 1000);
+                    });
+                };
+            }
+
+            // Add sample merge files
+            config.loadMergeFiles = () => {
+                log('Loading custom merge files...');
+                return [
+                    { label: 'First Name', field: 'firstName' },
+                    { label: 'Last Name', field: 'lastName' },
+                    { label: 'Email Address', field: 'email' },
+                    { label: 'Company Name', field: 'company' },
+                    { label: 'Premium Status', field: 'isPremium' },
+                    { label: 'Subscription Type', field: 'subscriptionType' }
+                ];
+            };
+
+            iframe.contentWindow.postMessage({
+                type: 'CONFIGURE_EDITOR',
+                config: config
+            }, '*');
+
+            log('Configuration applied: ' + JSON.stringify(config, null, 2));
+        }
+
+        function enableCustomHandlers() {
+            customHandlersEnabled = true;
+            log('Custom handlers enabled');
+        }
+
+        function disableCustomHandlers() {
+            customHandlersEnabled = false;
+            log('Custom handlers disabled');
+        }
+
+        function enableImageBrowser() {
+            imageBrowserEnabled = true;
+            log('Custom image browser enabled');
+        }
+
+        function disableImageBrowser() {
+            imageBrowserEnabled = false;
+            log('Custom image browser disabled');
+        }
+
+        function testGetHtml() {
+            const iframe = document.querySelector('iframe');
+            iframe.contentWindow.postMessage({ type: 'GET_HTML' }, '*');
+        }
+
+        function testGetJson() {
+            const iframe = document.querySelector('iframe');
+            iframe.contentWindow.postMessage({ type: 'GET_JSON' }, '*');
+        }
+
+        function testSetSampleData() {
+            const iframe = document.querySelector('iframe');
+            const sampleData = {
+                rows: [
+                    {
+                        id: 'sample-row-1',
+                        columns: [
+                            {
+                                id: 'sample-col-1',
+                                span: 12,
+                                blocks: [
+                                    {
+                                        id: 'sample-text-1',
+                                        type: 'text',
+                                        content: '<h1>Welcome {{firstName}}!</h1><p>Thank you for joining our community.</p>',
+                                        styles: { padding: '20px', textAlign: 'center' }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'sample-row-2',
+                        columns: [
+                            {
+                                id: 'sample-col-2',
+                                span: 6,
+                                blocks: [
+                                    {
+                                        id: 'sample-image-1',
+                                        type: 'image',
+                                        src: 'https://picsum.photos/300/200',
+                                        alt: 'Sample Image',
+                                        align: 'center',
+                                        styles: { padding: '10px' }
+                                    }
+                                ]
+                            },
+                            {
+                                id: 'sample-col-3',
+                                span: 6,
+                                blocks: [
+                                    {
+                                        id: 'sample-button-1',
+                                        type: 'button',
+                                        text: 'Get Started',
+                                        href: 'https://example.com',
+                                        align: 'center',
+                                        buttonStyles: {
+                                            backgroundColor: '#3b82f6',
+                                            color: '#ffffff',
+                                            padding: '12px 24px',
+                                            borderRadius: '6px'
+                                        },
+                                        styles: { padding: '20px' }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                settings: {
+                    contentWidth: '600px',
+                    backgroundColor: '#f8fafc',
+                    fontFamily: "'Inter', sans-serif"
+                }
+            };
+            
+            iframe.contentWindow.postMessage({
+                type: 'SET_JSON',
+                data: sampleData
+            }, '*');
+            log('Sample data set in editor');
+        }
+
+        function testGetLinks() {
+            const iframe = document.querySelector('iframe');
+            iframe.contentWindow.postMessage({ type: 'GET_LINKS' }, '*');
+        }
+
+        function testClearDocument() {
+            const iframe = document.querySelector('iframe');
+            iframe.contentWindow.postMessage({ type: 'CLEAR_DOCUMENT' }, '*');
+            log('Clear document command sent');
+        }
+
+        // Listen for messages from the iframe
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'EDITOR_HTML_RESULT') {
+                log('HTML Result (truncated):');
+                log(event.data.html.substring(0, 500) + '...');
+            } else if (event.data.type === 'EDITOR_JSON_RESULT') {
+                log('JSON Result:');
+                log(JSON.stringify(event.data.json, null, 2));
+            } else if (event.data.type === 'EDITOR_LINKS_RESULT') {
+                log('Links Result:');
+                log(JSON.stringify(event.data.links, null, 2));
+            } else if (event.data.type === 'EDITOR_READY') {
+                log('Editor is ready!');
+                // Auto-apply initial configuration
+                setTimeout(applyConfiguration, 500);
+            }
+        });
+
+        // Auto-apply configuration when iframe loads
+        document.querySelector('iframe').addEventListener('load', () => {
+            setTimeout(applyConfiguration, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -26,13 +26,6 @@ A modern, React-based visual email editor built with Vite, TypeScript, and Tailw
 - 📊 **Merge File Loading** - Dynamic placeholder/merge field management
 - 💬 **PostMessage Support** - iframe-based communication for embedded scenarios
 
-### Branding & Theming (NEW)
-- 🎨 **Custom Branding** - Replace "Mailcraft" with your company name/logo
-- 🌈 **Flexible Theming** - Custom colors, CSS, and complete visual control
-- 🌙 **Dark Mode Support** - Built-in dark mode with system preference detection
-- 🏢 **Brand Integration** - Logo, custom headers, and branded styling
-- ✨ **CSS Injection** - Advanced theming with custom CSS and variables
-
 ## Quick Start
 
 ### Development
@@ -146,27 +139,7 @@ const links = window.editor.getAllLinks();
 window.editor.clearDocument();
 ```
 
-## Testing & Demo Pages
-
-The project includes several test pages for different features:
-
-```bash
-# Start development server
-npm run dev
-
-# Test pages available at:
-http://localhost:5174/test-window-editor-api.html    # Complete API testing
-http://localhost:5174/test-button-visibility.html    # Button configuration
-http://localhost:5174/test-branding-theme.html       # Branding & theming
-http://localhost:5174/test-rulebuilder.html          # Conditional layouts
-```
-
-### Test Page Features
-
-- **API Test Page** - Test all window.editor API features including custom handlers, image browser integration, and content management
-- **Button Visibility** - Configure which buttons appear in the toolbar and test custom button handlers
-- **Branding & Theme** - Live testing of branding options (logos, titles, custom headers) and theming (colors, dark mode, custom CSS)
-- **Rule Builder** - Test conditional layout functionality and merge field integration
+## Testing
 
 ### Manual Testing
 

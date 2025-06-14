@@ -6,8 +6,7 @@ body {
   @apply font-body antialiased;
 }
 
-@layer base {
-  :root {
+@layer base {  :root {
     --background: 210 25% 95%; /* Light gray (#F0F4F8) */
     --foreground: 210 10% 23%; /* Darker gray for text */
 
@@ -42,6 +41,10 @@ body {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
 
+    /* Custom theme variables for window.editor API */
+    --header-bg: var(--background);
+    --header-text: var(--foreground);
+
     /* Sidebar specific colors - can be adjusted if sidebar is deeply themed */
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -52,7 +55,6 @@ body {
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-
   .dark {
     --background: 210 10% 15%; /* Darker gray for dark mode background */
     --foreground: 210 25% 95%; /* Light gray for dark mode text */
@@ -80,6 +82,10 @@ body {
     --border: 210 10% 30%;
     --input: 210 10% 30%;
     --ring: 207 87% 68%; /* Primary color for ring */
+    
+    /* Custom theme variables for dark mode */
+    --header-bg: var(--background);
+    --header-text: var(--foreground);
     
     /* Dark Sidebar specific colors */
     --sidebar-background: 240 5.9% 10%;

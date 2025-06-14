@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Branding & Theme Test</title>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: #f5f5f5; 
+        }
+        .container { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            background: white; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+            overflow: hidden; 
+        }
+        .header { 
+            background: #2563eb; 
+            color: white; 
+            padding: 20px; 
+        }
+        .controls { 
+            padding: 20px; 
+            border-bottom: 1px solid #e5e7eb; 
+            background: #f9fafb; 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 20px; 
+        }
+        .control-group { 
+            background: white; 
+            padding: 15px; 
+            border-radius: 6px; 
+            border: 1px solid #e5e7eb; 
+        }
+        .control-group h3 { 
+            margin: 0 0 15px 0; 
+            color: #374151; 
+            font-size: 16px; 
+        }
+        .btn { 
+            background: #2563eb; 
+            color: white; 
+            border: none; 
+            padding: 8px 16px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            margin: 4px; 
+            font-size: 12px; 
+        }
+        .btn:hover { background: #1d4ed8; }
+        .btn-secondary { background: #6b7280; }
+        .btn-secondary:hover { background: #4b5563; }
+        .btn-danger { background: #dc2626; }
+        .btn-danger:hover { background: #b91c1c; }
+        .btn-success { background: #059669; }
+        .btn-success:hover { background: #047857; }
+        iframe { 
+            width: 100%; 
+            height: 700px; 
+            border: none; 
+        }
+        .input-row { 
+            display: flex; 
+            align-items: center; 
+            margin-bottom: 10px; 
+            gap: 10px; 
+        }
+        .input-row label { 
+            min-width: 100px; 
+            font-size: 12px; 
+            font-weight: 500; 
+        }
+        .input-row input { 
+            flex: 1; 
+            padding: 6px 8px; 
+            border: 1px solid #d1d5db; 
+            border-radius: 4px; 
+            font-size: 12px; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Mail Craft - Branding & Theme Configuration Test</h1>
+            <p>Test the new branding customization and theming capabilities including dark mode support.</p>
+        </div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <h3>🎨 Branding Options</h3>
+                
+                <div class="input-row">
+                    <label>Title:</label>
+                    <input type="text" id="brandTitle" placeholder="Enter custom title" value="">
+                </div>
+                
+                <div class="input-row">
+                    <label>Logo URL:</label>
+                    <input type="url" id="logoUrl" placeholder="https://example.com/logo.png" value="">
+                </div>
+                
+                <div class="input-row">
+                    <label>Logo Alt:</label>
+                    <input type="text" id="logoAlt" placeholder="Company Logo" value="">
+                </div>
+                
+                <div class="input-row">
+                    <label>Hide Title:</label>
+                    <input type="checkbox" id="hideTitle">
+                </div>
+                
+                <button class="btn btn-success" onclick="testCustomTitle()">Set Custom Title</button>
+                <button class="btn btn-success" onclick="testSampleLogo()">Add Sample Logo</button>
+                <button class="btn btn-success" onclick="testCustomHeader()">Custom Header HTML</button>
+                <button class="btn btn-secondary" onclick="resetBranding()">Reset Branding</button>
+            </div>
+
+            <div class="control-group">
+                <h3>🌙 Theme Options</h3>
+                
+                <button class="btn" onclick="setLightMode()">Light Mode</button>
+                <button class="btn" onclick="setDarkMode()">Dark Mode</button>
+                <button class="btn" onclick="setAutoMode()">Auto Mode</button>
+                <br><br>
+                
+                <div class="input-row">
+                    <label>Primary Color:</label>
+                    <input type="color" id="primaryColor" value="#3b82f6">
+                </div>
+                
+                <div class="input-row">
+                    <label>Background:</label>
+                    <input type="color" id="backgroundColor" value="#f8fafc">
+                </div>
+                
+                <div class="input-row">
+                    <label>Header BG:</label>
+                    <input type="color" id="headerBg" value="#ffffff">
+                </div>
+                
+                <div class="input-row">
+                    <label>Header Text:</label>
+                    <input type="color" id="headerText" value="#1f2937">
+                </div>
+                
+                <button class="btn btn-success" onclick="applyCustomColors()">Apply Custom Colors</button>
+                <button class="btn btn-danger" onclick="testCompanyTheme()">Company Theme</button>
+                <button class="btn btn-secondary" onclick="resetTheme()">Reset Theme</button>
+            </div>
+        </div>
+        
+        <iframe src="/" id="editor-iframe"></iframe>
+    </div>
+
+    <script>
+        function getIframe() {
+            return document.getElementById('editor-iframe');
+        }
+
+        function configureEditor(config) {
+            const iframe = getIframe();
+            iframe.contentWindow.postMessage({
+                type: 'CONFIGURE_EDITOR',
+                config: config
+            }, '*');
+            console.log('Applied config:', config);
+        }
+
+        // Branding Functions
+        function testCustomTitle() {
+            const title = document.getElementById('brandTitle').value || 'My Email Builder';
+            configureEditor({
+                branding: {
+                    title: title
+                }
+            });
+        }
+
+        function testSampleLogo() {
+            const logoUrl = document.getElementById('logoUrl').value || 'https://via.placeholder.com/200x50/2563eb/ffffff?text=LOGO';
+            const logoAlt = document.getElementById('logoAlt').value || 'Company Logo';
+            const hideTitle = document.getElementById('hideTitle').checked;
+            
+            configureEditor({
+                branding: {
+                    logoUrl: logoUrl,
+                    logoAlt: logoAlt,
+                    hideTitle: hideTitle
+                }
+            });
+        }
+
+        function testCustomHeader() {
+            configureEditor({
+                branding: {
+                    customHeaderContent: `
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(45deg, #3b82f6, #8b5cf6); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px;">M</div>
+                            <div>
+                                <div style="font-size: 20px; font-weight: bold; color: #1f2937;">My Company</div>
+                                <div style="font-size: 12px; color: #6b7280;">Email Campaign Builder</div>
+                            </div>
+                        </div>
+                    `
+                }
+            });
+        }
+
+        function resetBranding() {
+            configureEditor({
+                branding: undefined
+            });
+        }
+
+        // Theme Functions
+        function setLightMode() {
+            configureEditor({
+                theme: {
+                    mode: 'light'
+                }
+            });
+        }
+
+        function setDarkMode() {
+            configureEditor({
+                theme: {
+                    mode: 'dark'
+                }
+            });
+        }
+
+        function setAutoMode() {
+            configureEditor({
+                theme: {
+                    mode: 'auto'
+                }
+            });
+        }
+
+        function applyCustomColors() {
+            const primaryColor = document.getElementById('primaryColor').value;
+            const backgroundColor = document.getElementById('backgroundColor').value;
+            const headerBg = document.getElementById('headerBg').value;
+            const headerText = document.getElementById('headerText').value;
+
+            configureEditor({
+                theme: {
+                    primaryColor: primaryColor,
+                    backgroundColor: backgroundColor,
+                    headerBackgroundColor: headerBg,
+                    headerTextColor: headerText
+                }
+            });
+        }
+
+        function testCompanyTheme() {
+            configureEditor({
+                branding: {
+                    title: 'Acme Corp Builder',
+                    logoUrl: 'https://via.placeholder.com/160x40/dc2626/ffffff?text=ACME+CORP'
+                },
+                theme: {
+                    mode: 'light',
+                    primaryColor: '#dc2626',
+                    backgroundColor: '#fef2f2',
+                    headerBackgroundColor: '#dc2626',
+                    headerTextColor: '#ffffff',
+                    borderColor: '#fecaca',
+                    customCSS: `
+                        .btn-primary { background-color: #dc2626 !important; }
+                        .btn-primary:hover { background-color: #b91c1c !important; }
+                        .border-primary { border-color: #dc2626 !important; }
+                    `
+                }
+            });
+        }
+
+        function resetTheme() {
+            configureEditor({
+                theme: undefined
+            });
+        }
+
+        // Test combinations
+        function testDarkCompanyTheme() {
+            configureEditor({
+                branding: {
+                    title: 'NightOwl Studios',
+                    logoUrl: 'https://via.placeholder.com/180x45/8b5cf6/ffffff?text=NIGHTOWL'
+                },
+                theme: {
+                    mode: 'dark',
+                    primaryColor: '#8b5cf6',
+                    headerBackgroundColor: '#1f2937',
+                    headerTextColor: '#f9fafb'
+                }
+            });
+        }
+
+        // Listen for editor ready
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'EDITOR_READY') {
+                console.log('Editor is ready for branding and theming tests!');
+            }
+        });
+
+        // Auto-test on load
+        setTimeout(() => {
+            console.log('🎨 Branding & Theme Test Page Ready!');
+            console.log('Try the different branding and theme options above.');
+        }, 1000);
+    </script>
+</body>
+</html>
