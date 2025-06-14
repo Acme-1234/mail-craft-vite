@@ -221,8 +221,7 @@ const RuleBuilder: React.FC<RuleBuilderProps> = ({ value, onChange, placeholders
     if (groupConditions.length === 1) return `{{ ${groupConditions[0]} }}`;
     
     return `{{ ${groupConditions.join(' or ')} }}`;
-  };
-  useEffect(() => {
+  };  useEffect(() => {
     try {
       if (mode === 'visual') {
         const code = generateLiquidCode();
@@ -233,7 +232,7 @@ const RuleBuilder: React.FC<RuleBuilderProps> = ({ value, onChange, placeholders
     } catch (error) {
       console.error('Error in RuleBuilder onChange:', error);
     }
-  }, [ruleGroups, mode, rawCode, onChange]);
+  }, [ruleGroups, mode, rawCode]); // Removed onChange from dependencies to prevent infinite loop
 
   if (mode === 'code') {
     return (

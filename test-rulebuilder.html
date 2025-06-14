@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RuleBuilder Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-step {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .success {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>RuleBuilder Crash Test</h1>
+        <p>This page tests the RuleBuilder component for crashes and infinite loops.</p>
+        
+        <div class="test-step">
+            <h3>Test 1: Load Main Application</h3>
+            <p>Loading the main application to test basic functionality...</p>
+            <iframe src="http://localhost:5173/" onload="markSuccess(1)" onerror="markError(1)"></iframe>
+        </div>
+
+        <div class="test-step">
+            <h3>Test Results</h3>
+            <div id="result-1">⏳ Loading main application...</div>
+        </div>
+
+        <div class="test-step">
+            <h3>Instructions for Manual Testing</h3>
+            <ol>
+                <li>Wait for the app to load in the iframe above</li>
+                <li>In the main app, drag a "Conditional Layout" block to the canvas</li>
+                <li>Click on the conditional layout block to select it</li>
+                <li>Check the settings panel on the right - you should see the RuleBuilder</li>
+                <li>Try switching between Visual and Code modes</li>
+                <li>Try adding rules and conditions</li>
+                <li>If the app doesn't crash or freeze, the fix is successful! ✅</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function markSuccess(testNumber) {
+            const result = document.getElementById(`result-${testNumber}`);
+            result.innerHTML = '✅ Test passed - Application loaded successfully!';
+            result.className = 'success';
+        }
+
+        function markError(testNumber) {
+            const result = document.getElementById(`result-${testNumber}`);
+            result.innerHTML = '❌ Test failed - Application failed to load!';
+            result.className = 'error';
+        }
+
+        // Timeout check
+        setTimeout(() => {
+            const result1 = document.getElementById('result-1');
+            if (result1.innerHTML.includes('⏳')) {
+                result1.innerHTML = '⚠️ Application may be slow to load or has issues';
+                result1.className = 'error';
+            }
+        }, 10000);
+    </script>
+</body>
+</html>
