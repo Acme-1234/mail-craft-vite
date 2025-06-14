@@ -1,5 +1,5 @@
 
-import React, { useEffect, useImperativeHandle, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useState, useRef } from 'react';
 import type {
   EmailEditorProps,
   EmailEditorRef,
@@ -37,7 +37,9 @@ const EmailEditor = React.forwardRef<EmailEditorRef, EmailEditorProps>(  ({ plac
       addBlock: storeAddBlock,
     } = useEditorStore();
     
-    const { getButtonConfig, configure } = useWindowEditorAPI();// Debug logging - only run once on mount
+    const { getButtonConfig, configure } = useWindowEditorAPI();
+    const configureRef = useRef(configure);
+    configureRef.current = configure;// Debug logging - only run once on mount
     useEffect(() => {
       console.log('EmailEditor mounted, clearDocument:', clearDocument);
       console.log('Document rows count:', document.rows.length);
@@ -59,25 +61,25 @@ const EmailEditor = React.forwardRef<EmailEditorRef, EmailEditorProps>(  ({ plac
       }
     }, [onImageSelect, setOnImageSelect]);    // Initialize window.editor with props-based configuration
     useEffect(() => {
-      configure({
+      const initialConfig = {
         // Set up default image browser if onImageSelect is provided
         ...(onImageSelect && { imageBrowser: () => new Promise<string | null>((resolve) => {
           onImageSelect((imageUrl: string) => resolve(imageUrl));
         })}),
         // Set up placeholders
         ...(placeholders && { loadMergeFiles: () => placeholders }),
-      });
-    }, [configure, onImageSelect, placeholders]);
+      };
+      configureRef.current(initialConfig);
+    }, [onImageSelect, placeholders]); // Use configureRef to avoid dependency issues
 
     // PostMessage handling for iframe integration
     useEffect(() => {
       const handleMessage = (event: MessageEvent) => {
         const { type, config, data } = event.data;
-        
-        switch (type) {
+          switch (type) {
           case 'CONFIGURE_EDITOR':
             if (config) {
-              configure(config);
+              configureRef.current(config);
             }
             break;
           case 'GET_HTML':

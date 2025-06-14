@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Button Visibility Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .controls { background: #f5f5f5; padding: 20px; margin-bottom: 20px; border-radius: 8px; }
+        .controls button { margin: 10px; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+        .controls button.primary { background: #007bff; color: white; }
+        .controls button.secondary { background: #6c757d; color: white; }
+        iframe { width: 100%; height: 600px; border: 1px solid #ddd; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Button Visibility Test</h1>
+        
+        <div class="controls">
+            <h3>Test Button Visibility Configuration</h3>
+            <button class="primary" onclick="hideExportButtons()">Hide Export Buttons</button>
+            <button class="primary" onclick="showOnlyPreview()">Show Only Preview</button>
+            <button class="primary" onclick="showAllButtons()">Show All Buttons</button>
+            <button class="secondary" onclick="checkConfiguration()">Check Current Config</button>
+        </div>
+        
+        <iframe src="/" id="editor-iframe"></iframe>
+    </div>
+
+    <script>
+        function hideExportButtons() {
+            const iframe = document.getElementById('editor-iframe');
+            iframe.contentWindow.postMessage({
+                type: 'CONFIGURE_EDITOR',
+                config: {
+                    showExportHtml: false,
+                    showExportJson: false,
+                    showImportJson: true,
+                    showPreview: true,
+                    showClear: true,
+                    showGetLinks: true
+                }
+            }, '*');
+            console.log('Hiding export buttons...');
+        }
+
+        function showOnlyPreview() {
+            const iframe = document.getElementById('editor-iframe');
+            iframe.contentWindow.postMessage({
+                type: 'CONFIGURE_EDITOR',
+                config: {
+                    showExportHtml: false,
+                    showExportJson: false,
+                    showImportJson: false,
+                    showPreview: true,
+                    showClear: false,
+                    showGetLinks: false
+                }
+            }, '*');
+            console.log('Showing only preview button...');
+        }
+
+        function showAllButtons() {
+            const iframe = document.getElementById('editor-iframe');
+            iframe.contentWindow.postMessage({
+                type: 'CONFIGURE_EDITOR',
+                config: {
+                    showExportHtml: true,
+                    showExportJson: true,
+                    showImportJson: true,
+                    showPreview: true,
+                    showClear: true,
+                    showGetLinks: true
+                }
+            }, '*');
+            console.log('Showing all buttons...');
+        }
+
+        function checkConfiguration() {
+            const iframe = document.getElementById('editor-iframe');
+            // Check window.editor directly
+            setTimeout(() => {
+                if (iframe.contentWindow.editor) {
+                    const config = iframe.contentWindow.editor.getConfig ? iframe.contentWindow.editor.getConfig() : 'getConfig not available';
+                    console.log('Current configuration:', config);
+                } else {
+                    console.log('window.editor not available yet');
+                }
+            }, 100);
+        }
+
+        // Listen for editor ready message
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'EDITOR_READY') {
+                console.log('Editor is ready! You can now test button visibility.');
+            }
+        });
+    </script>
+</body>
+</html>

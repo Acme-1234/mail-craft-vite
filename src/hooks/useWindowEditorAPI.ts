@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 import { useEditorStore } from './useEditorStore';
 import { exportDocumentAsHtml, exportDocumentAsJson } from '@/lib/export';
 import { importJsonToDocument, importHtmlToDocument } from '@/lib/import';
@@ -57,8 +57,7 @@ export const useWindowEditorAPI = () => {
     setPlaceholders,
     setOnImageSelect,
   } = useEditorStore();
-  
-  const configRef = useRef<WindowEditorConfig>({
+    const [config, setConfig] = useState<WindowEditorConfig>({
     // Default configuration - all buttons shown
     showExportHtml: true,
     showExportJson: true,
@@ -67,6 +66,13 @@ export const useWindowEditorAPI = () => {
     showClear: true,
     showGetLinks: true,
   });
+  
+  const configRef = useRef<WindowEditorConfig>(config);
+  
+  // Keep configRef in sync with state
+  useEffect(() => {
+    configRef.current = config;
+  }, [config]);
 
   // Get current HTML
   const getHtml = useCallback(() => {
@@ -108,16 +114,18 @@ export const useWindowEditorAPI = () => {
   // Get all links
   const getAllLinks = useCallback(() => {
     return extractLinksFromDocument(document);
-  }, [document]);
-
-  // Configure the editor
-  const configure = useCallback((config: Partial<WindowEditorConfig>) => {
-    configRef.current = { ...configRef.current, ...config };
+  }, [document]);  // Configure the editor
+  const configure = useCallback((newConfig: Partial<WindowEditorConfig>) => {
+    setConfig(prevConfig => {
+      const updatedConfig = { ...prevConfig, ...newConfig };
+      configRef.current = updatedConfig;
+      return updatedConfig;
+    });
     
     // If a new image browser is provided, update the onImageSelect handler
-    if (config.imageBrowser) {
+    if (newConfig.imageBrowser) {
       setOnImageSelect((callback) => {
-        config.imageBrowser!()
+        newConfig.imageBrowser!()
           .then((imageUrl) => {
             if (imageUrl) {
               callback(imageUrl);
@@ -130,8 +138,8 @@ export const useWindowEditorAPI = () => {
     }
     
     // If loadMergeFiles is provided, load placeholders
-    if (config.loadMergeFiles) {
-      Promise.resolve(config.loadMergeFiles())
+    if (newConfig.loadMergeFiles) {
+      Promise.resolve(newConfig.loadMergeFiles())
         .then((mergeFiles) => {
           if (Array.isArray(mergeFiles)) {
             setPlaceholders(mergeFiles);
@@ -144,10 +152,9 @@ export const useWindowEditorAPI = () => {
   }, [setOnImageSelect, setPlaceholders]);
 
   // Initialize window.editor API
-  useEffect(() => {
-    const api: WindowEditorAPI = {
+  useEffect(() => {    const api: WindowEditorAPI = {
       // Configuration
-      ...configRef.current,
+      ...config,
       
       // Core methods
       getHtml,
@@ -165,27 +172,25 @@ export const useWindowEditorAPI = () => {
     return () => {
       delete window.editor;
     };
-  }, [getHtml, setHtml, getJson, setJson, clearDocument, getAllLinks, configure]);
-
-  // Helper functions for components to check configuration and get handlers
+  }, [getHtml, setHtml, getJson, setJson, clearDocument, getAllLinks, configure, config]);  // Helper functions for components to check configuration and get handlers
   const getButtonConfig = useCallback((buttonType: keyof WindowEditorConfig) => {
     const showKey = `show${buttonType.charAt(0).toUpperCase() + buttonType.slice(1)}` as keyof WindowEditorConfig;
-    const isVisible = configRef.current[showKey] !== false;
-    const customHandler = configRef.current[buttonType] as (() => void | Promise<void>) | undefined;
+    // Default to true if not explicitly set to false
+    const isVisible = config[showKey] !== false;
+    const customHandler = config[buttonType] as (() => void | Promise<void>) | undefined;
     
     return {
       isVisible,
       customHandler,
     };
-  }, []);
-
+  }, [config]);
   const getImageBrowser = useCallback(() => {
-    return configRef.current.imageBrowser;
-  }, []);
+    return config.imageBrowser;
+  }, [config]);
 
   const getConfig = useCallback(() => {
-    return { ...configRef.current };
-  }, []);
+    return { ...config };
+  }, [config]);
 
   return {
     getButtonConfig,
