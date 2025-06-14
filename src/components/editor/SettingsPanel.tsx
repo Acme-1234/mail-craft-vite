@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useEditorStore } from '@/hooks/useEditorStore';
 import type { 
   EditorBlockData, 
@@ -34,12 +34,11 @@ const SettingsPanel: React.FC = () => {
   } = useEditorStore();
   
   const selectedBlock = selectedBlockId ? getBlockById(selectedBlockId) : null;
-
-  const handleUpdateBlock = (updates: Partial<EditorBlockData> | { styles?: Partial<BlockStyles>, buttonStyles?: Partial<ButtonSpecificStyles>, imageElementStyles?: Partial<ImageElementStyles> }) => {
+  const handleUpdateBlock = useCallback((updates: Partial<EditorBlockData> | { styles?: Partial<BlockStyles>, buttonStyles?: Partial<ButtonSpecificStyles>, imageElementStyles?: Partial<ImageElementStyles> }) => {
     if (selectedBlockId) {
       updateBlock(selectedBlockId, updates);
     }
-  };
+  }, [selectedBlockId, updateBlock]);
 
   // No block selected - show document settings
   if (!selectedBlockId || !selectedBlock) {

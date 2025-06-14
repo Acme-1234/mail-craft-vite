@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { TerminalSquare } from 'lucide-react';
@@ -17,11 +17,10 @@ const ConditionalLayoutSettings: React.FC<ConditionalLayoutSettingsProps> = ({
     const conditionalBlock = block as ConditionalLayoutBlockData;
     setLocalConditionalCondition(conditionalBlock.condition || '');
   }, [block]);
-
-  const handleConditionalConditionChange = (value: string) => {
+  const handleConditionalConditionChange = useCallback((value: string) => {
     setLocalConditionalCondition(value);
     onUpdate({ condition: value } as Partial<ConditionalLayoutBlockData>);
-  };
+  }, [onUpdate]);
 
   return (
     <>
