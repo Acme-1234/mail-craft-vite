@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ImageUp, Link2 } from 'lucide-react';
 import type { ImageSettingsProps } from './types';
 import type { ImageBlockData } from '@/lib/types';
+import { alignmentOptions } from './constants';
 
 const ImageSettings: React.FC<ImageSettingsProps> = ({ block, onUpdate, onImageSelect }) => {
   const [localSrc, setLocalSrc] = useState('');
@@ -118,11 +119,10 @@ const ImageSettings: React.FC<ImageSettingsProps> = ({ block, onUpdate, onImageS
           <Select value={localImageAlign} onValueChange={handleAlignChange}>
             <SelectTrigger className="text-xs mt-1">
               <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="left">Left</SelectItem>
-              <SelectItem value="center">Center</SelectItem>
-              <SelectItem value="right">Right</SelectItem>
+            </SelectTrigger>            <SelectContent>
+              {alignmentOptions.map(option => (
+                <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>

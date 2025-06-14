@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { MousePointerSquareDashed, ImagePlus } from 'lucide-react';
 import type { ButtonSettingsProps } from './types';
 import type { ButtonBlockData } from '@/lib/types';
+import { fontWeights, alignmentOptions } from './constants';
 
 const ButtonSettings: React.FC<ButtonSettingsProps> = ({ block, onUpdate, onImageSelect }) => {
   const [localButtonText, setLocalButtonText] = useState('');
@@ -118,11 +119,10 @@ const ButtonSettings: React.FC<ButtonSettingsProps> = ({ block, onUpdate, onImag
           <Select value={localButtonContainerAlign} onValueChange={handleButtonContainerAlignChange}>
             <SelectTrigger className="text-xs mt-1">
               <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="left">Left</SelectItem>
-              <SelectItem value="center">Center</SelectItem>
-              <SelectItem value="right">Right</SelectItem>
+            </SelectTrigger>            <SelectContent>
+              {alignmentOptions.map(option => (
+                <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -217,19 +217,10 @@ const ButtonSettings: React.FC<ButtonSettingsProps> = ({ block, onUpdate, onImag
           }}>
             <SelectTrigger className="text-xs mt-1">
               <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="normal">Normal</SelectItem>
-              <SelectItem value="bold">Bold</SelectItem>
-              <SelectItem value="100">100</SelectItem>
-              <SelectItem value="200">200</SelectItem>
-              <SelectItem value="300">300</SelectItem>
-              <SelectItem value="400">400</SelectItem>
-              <SelectItem value="500">500</SelectItem>
-              <SelectItem value="600">600</SelectItem>
-              <SelectItem value="700">700</SelectItem>
-              <SelectItem value="800">800</SelectItem>
-              <SelectItem value="900">900</SelectItem>
+            </SelectTrigger>            <SelectContent>
+              {fontWeights.map(fw => (
+                <SelectItem key={fw.value} value={fw.value}>{fw.label}</SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
