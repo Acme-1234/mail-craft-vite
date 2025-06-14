@@ -12,6 +12,12 @@ export interface BlockStyles {
   backgroundColor?: string; // e.g., "#FFFFFF", "blue"
   border?: string; // e.g., "1px solid #000000"
   borderRadius?: string; // e.g., "8px"
+  textAlign?: 'left' | 'center' | 'right'; // Text alignment
+  fontFamily?: string; // Font family
+  fontSize?: string; // Font size
+  fontWeight?: string; // Font weight
+  color?: string; // Text color
+  lineHeight?: string; // Line height
 }
 
 export interface ButtonSpecificStyles {
