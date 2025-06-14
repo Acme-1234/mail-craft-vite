@@ -9,8 +9,10 @@ The Window Editor API provides a powerful integration interface that allows host
 3. [Configuration Options](#configuration-options)
 4. [Custom Handlers](#custom-handlers)
 5. [Image Browser Integration](#image-browser-integration)
-6. [Examples](#examples)
-7. [PostMessage Integration](#postmessage-integration)
+6. [Branding and Theming](#branding-and-theming)
+7. [Examples](#examples)
+8. [PostMessage Integration](#postmessage-integration)
+8. [Branding and Theming](#branding-and-theming)
 
 ## Overview
 
@@ -61,10 +63,29 @@ interface WindowEditorConfig {
   preview?: () => void | Promise<void>;
   clear?: () => void | Promise<void>;
   getLinks?: () => void | Promise<void>;
-  
-  // Integration APIs
+    // Integration APIs
   imageBrowser?: () => Promise<string | null>;
   loadMergeFiles?: () => Promise<any[]> | any[];
+  
+  // Branding configuration
+  branding?: {
+    title?: string;                    // Replace "Mailcraft" with custom title
+    logoUrl?: string;                  // Custom logo image URL
+    logoAlt?: string;                  // Alt text for logo
+    hideTitle?: boolean;               // Hide title when using logo
+    customHeaderContent?: string;      // Custom HTML content for header
+  };
+  
+  // Theme configuration
+  theme?: {
+    mode?: 'light' | 'dark' | 'auto';  // Theme mode
+    primaryColor?: string;             // Primary brand color
+    backgroundColor?: string;          // Background color
+    headerBackgroundColor?: string;    // Header background
+    headerTextColor?: string;          // Header text color
+    borderColor?: string;              // Border colors
+    customCSS?: string;                // Custom CSS styles
+  };
 }
 ```
 
@@ -306,6 +327,236 @@ window.addEventListener('message', (event) => {
   }
 });
 ```
+
+## Branding and Theming
+
+The Window Editor API provides powerful branding and theming capabilities, allowing you to completely customize the editor's appearance and branding to match your application.
+
+### Branding Configuration
+
+Replace the default "Mailcraft" branding with your own:
+
+```javascript
+// Custom title only
+window.editor.configure({
+  branding: {
+    title: 'My Email Builder'
+  }
+});
+
+// Custom logo with title
+window.editor.configure({
+  branding: {
+    title: 'Acme Corp',
+    logoUrl: 'https://example.com/logo.png',
+    logoAlt: 'Acme Corp Logo'
+  }
+});
+
+// Logo only (hide title)
+window.editor.configure({
+  branding: {
+    logoUrl: 'https://example.com/logo.png',
+    logoAlt: 'Company Logo',
+    hideTitle: true
+  }
+});
+
+// Completely custom header HTML
+window.editor.configure({
+  branding: {
+    customHeaderContent: `
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 40px; height: 40px; background: linear-gradient(45deg, #3b82f6, #8b5cf6); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">A</div>
+        <div>
+          <div style="font-size: 20px; font-weight: bold;">Acme Email Builder</div>
+          <div style="font-size: 12px; color: #666;">Campaign Management Platform</div>
+        </div>
+      </div>
+    `
+  }
+});
+```
+
+### Theme Configuration
+
+#### Basic Theme Modes
+
+```javascript
+// Light mode
+window.editor.configure({
+  theme: {
+    mode: 'light'
+  }
+});
+
+// Dark mode
+window.editor.configure({
+  theme: {
+    mode: 'dark'
+  }
+});
+
+// Auto mode (follows system preference)
+window.editor.configure({
+  theme: {
+    mode: 'auto'
+  }
+});
+```
+
+#### Custom Colors
+
+```javascript
+window.editor.configure({
+  theme: {
+    primaryColor: '#dc2626',           // Custom primary color
+    backgroundColor: '#fef2f2',        // Custom background
+    headerBackgroundColor: '#dc2626',  // Header background
+    headerTextColor: '#ffffff',        // Header text color
+    borderColor: '#fecaca'             // Border colors
+  }
+});
+```
+
+#### Advanced Theming with Custom CSS
+
+```javascript
+window.editor.configure({
+  theme: {
+    mode: 'light',
+    primaryColor: '#8b5cf6',
+    customCSS: `
+      /* Custom button styles */
+      .btn-primary { 
+        background: linear-gradient(45deg, #8b5cf6, #3b82f6) !important; 
+        border: none !important;
+      }
+      .btn-primary:hover { 
+        background: linear-gradient(45deg, #7c3aed, #2563eb) !important; 
+      }
+      
+      /* Custom panel styling */
+      .settings-panel {
+        border-left: 3px solid #8b5cf6;
+      }
+      
+      /* Custom canvas styling */
+      .email-canvas {
+        box-shadow: 0 8px 32px rgba(139, 92, 246, 0.1);
+      }
+    `
+  }
+});
+```
+
+### Complete Brand Integration Example
+
+```javascript
+// Complete company branding setup
+window.editor.configure({
+  branding: {
+    title: 'Acme Email Studio',
+    logoUrl: 'https://cdn.acme.com/logo.svg',
+    logoAlt: 'Acme Corporation'
+  },
+  theme: {
+    mode: 'light',
+    primaryColor: '#dc2626',
+    backgroundColor: '#fef2f2',
+    headerBackgroundColor: '#dc2626',
+    headerTextColor: '#ffffff',
+    borderColor: '#fecaca',
+    customCSS: `
+      /* Acme brand styling */
+      .btn-primary, .bg-primary { 
+        background-color: #dc2626 !important; 
+      }
+      .btn-primary:hover { 
+        background-color: #b91c1c !important; 
+      }
+      .text-primary, .border-primary { 
+        color: #dc2626 !important; 
+        border-color: #dc2626 !important; 
+      }
+      
+      /* Custom header gradient */
+      .editor-header {
+        background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+      }
+    `
+  }
+});
+```
+
+### Branding Interface
+
+```typescript
+interface BrandingConfig {
+  title?: string;                    // Custom title (replaces "Mailcraft")
+  logoUrl?: string;                  // Logo image URL
+  logoAlt?: string;                  // Logo alt text
+  hideTitle?: boolean;               // Hide title when using logo
+  customHeaderContent?: string;      // Complete custom header HTML
+}
+```
+
+### Theme Interface
+
+```typescript
+interface ThemeConfig {
+  mode?: 'light' | 'dark' | 'auto';  // Theme mode
+  primaryColor?: string;             // Primary brand color
+  backgroundColor?: string;          // Main background color
+  headerBackgroundColor?: string;    // Header background
+  headerTextColor?: string;          // Header text color
+  borderColor?: string;              // Border colors throughout UI
+  customCSS?: string;                // Custom CSS injection
+}
+```
+
+### CSS Variables
+
+The editor uses CSS variables that can be customized through the theme API:
+
+```css
+:root {
+  --primary: /* Primary color */
+  --background: /* Background color */
+  --header-bg: /* Header background */
+  --header-text: /* Header text color */
+  --border: /* Border color */
+  /* ... and many more */
+}
+```
+
+### Dark Mode Support
+
+The editor includes comprehensive dark mode support:
+
+- Automatic CSS variable switching
+- System preference detection in 'auto' mode  
+- Full UI adaptation including panels, buttons, and canvas
+- Proper contrast ratios for accessibility
+
+### Testing Branding and Themes
+
+Use the test page (`test-branding-theme.html`) to test branding and theming:
+
+```bash
+# Start dev server
+npm run dev
+
+# Open test page
+http://localhost:5174/test-branding-theme.html
+```
+
+The test page provides:
+- Live branding configuration
+- Theme mode switching
+- Custom color selection
+- Real-time preview of changes
+- Example configurations for different use cases
 
 ## TypeScript Support
 

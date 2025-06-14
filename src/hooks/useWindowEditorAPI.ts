@@ -28,6 +28,25 @@ export interface WindowEditorConfig {
   
   // Merge files / placeholders
   loadMergeFiles?: () => Promise<any[]> | any[];
+  
+  // Branding and theming (NEW)
+  branding?: {
+    title?: string;                    // Replace "Mailcraft" with custom title
+    logoUrl?: string;                  // Custom logo image URL
+    logoAlt?: string;                  // Alt text for logo
+    hideTitle?: boolean;               // Hide title when using logo
+    customHeaderContent?: string;      // Custom HTML content for header
+  };
+  
+  theme?: {
+    mode?: 'light' | 'dark' | 'auto';  // Theme mode
+    primaryColor?: string;             // Primary brand color
+    backgroundColor?: string;          // Background color
+    headerBackgroundColor?: string;    // Header background
+    headerTextColor?: string;          // Header text color
+    borderColor?: string;              // Border colors
+    customCSS?: string;                // Custom CSS styles
+  };
 }
 
 export interface WindowEditorAPI extends WindowEditorConfig {
@@ -51,7 +70,7 @@ declare global {
 
 export const useWindowEditorAPI = () => {
   const {
-    document,
+    document: editorDocument,
     setDocument,
     clearDocument: storeClearDocument,
     setPlaceholders,
@@ -73,11 +92,10 @@ export const useWindowEditorAPI = () => {
   useEffect(() => {
     configRef.current = config;
   }, [config]);
-
   // Get current HTML
   const getHtml = useCallback(() => {
-    return exportDocumentAsHtml(document);
-  }, [document]);
+    return exportDocumentAsHtml(editorDocument);
+  }, [editorDocument]);
 
   // Set HTML content
   const setHtml = useCallback((html: string) => {
@@ -92,8 +110,8 @@ export const useWindowEditorAPI = () => {
 
   // Get current JSON
   const getJson = useCallback(() => {
-    return exportDocumentAsJson(document);
-  }, [document]);
+    return exportDocumentAsJson(editorDocument);
+  }, [editorDocument]);
 
   // Set JSON content
   const setJson = useCallback((data: EditorDocument) => {
@@ -113,12 +131,18 @@ export const useWindowEditorAPI = () => {
 
   // Get all links
   const getAllLinks = useCallback(() => {
-    return extractLinksFromDocument(document);
-  }, [document]);  // Configure the editor
+    return extractLinksFromDocument(editorDocument);
+  }, [editorDocument]);// Configure the editor
   const configure = useCallback((newConfig: Partial<WindowEditorConfig>) => {
     setConfig(prevConfig => {
       const updatedConfig = { ...prevConfig, ...newConfig };
       configRef.current = updatedConfig;
+      
+      // Apply theme changes
+      if (newConfig.theme) {
+        applyTheme(newConfig.theme);
+      }
+      
       return updatedConfig;
     });
     
@@ -150,6 +174,54 @@ export const useWindowEditorAPI = () => {
         });
     }
   }, [setOnImageSelect, setPlaceholders]);
+  
+  // Theme application function
+  const applyTheme = useCallback((theme: NonNullable<WindowEditorConfig['theme']>) => {
+    const root = document.documentElement;
+    
+    // Handle theme mode
+    if (theme.mode === 'dark') {
+      root.classList.add('dark');
+    } else if (theme.mode === 'light') {
+      root.classList.remove('dark');
+    } else if (theme.mode === 'auto') {
+      // Auto mode: follow system preference
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (prefersDark) {
+        root.classList.add('dark');
+      } else {
+        root.classList.remove('dark');
+      }
+    }
+    
+    // Apply custom colors via CSS variables
+    if (theme.primaryColor) {
+      root.style.setProperty('--primary', theme.primaryColor);
+    }
+    if (theme.backgroundColor) {
+      root.style.setProperty('--background', theme.backgroundColor);
+    }
+    if (theme.headerBackgroundColor) {
+      root.style.setProperty('--header-bg', theme.headerBackgroundColor);
+    }
+    if (theme.headerTextColor) {
+      root.style.setProperty('--header-text', theme.headerTextColor);
+    }
+    if (theme.borderColor) {
+      root.style.setProperty('--border', theme.borderColor);
+    }
+    
+    // Apply custom CSS
+    if (theme.customCSS) {
+      let customStyleElement = document.getElementById('mailcraft-custom-styles');
+      if (!customStyleElement) {
+        customStyleElement = document.createElement('style');
+        customStyleElement.id = 'mailcraft-custom-styles';
+        document.head.appendChild(customStyleElement);
+      }
+      customStyleElement.textContent = theme.customCSS;
+    }
+  }, []);
 
   // Initialize window.editor API
   useEffect(() => {    const api: WindowEditorAPI = {
@@ -187,15 +259,24 @@ export const useWindowEditorAPI = () => {
   const getImageBrowser = useCallback(() => {
     return config.imageBrowser;
   }, [config]);
-
   const getConfig = useCallback(() => {
     return { ...config };
+  }, [config]);
+
+  const getBranding = useCallback(() => {
+    return config.branding;
+  }, [config]);
+
+  const getTheme = useCallback(() => {
+    return config.theme;
   }, [config]);
 
   return {
     getButtonConfig,
     getImageBrowser,
     getConfig,
+    getBranding,
+    getTheme,
     configure,
   };
 };

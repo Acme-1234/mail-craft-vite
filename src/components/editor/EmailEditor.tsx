@@ -13,6 +13,7 @@ import { useWindowEditorAPI } from '@/hooks/useWindowEditorAPI';
 import Toolbar from './Toolbar';
 import Canvas from './Canvas';
 import SettingsPanel from './SettingsPanel';
+import HeaderBranding from './HeaderBranding';
 import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import type { DragEndEvent } from '@dnd-kit/core';
 import { DragDropProvider } from '@/components/editor/dnd/FriendlyDndProvider';
@@ -35,11 +36,17 @@ const EmailEditor = React.forwardRef<EmailEditorRef, EmailEditorProps>(  ({ plac
       setOnImageSelect,
       addRow,
       addBlock: storeAddBlock,
-    } = useEditorStore();
-    
-    const { getButtonConfig, configure } = useWindowEditorAPI();
+    } = useEditorStore();    const { getButtonConfig, configure, getBranding } = useWindowEditorAPI();
     const configureRef = useRef(configure);
-    configureRef.current = configure;// Debug logging - only run once on mount
+    const [currentBranding, setCurrentBranding] = useState(getBranding());
+    
+    configureRef.current = configure;
+    
+    // Update branding when it changes
+    useEffect(() => {
+      const newBranding = getBranding();
+      setCurrentBranding(newBranding);
+    }, [getBranding]);// Debug logging - only run once on mount
     useEffect(() => {
       console.log('EmailEditor mounted, clearDocument:', clearDocument);
       console.log('Document rows count:', document.rows.length);
@@ -309,9 +316,8 @@ const EmailEditor = React.forwardRef<EmailEditorRef, EmailEditorProps>(  ({ plac
     return (
       <DndContext id="mailcraft-dnd-context-editor" sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <DragDropProvider>
-          <div className="flex flex-col h-screen bg-background text-foreground">
-            <header className="p-4 border-b border-border flex justify-between items-center">
-              <h1 className="text-2xl font-headline text-primary">Mailcraft</h1>              <div className="flex gap-2">
+          <div className="flex flex-col h-screen bg-background text-foreground">            <header className="p-4 border-b border-border flex justify-between items-center" style={{ backgroundColor: 'var(--header-bg, hsl(var(--background)))', color: 'var(--header-text, hsl(var(--foreground)))' }}>
+              <HeaderBranding branding={currentBranding} />              <div className="flex gap-2">
                 {getButtonConfig('preview').isVisible && (
                   <Button variant="outline" size="sm" onClick={handlePreview}>
                     <Eye className="mr-2 h-4 w-4" /> Preview
