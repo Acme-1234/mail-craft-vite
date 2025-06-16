@@ -74,12 +74,11 @@ const BlockWrapper: React.FC<BlockWrapperProps> = ({ block, rowId, columnId, par
       break;
     default:
       return null;
-  }
-  return (
+  }  return (
     <div
       className={cn(
-        'relative border border-dashed border-transparent hover:border-primary transition-colors group', 
-        isSelected && 'border-primary border-solid shadow-lg'
+        'relative border-2 border-dashed border-transparent hover:border-blue-400 hover:bg-blue-50/30 transition-all duration-200 group rounded-md', 
+        isSelected && 'border-blue-500 border-solid bg-blue-50/50 shadow-lg shadow-blue-200/50'
       )}
       onClick={handleSelectBlock}
     >
@@ -134,17 +133,16 @@ const ColumnComponent: React.FC<ColumnComponentProps> = ({ column, rowId, parent
 
   return (
     <div
-      ref={setNodeRef}
-      className={cn(
-        'border border-dashed border-transparent min-h-[50px]', 
+      ref={setNodeRef}      className={cn(
+        'border border-dashed border-transparent min-h-[50px] hover:border-blue-300 hover:bg-blue-50/20 transition-all duration-200 rounded-md', 
         getColumnWidthClass(column.span),
-        isOver && 'bg-primary/10 border-primary'
+        isOver && 'bg-blue-100/60 border-blue-400 border-solid'
       )}
       onClick={(e) => e.stopPropagation()} 
       style={{padding: column.blocks.length === 0 ? '0.5rem' : '0'}}
     >
       {column.blocks.length === 0 && (
-         <div className="flex items-center justify-center text-muted-foreground h-full text-sm p-2" onClick={(e) => e.stopPropagation()} >Drop block here</div> 
+         <div className="flex items-center justify-center text-blue-400 h-full text-sm p-4 font-medium" onClick={(e) => e.stopPropagation()} >Drop block here</div> 
       )}
       {column.blocks.map((block) => (
         <BlockWrapper key={block.id} block={block} rowId={rowId} columnId={column.id} parentConditionalBlockId={parentConditionalBlockId}/>
@@ -174,15 +172,15 @@ const RowComponent: React.FC<RowComponentProps> = ({ row, parentConditionalBlock
     e.stopPropagation();
     removeRow(row.id, parentConditionalBlockId);
   }
-
   const handleMoveRow = (e: React.MouseEvent, direction: 'up' | 'down') => {
     e.stopPropagation();
     moveRow(row.id, direction, parentConditionalBlockId);
-  }
+  };
+
   return (
     <div
       className={cn(
-        "relative hover:border-primary transition-colors group bg-card"
+        "relative border-2 border-dashed border-gray-200 hover:border-blue-400 hover:bg-blue-50/20 transition-all duration-200 group bg-card rounded-lg"
       )}
       onClick={(e) => e.stopPropagation()} 
     >
@@ -196,8 +194,7 @@ const RowComponent: React.FC<RowComponentProps> = ({ row, parentConditionalBlock
         <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive hover:text-destructive" onClick={handleRemoveRow} title="Delete row">
           <Trash2 className="h-5 w-5" />
         </Button>
-      </div>
-      <div ref={setDroppableRowRef} className={cn("flex flex-wrap gap-0", isOver && 'bg-primary/5')}>
+      </div>      <div ref={setDroppableRowRef} className={cn("flex flex-wrap gap-0", isOver && 'bg-blue-100/50 border-2 border-blue-300 border-dashed rounded-md')}>
         {row.columns.map((col) => (
           <ColumnComponent key={col.id} column={col} rowId={row.id} parentConditionalBlockId={parentConditionalBlockId} />
         ))}

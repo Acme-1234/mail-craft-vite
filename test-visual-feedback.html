@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Feedback Improvements Test - Mail Craft</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            background: #f8f9fa;
+        }
+        .visual-demo {
+            background: #e7f3ff;
+            border: 2px solid #3b82f6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            position: relative;
+        }
+        .visual-demo.hover {
+            background: #dbeafe;
+            border-color: #60a5fa;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+        }
+        .visual-demo.selected {
+            background: #dbeafe;
+            border-color: #3b82f6;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.25);
+        }
+        .improvement {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .feature-list {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .step {
+            margin: 10px 0;
+            padding: 10px 0;
+        }
+        .code {
+            background: #f1f3f4;
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        .launch-btn {
+            display: inline-block;
+            background: #3b82f6;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            margin: 10px 10px 10px 0;
+            transition: all 0.2s;
+        }
+        .launch-btn:hover {
+            background: #2563eb;
+            color: white;
+            transform: translateY(-1px);
+        }
+        .color-swatch {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            margin: 0 8px 0 0;
+            vertical-align: middle;
+            border: 1px solid #ccc;
+        }
+        .blue-400 { background-color: #60a5fa; }
+        .blue-500 { background-color: #3b82f6; }
+        .blue-100 { background-color: #dbeafe; }
+        .blue-300 { background-color: #93c5fd; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Visual Feedback Improvements</h1>
+            <p>Enhanced hover and selection states for better user experience</p>
+            <a href="http://localhost:5173/" class="launch-btn" target="_blank">🚀 Open Mail Craft Editor</a>
+        </div>
+
+        <div class="test-section">
+            <h2>✨ Visual Improvements Added</h2>
+            
+            <div class="feature-list">
+                <h3>🎯 Enhanced Visual States:</h3>
+                <ul>
+                    <li><strong>Block Hover:</strong> <span class="color-swatch blue-400"></span>Blue border + light blue background</li>
+                    <li><strong>Block Selected:</strong> <span class="color-swatch blue-500"></span>Solid blue border + blue background + shadow</li>
+                    <li><strong>Row Hover:</strong> <span class="color-swatch blue-400"></span>Blue dashed border + light blue background</li>
+                    <li><strong>Column Drop Zone:</strong> <span class="color-swatch blue-100"></span>Blue background when dragging over</li>
+                    <li><strong>Empty Columns:</strong> <span class="color-swatch blue-400"></span>Blue text with better contrast</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🎭 Visual States Demo</h2>
+            
+            <div class="step">
+                <h3>Block States</h3>
+                <div class="visual-demo">
+                    <strong>Normal Block:</strong> Transparent border, no background
+                </div>
+                <div class="visual-demo hover">
+                    <strong>Hovered Block:</strong> Blue dashed border + light blue background
+                </div>
+                <div class="visual-demo selected">
+                    <strong>Selected Block:</strong> Solid blue border + blue background + shadow
+                </div>
+            </div>
+
+            <div class="step">
+                <h3>Row States</h3>
+                <div style="border: 2px dashed #d1d5db; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>Normal Row:</strong> Gray dashed border
+                </div>
+                <div style="border: 2px dashed #60a5fa; background: rgba(219, 234, 254, 0.2); padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>Hovered Row:</strong> Blue dashed border + light blue background
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🧪 Testing Instructions</h2>
+            
+            <div class="step">
+                <h3>1. Test Block Visual Feedback</h3>
+                <p>Add blocks to the canvas and interact with them:</p>
+                <div class="improvement">
+                    <strong>Expected:</strong><br>
+                    • <strong>Hover:</strong> Blue dashed border appears with light blue background<br>
+                    • <strong>Click/Select:</strong> Solid blue border with stronger blue background and shadow<br>
+                    • <strong>Smooth transitions:</strong> All state changes should be smooth (200ms duration)
+                </div>
+            </div>
+
+            <div class="step">
+                <h3>2. Test Row Visual Feedback</h3>
+                <p>Hover over row areas (not the blocks inside):</p>
+                <div class="improvement">
+                    <strong>Expected:</strong><br>
+                    • <strong>Hover:</strong> Blue dashed border around entire row with light blue background<br>
+                    • <strong>Rounded corners:</strong> Professional look with border-radius
+                </div>
+            </div>
+
+            <div class="step">
+                <h3>3. Test Drop Zone Feedback</h3>
+                <p>Drag new blocks from the toolbar:</p>
+                <div class="improvement">
+                    <strong>Expected:</strong><br>
+                    • <strong>Over Column:</strong> Blue background highlight when dragging over valid drop zones<br>
+                    • <strong>Over Row:</strong> Entire row area shows blue dashed border feedback<br>
+                    • <strong>Empty Columns:</strong> "Drop block here" text in blue color
+                </div>
+            </div>
+
+            <div class="step">
+                <h3>4. Test Overall User Experience</h3>
+                <p>Navigate through the canvas and create a complex layout:</p>
+                <div class="improvement">
+                    <strong>Expected:</strong><br>
+                    • <strong>Clear visual hierarchy:</strong> Easy to distinguish between different elements<br>
+                    • <strong>Intuitive interactions:</strong> Visual feedback makes it clear what's interactive<br>
+                    • <strong>Professional appearance:</strong> Consistent blue color scheme throughout
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🔧 Technical Implementation</h2>
+            
+            <div class="improvement">
+                <h3>CSS Classes Added:</h3>
+                <div class="code">
+// Block states
+hover:border-blue-400 hover:bg-blue-50/30 transition-all duration-200
+border-blue-500 border-solid bg-blue-50/50 shadow-lg shadow-blue-200/50
+
+// Row states  
+border-2 border-dashed border-gray-200 hover:border-blue-400 hover:bg-blue-50/20
+
+// Column drop zones
+hover:border-blue-300 hover:bg-blue-50/20
+isOver && 'bg-blue-100/60 border-blue-400 border-solid'
+
+// Empty column text
+text-blue-400 font-medium
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🎨 Color Palette Used</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 15px; margin: 20px 0;">
+                <div style="text-align: center;">
+                    <div class="color-swatch blue-400" style="width: 60px; height: 60px; margin: 0 auto 5px;"></div>
+                    <small><strong>Blue-400</strong><br>#60a5fa<br>Hover borders</small>
+                </div>
+                <div style="text-align: center;">
+                    <div class="color-swatch blue-500" style="width: 60px; height: 60px; margin: 0 auto 5px;"></div>
+                    <small><strong>Blue-500</strong><br>#3b82f6<br>Selected borders</small>
+                </div>
+                <div style="text-align: center;">
+                    <div class="color-swatch blue-100" style="width: 60px; height: 60px; margin: 0 auto 5px;"></div>
+                    <small><strong>Blue-100</strong><br>#dbeafe<br>Backgrounds</small>
+                </div>
+                <div style="text-align: center;">
+                    <div class="color-swatch blue-300" style="width: 60px; height: 60px; margin: 0 auto 5px;"></div>
+                    <small><strong>Blue-300</strong><br>#93c5fd<br>Drop zones</small>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 2rem; padding: 1rem; background: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 0.5rem;">
+            <h3>🎯 Success Criteria</h3>
+            <p>Visual feedback improvements should provide:</p>
+            <ol>
+                <li>✅ Clear visual distinction between hover, selected, and normal states</li>
+                <li>✅ Consistent blue color scheme throughout the interface</li>
+                <li>✅ Smooth transitions for professional feel</li>
+                <li>✅ Better drop zone visibility when dragging content</li>
+                <li>✅ Enhanced user confidence through clear visual feedback</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>
