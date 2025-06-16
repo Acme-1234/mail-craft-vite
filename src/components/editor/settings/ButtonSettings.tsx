@@ -19,9 +19,9 @@ const ButtonSettings: React.FC<ButtonSettingsProps> = ({ block, onUpdate, onImag
   const [localButtonTextColor, setLocalButtonTextColor] = useState('');
   const [localButtonPadding, setLocalButtonPadding] = useState('');
   const [localButtonBorderRadius, setLocalButtonBorderRadius] = useState('');
-  const [localButtonFontWeight, setLocalButtonFontWeight] = useState('');
-  const [localButtonFontSize, setLocalButtonFontSize] = useState('');
+  const [localButtonFontWeight, setLocalButtonFontWeight] = useState('');  const [localButtonFontSize, setLocalButtonFontSize] = useState('');
   const [localButtonBorder, setLocalButtonBorder] = useState('');
+  const [localButtonWidth, setLocalButtonWidth] = useState('');
   const [localButtonImageUrl, setLocalButtonImageUrl] = useState('');
   const [localButtonImagePosition, setLocalButtonImagePosition] = useState<'none' | 'left' | 'right'>('none');
 
@@ -33,10 +33,10 @@ const ButtonSettings: React.FC<ButtonSettingsProps> = ({ block, onUpdate, onImag
     setLocalButtonBackgroundColor(buttonBlock.buttonStyles?.backgroundColor || '');
     setLocalButtonTextColor(buttonBlock.buttonStyles?.color || '');
     setLocalButtonPadding(buttonBlock.buttonStyles?.padding || '');
-    setLocalButtonBorderRadius(buttonBlock.buttonStyles?.borderRadius || '');
-    setLocalButtonFontWeight(buttonBlock.buttonStyles?.fontWeight || '');
+    setLocalButtonBorderRadius(buttonBlock.buttonStyles?.borderRadius || '');    setLocalButtonFontWeight(buttonBlock.buttonStyles?.fontWeight || '');
     setLocalButtonFontSize(buttonBlock.buttonStyles?.fontSize || '');
     setLocalButtonBorder(buttonBlock.buttonStyles?.border || '');
+    setLocalButtonWidth(buttonBlock.buttonStyles?.width || '');
     setLocalButtonImageUrl(buttonBlock.imageUrl || '');
     setLocalButtonImagePosition(buttonBlock.imagePosition || 'none');
   }, [block]);
@@ -209,6 +209,26 @@ const ButtonSettings: React.FC<ButtonSettingsProps> = ({ block, onUpdate, onImag
             { label: 'Normal', value: '16px' },
             { label: 'Large', value: '20px' },
             { label: 'XL', value: '24px' }
+          ]}        />
+
+        <SizeInput
+          label="Button Width"
+          value={localButtonWidth}
+          onChange={(value) => {
+            setLocalButtonWidth(value);
+            handleButtonStyleChange('width', value);
+          }}
+          placeholder="auto"
+          type="single"
+          max={800}
+          min={50}
+          units={['px', '%', 'em', 'rem']}
+          presets={[
+            { label: 'Auto', value: 'auto' },
+            { label: 'Small', value: '120px' },
+            { label: 'Medium', value: '200px' },
+            { label: 'Large', value: '300px' },
+            { label: 'Full Width', value: '100%' }
           ]}
         />
 

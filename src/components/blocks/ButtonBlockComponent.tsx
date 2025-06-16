@@ -22,7 +22,6 @@ const ButtonBlockComponent: React.FC<ButtonBlockProps> = ({ block }) => {
     borderRadius: block.styles?.borderRadius, // Container's border radius
     textAlign: block.align || 'center', // Apply alignment to the container
   };
-
   const buttonInlineStyles: React.CSSProperties = {
     color: block.buttonStyles?.color,
     backgroundColor: block.buttonStyles?.backgroundColor,
@@ -31,6 +30,7 @@ const ButtonBlockComponent: React.FC<ButtonBlockProps> = ({ block }) => {
     fontWeight: block.buttonStyles?.fontWeight,
     fontSize: block.buttonStyles?.fontSize,
     border: block.buttonStyles?.border, // Button element's border
+    width: block.buttonStyles?.width, // Button width control
     display: 'inline-flex', 
     alignItems: 'center',
     lineHeight: 'normal', 

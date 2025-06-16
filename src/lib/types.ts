@@ -28,6 +28,7 @@ export interface ButtonSpecificStyles {
   fontWeight?: string; // e.g., "normal", "bold", "600"
   fontSize?: string; // e.g., "16px"
   border?: string; // Border for the button element itself, e.g., "1px solid #000000"
+  width?: string; // Width for the button element, e.g., "200px", "100%", "auto"
 }
 
 export interface ImageElementStyles {
@@ -79,17 +80,6 @@ export interface HeadingBlockData extends BaseBlockData {
   align?: 'left' | 'center' | 'right'; // Text alignment
 }
 
-export interface AvatarBlockData extends BaseBlockData {
-  type: 'avatar';
-  src: string;
-  alt: string;
-  size?: 'small' | 'medium' | 'large' | 'custom'; // Predefined sizes or custom
-  customSize?: string; // Custom size when size is 'custom' (e.g., "80px")
-  shape?: 'circle' | 'square' | 'rounded'; // Avatar shape
-  align?: 'left' | 'center' | 'right'; // Alignment within container
-  linkHref?: string; // Optional URL to make the avatar a link
-}
-
 export interface DividerBlockData extends BaseBlockData {
   type: 'divider';
   thickness?: string; // e.g., "1px", "2px"
@@ -109,7 +99,7 @@ export interface HtmlBlockData extends BaseBlockData {
   content: string; // Raw HTML content
 }
 
-export type EditorBlockData = TextBlockData | ImageBlockData | ButtonBlockData | ConditionalLayoutBlockData | HeadingBlockData | AvatarBlockData | DividerBlockData | SpacerBlockData | HtmlBlockData;
+export type EditorBlockData = TextBlockData | ImageBlockData | ButtonBlockData | ConditionalLayoutBlockData | HeadingBlockData | DividerBlockData | SpacerBlockData | HtmlBlockData;
 
 export interface EditorColumn {
   id: string;

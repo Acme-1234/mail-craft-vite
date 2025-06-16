@@ -8,7 +8,6 @@ import ImageBlockComponent from '@/components/blocks/ImageBlockComponent';
 import ButtonBlockComponent from '@/components/blocks/ButtonBlockComponent';
 import ConditionalLayoutBlockComponent from '@/components/blocks/ConditionalLayoutBlockComponent';
 import HeadingBlockComponent from '@/components/blocks/HeadingBlockComponent';
-import AvatarBlockComponent from '@/components/blocks/AvatarBlockComponent';
 import DividerBlockComponent from '@/components/blocks/DividerBlockComponent';
 import SpacerBlockComponent from '@/components/blocks/SpacerBlockComponent';
 import HtmlBlockComponent from '@/components/blocks/HtmlBlockComponent';
@@ -50,12 +49,8 @@ const BlockWrapper: React.FC<BlockWrapperProps> = ({ block, rowId, columnId, par
       break;
     case 'heading':
       blockComponent = <HeadingBlockComponent block={block} />;
-      break;
-    case 'image':
+      break;    case 'image':
       blockComponent = <ImageBlockComponent block={block} />;
-      break;
-    case 'avatar':
-      blockComponent = <AvatarBlockComponent block={block} />;
       break;
     case 'button':
       blockComponent = <ButtonBlockComponent block={block} />;

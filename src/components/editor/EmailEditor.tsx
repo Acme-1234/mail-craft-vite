@@ -293,7 +293,7 @@ const EmailEditor = React.forwardRef<EmailEditorRef, EmailEditorProps>(  ({ plac
         } else if (overData?.type === 'column' && overData.parentConditionalBlockId) {
            addRow({ type: draggedItem.type as 'layout-1-col' | 'layout-2-col' | 'layout-3-col' }, undefined, overData.parentConditionalBlockId);
         }
-      } else if (['text', 'image', 'button', 'conditionalLayout', 'heading', 'avatar', 'divider', 'spacer', 'html'].includes(draggedItem.type)) {
+      } else if (['text', 'image', 'button', 'conditionalLayout', 'heading', 'divider', 'spacer', 'html'].includes(draggedItem.type)) {
         if (overData?.type === 'column' && overData.columnId && overData.rowId) {
           storeAddBlock(overData.rowId, overData.columnId, draggedItem.type as BlockType, undefined, overData.parentConditionalBlockId);
         } else if (overData?.isCanvas && document.rows.length > 0) {

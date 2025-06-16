@@ -11,11 +11,9 @@ import type {
   ButtonSpecificStyles,
   DocumentSettings,
   ConditionalLayoutBlockData,
-  TextBlockData,
-  ImageBlockData,
+  TextBlockData,  ImageBlockData,
   ImageElementStyles,
   HeadingBlockData,
-  AvatarBlockData,
   DividerBlockData,
   SpacerBlockData,
   HtmlBlockData,
@@ -83,13 +81,10 @@ const createNewBlock = (type: BlockType): EditorBlockData => {
   const baseBlock = { id, type, styles: {} };
   switch (type) {
     case 'text':
-      return { ...baseBlock, type: 'text', content: '<p>Type your text here...</p>' } as TextBlockData;
-    case 'heading':
+      return { ...baseBlock, type: 'text', content: '<p>Type your text here...</p>' } as TextBlockData;    case 'heading':
       return { ...baseBlock, type: 'heading', content: 'Your Heading Here', level: 2, align: 'left' } as HeadingBlockData;
     case 'image':
       return { ...baseBlock, type: 'image', src: 'https://placehold.co/600x400.png', alt: 'Placeholder Image', imageElementStyles: {} } as ImageBlockData;
-    case 'avatar':
-      return { ...baseBlock, type: 'avatar', src: 'https://placehold.co/100x100.png', alt: 'Avatar', size: 'medium', shape: 'circle', align: 'center' } as AvatarBlockData;
     case 'button':
       return { 
         ...baseBlock, 
