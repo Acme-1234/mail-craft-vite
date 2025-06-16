@@ -93,8 +93,7 @@ const BlockWrapper: React.FC<BlockWrapperProps> = ({ block, rowId, columnId, par
         isDragging && 'opacity-50'
       )}
       onClick={handleSelectBlock}
-    >
-      <div className="absolute top-1 right-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1 bg-background p-1 rounded shadow">
+    >      <div className="absolute top-1 -left-12 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1 bg-background p-1 rounded shadow">
         <Button variant="ghost" size="icon" className="h-6 w-6 cursor-grab" {...listeners} {...attributes} title="Move block">
            <GripVertical className="h-4 w-4" />
         </Button>
@@ -207,14 +206,12 @@ const RowComponent: React.FC<RowComponentProps> = ({ row, parentConditionalBlock
   return (
     <div
       ref={setDraggableNodeRef} 
-      style={style}
-      className={cn(
-        "relative border border-muted-foreground/20 rounded-md hover:border-primary transition-colors group bg-card shadow-sm", 
+      style={style}      className={cn(
+        "relative hover:border-primary transition-colors group bg-card", 
         isDragging && 'opacity-70 shadow-xl'
       )}
       onClick={(e) => e.stopPropagation()} 
-    >
-      <div className="absolute top-2 right-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 bg-background p-1 rounded shadow-md">
+    >      <div className="absolute top-2 -left-12 z-20 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center gap-1 bg-background p-1 rounded shadow-md">
         <Button variant="ghost" size="icon" className="h-7 w-7 cursor-grab" {...listeners} {...attributes} title="Move row">
            <GripVertical className="h-5 w-5" />
         </Button>
@@ -228,7 +225,7 @@ const RowComponent: React.FC<RowComponentProps> = ({ row, parentConditionalBlock
           <Trash2 className="h-5 w-5" />
         </Button>
       </div>
-      <div ref={setDroppableRowRef} className={cn("flex flex-wrap -m-0.5", isOver && !isDragging && 'bg-primary/5')}> {/* Added -m-0.5 to counteract p-0.5 on columns */}
+      <div ref={setDroppableRowRef} className={cn("flex flex-wrap gap-0", isOver && !isDragging && 'bg-primary/5')}>
         {row.columns.map((col) => (
           <ColumnComponent key={col.id} column={col} rowId={row.id} parentConditionalBlockId={parentConditionalBlockId} />
         ))}
@@ -260,12 +257,13 @@ const Canvas: React.FC = () => {
       )} 
       style={{ backgroundColor: canvasBackgroundColor }}
       onClick={handleCanvasClick}
-    >
-      <ScrollArea className="h-full">
-        <div 
-          className="max-w-3xl mx-auto p-6 space-y-2" 
-          style={{ width: document.settings?.contentWidth || '600px' }} // Apply content width here
-        > 
+    >      <ScrollArea className="h-full">        <div 
+          className="mx-auto p-6 pl-20" 
+          style={{ 
+            width: document.settings?.contentWidth || '600px',
+            maxWidth: 'none' // Remove max-width constraint
+          }} 
+        >
           {document.rows.length === 0 && (
             <div 
               className="flex flex-col items-center justify-center h-[calc(100vh-200px)] text-muted-foreground border-2 border-dashed border-border rounded-lg p-8"
