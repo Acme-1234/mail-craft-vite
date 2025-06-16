@@ -4,7 +4,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area-simple';
-import { Type, Image as ImageIcon, MousePointerSquareDashed, Columns, Rows, GripVertical, TerminalSquare } from 'lucide-react';
+import { Type, Image as ImageIcon, MousePointerSquareDashed, Columns, Rows, GripVertical, TerminalSquare, Heading, User, Minus, Space, Code } from 'lucide-react';
 import type { DraggableItem } from '@/lib/types';
 import { useDraggable } from '@dnd-kit/core';
 
@@ -42,11 +42,15 @@ const DraggableToolbarItem: React.FC<DraggableToolbarItemProps> = ({ id, item, c
 };
 
 
-const Toolbar: React.FC = () => {
-  const draggableBlocks: { id: string; item: DraggableItem; label: string; icon: React.ReactNode }[] = [
-    { id: 'tb-text', item: { type: 'text' }, label: 'Text Block', icon: <Type className="h-5 w-5" /> },
-    { id: 'tb-image', item: { type: 'image' }, label: 'Image Block', icon: <ImageIcon className="h-5 w-5" /> },
-    { id: 'tb-button', item: { type: 'button' }, label: 'Button Block', icon: <MousePointerSquareDashed className="h-5 w-5" /> },
+const Toolbar: React.FC = () => {  const draggableBlocks: { id: string; item: DraggableItem; label: string; icon: React.ReactNode }[] = [
+    { id: 'tb-heading', item: { type: 'heading' }, label: 'Heading', icon: <Heading className="h-5 w-5" /> },
+    { id: 'tb-text', item: { type: 'text' }, label: 'Text', icon: <Type className="h-5 w-5" /> },
+    { id: 'tb-button', item: { type: 'button' }, label: 'Button', icon: <MousePointerSquareDashed className="h-5 w-5" /> },
+    { id: 'tb-image', item: { type: 'image' }, label: 'Image', icon: <ImageIcon className="h-5 w-5" /> },
+    { id: 'tb-avatar', item: { type: 'avatar' }, label: 'Avatar', icon: <User className="h-5 w-5" /> },
+    { id: 'tb-divider', item: { type: 'divider' }, label: 'Divider', icon: <Minus className="h-5 w-5" /> },
+    { id: 'tb-spacer', item: { type: 'spacer' }, label: 'Spacer', icon: <Space className="h-5 w-5" /> },
+    { id: 'tb-html', item: { type: 'html' }, label: 'Html', icon: <Code className="h-5 w-5" /> },
     { id: 'tb-conditional', item: { type: 'conditionalLayout' }, label: 'Conditional Layout', icon: <TerminalSquare className="h-5 w-5" /> },
   ];
 

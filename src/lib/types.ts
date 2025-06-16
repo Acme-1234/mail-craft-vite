@@ -1,5 +1,5 @@
 
-export type BlockType = 'text' | 'image' | 'button' | 'conditionalLayout';
+export type BlockType = 'text' | 'image' | 'button' | 'conditionalLayout' | 'heading' | 'avatar' | 'divider' | 'spacer' | 'html';
 
 export interface Placeholder {
   label: string;
@@ -72,7 +72,44 @@ export interface ConditionalLayoutBlockData extends BaseBlockData {
   rows: EditorRow[]; // Nested rows for the content to be rendered if condition is true
 }
 
-export type EditorBlockData = TextBlockData | ImageBlockData | ButtonBlockData | ConditionalLayoutBlockData;
+export interface HeadingBlockData extends BaseBlockData {
+  type: 'heading';
+  content: string; // HTML content or text with {{field}} placeholders
+  level: 1 | 2 | 3 | 4 | 5 | 6; // Heading level (h1, h2, h3, etc.)
+  align?: 'left' | 'center' | 'right'; // Text alignment
+}
+
+export interface AvatarBlockData extends BaseBlockData {
+  type: 'avatar';
+  src: string;
+  alt: string;
+  size?: 'small' | 'medium' | 'large' | 'custom'; // Predefined sizes or custom
+  customSize?: string; // Custom size when size is 'custom' (e.g., "80px")
+  shape?: 'circle' | 'square' | 'rounded'; // Avatar shape
+  align?: 'left' | 'center' | 'right'; // Alignment within container
+  linkHref?: string; // Optional URL to make the avatar a link
+}
+
+export interface DividerBlockData extends BaseBlockData {
+  type: 'divider';
+  thickness?: string; // e.g., "1px", "2px"
+  color?: string; // Divider color
+  style?: 'solid' | 'dashed' | 'dotted'; // Line style
+  width?: string; // Width of the divider (e.g., "100%", "50%")
+  align?: 'left' | 'center' | 'right'; // Alignment of the divider
+}
+
+export interface SpacerBlockData extends BaseBlockData {
+  type: 'spacer';
+  height?: string; // Height of the spacer (e.g., "20px", "40px")
+}
+
+export interface HtmlBlockData extends BaseBlockData {
+  type: 'html';
+  content: string; // Raw HTML content
+}
+
+export type EditorBlockData = TextBlockData | ImageBlockData | ButtonBlockData | ConditionalLayoutBlockData | HeadingBlockData | AvatarBlockData | DividerBlockData | SpacerBlockData | HtmlBlockData;
 
 export interface EditorColumn {
   id: string;
