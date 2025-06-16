@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test: 4-Column Layout Added</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .highlight {
+            background-color: #f0f8ff;
+            padding: 15px;
+            border-left: 4px solid #0066cc;
+            margin: 10px 0;
+        }
+        .test-item {
+            margin: 15px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        .checklist {
+            list-style-type: none;
+            padding: 0;
+        }
+        .checklist li {
+            margin: 8px 0;
+            padding: 5px;
+        }
+        .checklist li:before {
+            content: "☐ ";
+            font-size: 18px;
+            margin-right: 10px;
+        }
+        .new-feature {
+            background-color: #e8f5e8;
+            border-left: 4px solid #28a745;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .grid-demo {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        .grid-demo div {
+            background: #f8f9fa;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #dee2e6;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>📐 Test: 4-Column Layout Added</h1>
+    
+    <div class="highlight">
+        <strong>New Feature:</strong> 4-Column layout has been added to provide more granular control over email designs.
+    </div>
+
+    <div class="new-feature">
+        <h3>🆕 4-Column Layout Features</h3>
+        <ul>
+            <li><strong>Grid System:</strong> Uses 3-span columns (25% width each) for perfect 4-column layout</li>
+            <li><strong>Responsive Design:</strong> Works with existing Tailwind CSS grid classes</li>
+            <li><strong>Email Compatible:</strong> Generates proper table-based HTML for email clients</li>
+            <li><strong>Drag & Drop:</strong> Fully integrated with existing drag and drop functionality</li>
+        </ul>
+    </div>
+
+    <h2>📊 Layout Grid Overview</h2>
+    
+    <div class="test-item">
+        <h3>Layout Section (2x2 Grid)</h3>
+        <ul class="checklist">
+            <li><strong>Row 1:</strong> 1 Column, 2 Columns</li>
+            <li><strong>Row 2:</strong> 3 Columns, 4 Columns ✨</li>
+        </ul>
+        
+        <div class="grid-demo">
+            <div>1 Column<br><small>span: 12</small></div>
+            <div>2 Columns<br><small>span: 6 each</small></div>
+            <div>3 Columns<br><small>span: 4 each</small></div>
+            <div>4 Columns<br><small>span: 3 each</small></div>
+        </div>
+    </div>
+
+    <div class="test-item">
+        <h3>Block Section (2x4 Grid - Unchanged)</h3>
+        <ul class="checklist">
+            <li><strong>Row 1:</strong> Heading, Text</li>
+            <li><strong>Row 2:</strong> Button, Image</li>
+            <li><strong>Row 3:</strong> Divider, Spacer</li>
+            <li><strong>Row 4:</strong> Html, Conditional</li>
+        </ul>
+    </div>
+
+    <h2>🔧 Technical Implementation</h2>
+    
+    <div class="test-item">
+        <h3>Type System Updates</h3>
+        <ul class="checklist">
+            <li>Added <code>'layout-4-col'</code> to DraggableItemType</li>
+            <li>Added <code>span: 3</code> to EditorColumn type</li>
+            <li>Updated addRow function type signature</li>
+            <li>Canvas getColumnWidthClass already supported span 3</li>
+        </ul>
+    </div>
+
+    <div class="test-item">
+        <h3>Component Updates</h3>
+        <ul class="checklist">
+            <li><strong>Toolbar.tsx:</strong> Added 4-column layout with scaled Columns icon</li>
+            <li><strong>useEditorStore.ts:</strong> Added layout-4-col case with 4×span-3 columns</li>
+            <li><strong>EmailEditor.tsx:</strong> Updated drag handler type casting</li>
+            <li><strong>Canvas.tsx:</strong> Already supported w-3/12 (25% width)</li>
+        </ul>
+    </div>
+
+    <div class="test-item">
+        <h3>CSS Grid Mapping</h3>
+        <ul class="checklist">
+            <li><strong>span: 12</strong> → w-full (100%)</li>
+            <li><strong>span: 6</strong> → w-1/2 (50%)</li>
+            <li><strong>span: 4</strong> → w-1/3 (33.33%)</li>
+            <li><strong>span: 3</strong> → w-3/12 = w-1/4 (25%) ✨</li>
+        </ul>
+    </div>
+
+    <h2>🧪 Manual Testing Steps</h2>
+    
+    <div class="test-item">
+        <h3>Step 1: Verify 4-Column in Toolbar</h3>
+        <ol>
+            <li>Open the Mail Craft editor</li>
+            <li>Check Layouts section shows 4 items in 2×2 grid</li>
+            <li>Locate "4 Columns" in bottom-right position</li>
+            <li>Verify Columns icon with scale-x-110 styling</li>
+            <li>Test hover effect (blue accent)</li>
+        </ol>
+    </div>
+
+    <div class="test-item">
+        <h3>Step 2: Test 4-Column Layout Creation</h3>
+        <ol>
+            <li>Drag "4 Columns" layout to canvas</li>
+            <li>Verify 4 equal-width columns are created</li>
+            <li>Check each column has 25% width (w-3/12 class)</li>
+            <li>Add content to each column</li>
+            <li>Verify responsive behavior</li>
+        </ol>
+    </div>
+
+    <div class="test-item">
+        <h3>Step 3: Integration Testing</h3>
+        <ol>
+            <li>Mix 4-column rows with other layout types</li>
+            <li>Test drag and drop blocks into 4-column layout</li>
+            <li>Verify export generates proper HTML table structure</li>
+            <li>Test preview mode displays correctly</li>
+            <li>Check no TypeScript or console errors</li>
+        </ol>
+    </div>
+
+    <h2>📱 Email Client Compatibility</h2>
+    
+    <div class="test-item">
+        <h3>HTML Structure</h3>
+        <ul class="checklist">
+            <li>4-column layout exports as table with 4 td elements</li>
+            <li>Each column gets 25% width for email client compatibility</li>
+            <li>Proper table-based structure for Outlook, Gmail, etc.</li>
+            <li>Responsive behavior on mobile devices</li>
+        </ul>
+    </div>
+
+    <h2>🎯 Expected Results</h2>
+    
+    <div class="highlight">
+        <p><strong>Complete 4-Column Support:</strong></p>
+        <ul>
+            <li>4-Column layout visible in toolbar (4th layout)</li>
+            <li>Creates 4 equal-width columns (25% each)</li>
+            <li>Perfect for product grids, feature showcases, social links</li>
+            <li>Full drag & drop integration</li>
+            <li>Proper HTML export for email clients</li>
+            <li>No breaking changes to existing functionality</li>
+        </ul>
+    </div>
+
+    <div class="test-item">
+        <h3>🎨 Use Cases for 4-Column Layout</h3>
+        <ul>
+            <li><strong>Product Catalogs:</strong> Display 4 products side by side</li>
+            <li><strong>Feature Highlights:</strong> Show 4 key features with icons</li>
+            <li><strong>Social Media:</strong> 4 social media icons/links</li>
+            <li><strong>Team Members:</strong> Display 4 team member profiles</li>
+            <li><strong>Statistics:</strong> Show 4 key metrics or numbers</li>
+            <li><strong>Navigation:</strong> 4-column menu or category links</li>
+        </ul>
+    </div>
+
+    <div class="new-feature">
+        <strong>Result:</strong> The Mail Craft editor now provides complete layout flexibility with 1, 2, 3, and 4-column options, enabling more sophisticated email designs while maintaining full email client compatibility.
+    </div>
+
+    <p><em>Test completed on: <span id="date"></span></em></p>
+    
+    <script>
+        document.getElementById('date').textContent = new Date().toLocaleDateString();
+    </script>
+</body>
+</html>

@@ -4,6 +4,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import SizeInput from '@/components/ui/size-input';
 import { ImageUp, Link2 } from 'lucide-react';
 import type { ImageSettingsProps } from './types';
 import type { ImageBlockData } from '@/lib/types';
@@ -55,21 +56,10 @@ const ImageSettings: React.FC<ImageSettingsProps> = ({ block, onUpdate, onImageS
     onUpdate({ 
       imageElementStyles: { 
         ...currentStyles, 
-        border: e.target.value 
-      } 
+        border: e.target.value      } 
     });
   };
 
-  const handleImageElementBorderRadiusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLocalImageElementBorderRadius(e.target.value);
-    const currentStyles = (block as ImageBlockData).imageElementStyles || {};
-    onUpdate({ 
-      imageElementStyles: { 
-        ...currentStyles, 
-        borderRadius: e.target.value 
-      } 
-    });
-  };
   const handleSelectImage = () => {
     const imageBrowser = getImageBrowser();
     
@@ -169,18 +159,30 @@ const ImageSettings: React.FC<ImageSettingsProps> = ({ block, onUpdate, onImageS
             placeholder="1px solid #ccc"
             className="text-xs mt-1"
           />
-        </div>
-
-        <div>
-          <Label htmlFor="image-border-radius" className="text-xs">Border Radius</Label>
-          <Input
-            id="image-border-radius"
-            value={localImageElementBorderRadius}
-            onChange={handleImageElementBorderRadiusChange}
-            placeholder="4px"
-            className="text-xs mt-1"
-          />
-        </div>
+        </div>        <SizeInput
+          label="Border Radius"
+          value={localImageElementBorderRadius}
+          onChange={(value) => {
+            setLocalImageElementBorderRadius(value);
+            const currentStyles = (block as ImageBlockData).imageElementStyles || {};
+            onUpdate({ 
+              imageElementStyles: { 
+                ...currentStyles, 
+                borderRadius: value 
+              } 
+            });
+          }}
+          placeholder="4px"
+          type="single"
+          max={50}
+          presets={[
+            { label: 'None', value: '0px' },
+            { label: 'Small', value: '4px' },
+            { label: 'Medium', value: '8px' },
+            { label: 'Large', value: '16px' },
+            { label: 'Round', value: '50%' }
+          ]}
+        />
       </CardContent>
     </>
   );

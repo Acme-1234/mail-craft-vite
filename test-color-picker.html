@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Picker Test - Mail Craft</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #f8fafc;
+        }
+        .header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 2rem;
+        }
+        .header h1 {
+            margin: 0;
+            color: #1e293b;
+            font-size: 1.5rem;
+        }
+        .header p {
+            margin: 0.5rem 0 0 0;
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        .test-steps {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .test-steps h2 {
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+        .step-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .step-card h3 {
+            margin: 0 0 0.5rem 0;
+            color: #1e293b;
+        }
+        .step-card p {
+            margin: 0;
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        .features-list {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+        .features-list h3 {
+            margin: 0 0 1rem 0;
+            color: #1e293b;
+        }
+        .features-list ul {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+        .features-list li {
+            color: #64748b;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+        .badge {
+            background: #dcfce7;
+            color: #166534;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎨 Color Picker Enhancement Test</h1>
+        <p>Test the new advanced color picker with HEX, RGB, HSL, RGBA support and eyedropper functionality</p>
+    </div>
+
+    <div class="test-steps">
+        <h2>Testing Instructions</h2>
+        
+        <div class="step-card">
+            <h3>1. Add a Button Block</h3>
+            <p>Add a button block to the canvas and select it to open the settings panel. You should see enhanced color pickers for background and text colors.</p>
+        </div>
+
+        <div class="step-card">
+            <h3>2. Test Background Color Picker</h3>
+            <p>Click on the Background Color field and test:</p>
+            <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                <li>HEX format (e.g., #FF6B6B)</li>
+                <li>RGB format (e.g., rgb(255, 107, 107))</li>
+                <li>HSL format (e.g., hsl(0, 100%, 71%))</li>
+                <li>RGBA format (e.g., rgba(255, 107, 107, 0.8))</li>
+                <li>Common color palette selection</li>
+                <li>Native color picker</li>
+                <li>Eyedropper tool (if supported by browser)</li>
+            </ul>
+        </div>
+
+        <div class="step-card">
+            <h3>3. Test Text Color Picker</h3>
+            <p>Test the same features on the text color picker to ensure consistency across all color inputs.</p>
+        </div>
+
+        <div class="step-card">
+            <h3>4. Test Container Styles</h3>
+            <p>Add any block and test the container styles color pickers for background and text colors in the Container Styles section.</p>
+        </div>
+
+        <div class="step-card">
+            <h3>5. Test Document Settings</h3>
+            <p>Go to Document Settings and test the background color picker for the overall email background.</p>
+        </div>
+
+        <div class="step-card">
+            <h3>6. Visual Feedback Test</h3>
+            <p>Verify that color changes are immediately reflected in the canvas and that the color preview in the picker shows the correct color.</p>
+        </div>
+
+        <div class="features-list">
+            <h3>🎯 Expected Features</h3>
+            <ul>
+                <li><span class="badge">HEX</span> Support for hexadecimal color format (#RRGGBB)</li>
+                <li><span class="badge">RGB</span> Support for RGB format (rgb(r, g, b))</li>
+                <li><span class="badge">HSL</span> Support for HSL format (hsl(h, s%, l%))</li>
+                <li><span class="badge">RGBA</span> Support for RGBA format with opacity</li>
+                <li><span class="badge">Picker</span> Visual color picker with common color palette</li>
+                <li><span class="badge">Native</span> Browser native color picker integration</li>
+                <li><span class="badge">Eyedropper</span> Screen color picker (Chrome/Edge)</li>
+                <li><span class="badge">Preview</span> Live color preview in button</li>
+                <li><span class="badge">Canvas</span> Real-time updates on canvas</li>
+            </ul>
+        </div>
+
+        <div style="margin-top: 2rem; padding: 1rem; background: #fef3c7; border: 1px solid #f59e0b; border-radius: 0.5rem;">
+            <h3 style="margin: 0 0 0.5rem 0; color: #92400e;">💡 Note</h3>
+            <p style="margin: 0; color: #92400e; font-size: 0.875rem;">
+                The eyedropper tool requires a Chromium-based browser (Chrome, Edge, Opera) and HTTPS or localhost. 
+                If the eyedropper button doesn't appear, your browser doesn't support this feature.
+            </p>
+        </div>
+    </div>
+
+    <script type="module">
+        // Auto-redirect to app after a moment
+        setTimeout(() => {
+            if (confirm('Ready to test the color picker? This will open the main application.')) {
+                window.location.href = '/';
+            }
+        }, 2000);
+    </script>
+</body>
+</html>

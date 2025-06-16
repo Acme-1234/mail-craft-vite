@@ -4,6 +4,8 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import ColorPicker from '@/components/ui/color-picker';
+import SizeInput from '@/components/ui/size-input';
 import { MousePointerSquareDashed, ImagePlus } from 'lucide-react';
 import type { ButtonSettingsProps } from './types';
 import type { ButtonBlockData } from '@/lib/types';
@@ -17,9 +19,9 @@ const ButtonSettings: React.FC<ButtonSettingsProps> = ({ block, onUpdate, onImag
   const [localButtonTextColor, setLocalButtonTextColor] = useState('');
   const [localButtonPadding, setLocalButtonPadding] = useState('');
   const [localButtonBorderRadius, setLocalButtonBorderRadius] = useState('');
-  const [localButtonFontWeight, setLocalButtonFontWeight] = useState('');
-  const [localButtonFontSize, setLocalButtonFontSize] = useState('');
+  const [localButtonFontWeight, setLocalButtonFontWeight] = useState('');  const [localButtonFontSize, setLocalButtonFontSize] = useState('');
   const [localButtonBorder, setLocalButtonBorder] = useState('');
+  const [localButtonWidth, setLocalButtonWidth] = useState('');
   const [localButtonImageUrl, setLocalButtonImageUrl] = useState('');
   const [localButtonImagePosition, setLocalButtonImagePosition] = useState<'none' | 'left' | 'right'>('none');
 
@@ -31,10 +33,10 @@ const ButtonSettings: React.FC<ButtonSettingsProps> = ({ block, onUpdate, onImag
     setLocalButtonBackgroundColor(buttonBlock.buttonStyles?.backgroundColor || '');
     setLocalButtonTextColor(buttonBlock.buttonStyles?.color || '');
     setLocalButtonPadding(buttonBlock.buttonStyles?.padding || '');
-    setLocalButtonBorderRadius(buttonBlock.buttonStyles?.borderRadius || '');
-    setLocalButtonFontWeight(buttonBlock.buttonStyles?.fontWeight || '');
+    setLocalButtonBorderRadius(buttonBlock.buttonStyles?.borderRadius || '');    setLocalButtonFontWeight(buttonBlock.buttonStyles?.fontWeight || '');
     setLocalButtonFontSize(buttonBlock.buttonStyles?.fontSize || '');
     setLocalButtonBorder(buttonBlock.buttonStyles?.border || '');
+    setLocalButtonWidth(buttonBlock.buttonStyles?.width || '');
     setLocalButtonImageUrl(buttonBlock.imageUrl || '');
     setLocalButtonImagePosition(buttonBlock.imagePosition || 'none');
   }, [block]);
@@ -125,63 +127,60 @@ const ButtonSettings: React.FC<ButtonSettingsProps> = ({ block, onUpdate, onImag
               ))}
             </SelectContent>
           </Select>
-        </div>
+        </div>        <ColorPicker
+          label="Background Color"
+          value={localButtonBackgroundColor}
+          onChange={(value) => {
+            setLocalButtonBackgroundColor(value);
+            handleButtonStyleChange('backgroundColor', value);
+          }}
+          placeholder="#64B5F6"
+        />
 
-        <div>
-          <Label htmlFor="button-bg-color" className="text-xs">Background Color</Label>
-          <Input
-            id="button-bg-color"
-            value={localButtonBackgroundColor}
-            onChange={(e) => {
-              setLocalButtonBackgroundColor(e.target.value);
-              handleButtonStyleChange('backgroundColor', e.target.value);
-            }}
-            placeholder="#64B5F6"
-            className="text-xs mt-1"
-          />
-        </div>
+        <ColorPicker
+          label="Text Color"
+          value={localButtonTextColor}
+          onChange={(value) => {
+            setLocalButtonTextColor(value);
+            handleButtonStyleChange('color', value);
+          }}
+          placeholder="#FFFFFF"
+        />        <SizeInput
+          label="Padding"
+          value={localButtonPadding}
+          onChange={(value) => {
+            setLocalButtonPadding(value);
+            handleButtonStyleChange('padding', value);
+          }}
+          placeholder="10px 25px"
+          type="box"
+          max={100}
+          presets={[
+            { label: 'None', value: '0px' },
+            { label: 'Small', value: '8px 16px' },
+            { label: 'Medium', value: '12px 24px' },
+            { label: 'Large', value: '16px 32px' }
+          ]}
+        />
 
-        <div>
-          <Label htmlFor="button-text-color" className="text-xs">Text Color</Label>
-          <Input
-            id="button-text-color"
-            value={localButtonTextColor}
-            onChange={(e) => {
-              setLocalButtonTextColor(e.target.value);
-              handleButtonStyleChange('color', e.target.value);
-            }}
-            placeholder="#FFFFFF"
-            className="text-xs mt-1"
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="button-padding" className="text-xs">Padding</Label>
-          <Input
-            id="button-padding"
-            value={localButtonPadding}
-            onChange={(e) => {
-              setLocalButtonPadding(e.target.value);
-              handleButtonStyleChange('padding', e.target.value);
-            }}
-            placeholder="10px 25px"
-            className="text-xs mt-1"
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="button-border-radius" className="text-xs">Border Radius</Label>
-          <Input
-            id="button-border-radius"
-            value={localButtonBorderRadius}
-            onChange={(e) => {
-              setLocalButtonBorderRadius(e.target.value);
-              handleButtonStyleChange('borderRadius', e.target.value);
-            }}
-            placeholder="5px"
-            className="text-xs mt-1"
-          />
-        </div>        <div>
+        <SizeInput
+          label="Border Radius"
+          value={localButtonBorderRadius}
+          onChange={(value) => {
+            setLocalButtonBorderRadius(value);
+            handleButtonStyleChange('borderRadius', value);
+          }}
+          placeholder="5px"
+          type="single"
+          max={50}
+          presets={[
+            { label: 'None', value: '0px' },
+            { label: 'Small', value: '4px' },
+            { label: 'Medium', value: '8px' },
+            { label: 'Large', value: '16px' },
+            { label: 'Round', value: '50px' }
+          ]}
+        /><div>
           <Label htmlFor="button-border" className="text-xs">Border</Label>
           <Input
             id="button-border"
@@ -193,21 +192,45 @@ const ButtonSettings: React.FC<ButtonSettingsProps> = ({ block, onUpdate, onImag
             placeholder="1px solid #ccc"
             className="text-xs mt-1"
           />
-        </div>
+        </div>        <SizeInput
+          label="Font Size"
+          value={localButtonFontSize}
+          onChange={(value) => {
+            setLocalButtonFontSize(value);
+            handleButtonStyleChange('fontSize', value);
+          }}
+          placeholder="16px"
+          type="single"
+          max={72}
+          min={8}
+          units={['px', 'em', 'rem', 'pt']}
+          presets={[
+            { label: 'Small', value: '12px' },
+            { label: 'Normal', value: '16px' },
+            { label: 'Large', value: '20px' },
+            { label: 'XL', value: '24px' }
+          ]}        />
 
-        <div>
-          <Label htmlFor="button-font-size" className="text-xs">Font Size</Label>
-          <Input
-            id="button-font-size"
-            value={localButtonFontSize}
-            onChange={(e) => {
-              setLocalButtonFontSize(e.target.value);
-              handleButtonStyleChange('fontSize', e.target.value);
-            }}
-            placeholder="16px"
-            className="text-xs mt-1"
-          />
-        </div>
+        <SizeInput
+          label="Button Width"
+          value={localButtonWidth}
+          onChange={(value) => {
+            setLocalButtonWidth(value);
+            handleButtonStyleChange('width', value);
+          }}
+          placeholder="auto"
+          type="single"
+          max={800}
+          min={50}
+          units={['px', '%', 'em', 'rem']}
+          presets={[
+            { label: 'Auto', value: 'auto' },
+            { label: 'Small', value: '120px' },
+            { label: 'Medium', value: '200px' },
+            { label: 'Large', value: '300px' },
+            { label: 'Full Width', value: '100%' }
+          ]}
+        />
 
         <div>
           <Label className="text-xs">Font Weight</Label>

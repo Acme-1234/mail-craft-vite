@@ -3,7 +3,9 @@ import { CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { PaletteIcon, Ruler, BoxSelect } from 'lucide-react';
+import ColorPicker from '@/components/ui/color-picker';
+import SizeInput from '@/components/ui/size-input';
+import { BoxSelect } from 'lucide-react';
 import type { ContainerStylesProps } from './types';
 import { googleFontsList, fontWeights } from './constants';
 
@@ -46,55 +48,53 @@ const ContainerStyles: React.FC<ContainerStylesProps> = ({ block, onUpdate }) =>
           <BoxSelect className="h-5 w-5" /> Container Styles
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-3">
-        <div className="grid grid-cols-2 gap-2">
-          <div>
-            <Label htmlFor="padding" className="text-xs flex items-center gap-1">
-              <Ruler className="h-3 w-3" /> Padding
-            </Label>
-            <Input
-              id="padding"
-              value={localPadding}
-              onChange={(e) => {
-                setLocalPadding(e.target.value);
-                handleStyleChange('padding', e.target.value);
-              }}
-              placeholder="10px"
-              className="text-xs mt-1"
-            />
-          </div>
-          <div>
-            <Label htmlFor="margin" className="text-xs flex items-center gap-1">
-              <Ruler className="h-3 w-3" /> Margin
-            </Label>
-            <Input
-              id="margin"
-              value={localMargin}
-              onChange={(e) => {
-                setLocalMargin(e.target.value);
-                handleStyleChange('margin', e.target.value);
-              }}
-              placeholder="10px"
-              className="text-xs mt-1"
-            />
-          </div>
-        </div>
-
-        <div>
-          <Label htmlFor="background-color" className="text-xs flex items-center gap-1">
-            <PaletteIcon className="h-3 w-3" /> Background Color
-          </Label>
-          <Input
-            id="background-color"
-            value={localBackgroundColor}
-            onChange={(e) => {
-              setLocalBackgroundColor(e.target.value);
-              handleStyleChange('backgroundColor', e.target.value);
+      <CardContent className="space-y-3">        <div className="grid grid-cols-2 gap-2">
+          <SizeInput
+            label="Padding"
+            value={localPadding}
+            onChange={(value) => {
+              setLocalPadding(value);
+              handleStyleChange('padding', value);
             }}
-            placeholder="#FFFFFF"
-            className="text-xs mt-1"
+            placeholder="10px"
+            type="box"
+            max={100}
+            presets={[
+              { label: 'None', value: '0px' },
+              { label: 'Small', value: '8px' },
+              { label: 'Medium', value: '16px' },
+              { label: 'Large', value: '24px' }
+            ]}
+          />
+          <SizeInput
+            label="Margin"
+            value={localMargin}
+            onChange={(value) => {
+              setLocalMargin(value);
+              handleStyleChange('margin', value);
+            }}
+            placeholder="10px"
+            type="box"
+            max={100}
+            allowNegative={true}
+            presets={[
+              { label: 'None', value: '0px' },
+              { label: 'Small', value: '8px' },
+              { label: 'Medium', value: '16px' },
+              { label: 'Large', value: '24px' },
+              { label: 'Auto', value: 'auto' }            ]}
           />
         </div>
+
+        <ColorPicker
+          label="Background Color"
+          value={localBackgroundColor}
+          onChange={(value) => {
+            setLocalBackgroundColor(value);
+            handleStyleChange('backgroundColor', value);
+          }}
+          placeholder="#FFFFFF"
+        />
 
         <div>
           <Label className="text-xs">Text Alignment</Label>
@@ -136,22 +136,26 @@ const ContainerStyles: React.FC<ContainerStylesProps> = ({ block, onUpdate }) =>
               ))}
             </SelectContent>
           </Select>
-        </div>
-
-        <div className="grid grid-cols-2 gap-2">
-          <div>
-            <Label htmlFor="font-size" className="text-xs">Font Size</Label>
-            <Input
-              id="font-size"
-              value={localFontSize}
-              onChange={(e) => {
-                setLocalFontSize(e.target.value);
-                handleStyleChange('fontSize', e.target.value);
-              }}
-              placeholder="16px"
-              className="text-xs mt-1"
-            />
-          </div>
+        </div>        <div className="grid grid-cols-2 gap-2">
+          <SizeInput
+            label="Font Size"
+            value={localFontSize}
+            onChange={(value) => {
+              setLocalFontSize(value);
+              handleStyleChange('fontSize', value);
+            }}
+            placeholder="16px"
+            type="single"
+            max={72}
+            min={8}
+            units={['px', 'em', 'rem', 'pt']}
+            presets={[
+              { label: 'Small', value: '12px' },
+              { label: 'Normal', value: '16px' },
+              { label: 'Large', value: '20px' },
+              { label: 'XL', value: '24px' }
+            ]}
+          />
           <div>
             <Label className="text-xs">Font Weight</Label>
             <Select 
@@ -173,22 +177,16 @@ const ContainerStyles: React.FC<ContainerStylesProps> = ({ block, onUpdate }) =>
               </SelectContent>
             </Select>
           </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-2">
-          <div>
-            <Label htmlFor="text-color" className="text-xs">Text Color</Label>
-            <Input
-              id="text-color"
-              value={localTextColor}
-              onChange={(e) => {
-                setLocalTextColor(e.target.value);
-                handleStyleChange('color', e.target.value);
-              }}
-              placeholder="#000000"
-              className="text-xs mt-1"
-            />
-          </div>
+        </div>        <div className="grid grid-cols-2 gap-2">
+          <ColorPicker
+            label="Text Color"
+            value={localTextColor}
+            onChange={(value) => {
+              setLocalTextColor(value);
+              handleStyleChange('color', value);
+            }}
+            placeholder="#000000"
+          />
           <div>
             <Label htmlFor="line-height" className="text-xs">Line Height</Label>
             <Input

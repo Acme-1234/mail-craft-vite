@@ -6,6 +6,7 @@ import type {
   ImageBlockData, 
   ButtonBlockData,
   HeadingBlockData,
+  HtmlBlockData,
   ConditionalLayoutBlockData,
   BlockStyles, 
   ButtonSpecificStyles, 
@@ -17,6 +18,7 @@ import { Separator } from '@/components/ui/separator';
 import {
   TextSettings,
   HeadingSettings,
+  HtmlSettings,
   ImageSettings,
   ButtonSettings,
   ConditionalLayoutSettings,
@@ -71,6 +73,11 @@ const SettingsPanel: React.FC = () => {
         return (
           <HeadingSettings
             block={selectedBlock as HeadingBlockData}
+            onUpdate={handleUpdateBlock}
+          />        );      case 'html':
+        return (
+          <HtmlSettings
+            block={selectedBlock as HtmlBlockData}
             onUpdate={handleUpdateBlock}
           />
         );
