@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Editor Test - Mail Craft</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #f8fafc;
+        }
+        .header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 2rem;
+        }
+        .header h1 {
+            margin: 0;
+            color: #1e293b;
+            font-size: 1.5rem;
+        }
+        .header p {
+            margin: 0.5rem 0 0 0;
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        .features {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .features h2 {
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .feature-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+        .feature-card h3 {
+            margin: 0 0 0.5rem 0;
+            color: #1e293b;
+            font-size: 1rem;
+        }
+        .feature-card p {
+            margin: 0;
+            color: #64748b;
+            font-size: 0.875rem;
+            line-height: 1.4;
+        }
+        .test-steps {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .test-steps h3 {
+            margin: 0 0 1rem 0;
+            color: #1e293b;
+        }
+        .test-steps ol {
+            margin: 0;
+            padding-left: 1.5rem;
+            color: #475569;
+        }
+        .test-steps li {
+            margin-bottom: 0.5rem;
+        }
+        .app-container {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+    <script>
+        // Configure the editor on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            if (window.editor) {
+                // Configure advanced branding for HTML editor test
+                window.editor.configure({
+                    branding: {
+                        title: "HTML Editor Test",
+                        logo: null,
+                        showHeader: true
+                    },
+                    theme: {
+                        mode: "light",
+                        primaryColor: "#3b82f6",
+                        fontFamily: "Inter, system-ui, sans-serif"
+                    },
+                    buttons: {
+                        preview: true,
+                        importJson: true,
+                        exportJson: true,
+                        exportHtml: true,
+                        clear: true,
+                        getLinks: true
+                    },
+                    placeholders: [
+                        { label: "User Name", field: "user.name" },
+                        { label: "User Email", field: "user.email" },
+                        { label: "Company", field: "company.name" },
+                        { label: "Product Name", field: "product.name" },
+                        { label: "Current Date", field: "date.today" },
+                        { label: "Unsubscribe Link", field: "links.unsubscribe" }
+                    ]
+                });                // Add some sample data to demonstrate HTML editor
+                const sampleData = {
+                    rows: [
+                        {
+                            id: "row-1",
+                            columns: [
+                                {
+                                    id: "col-1",
+                                    width: 100,
+                                    blocks: [
+                                        {
+                                            id: "html-demo",
+                                            type: "html",
+                                            content: "&lt;div style=\"padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; color: white; text-align: center;\"&gt;\n  &lt;h2 style=\"margin: 0 0 16px 0; font-size: 28px; font-weight: bold;\"&gt;🎨 HTML Editor Demo&lt;/h2&gt;\n  &lt;p style=\"margin: 0 0 20px 0; font-size: 16px; opacity: 0.9;\"&gt;\n    This HTML block showcases the Monaco Editor with syntax highlighting!\n  &lt;/p&gt;\n  &lt;button onclick=\"alert('Hello from HTML Editor!')\" style=\"padding: 12px 24px; background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; cursor: pointer;\"&gt;\n    🚀 Test Interactive Button\n  &lt;/button&gt;\n&lt;/div&gt;",
+                                            styles: {
+                                                padding: "0",
+                                                margin: "0 0 20px 0"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                };
+
+                // Load the sample data
+                window.editor.import(sampleData);
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="header">
+        <h1>🎨 HTML Editor with Monaco Editor</h1>
+        <p>Testing the enhanced HTML block with syntax highlighting, live preview, and template support</p>
+    </div>
+
+    <div class="features">
+        <h2>🚀 HTML Editor Features</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>📝 Monaco Editor Integration</h3>
+                <p>Professional code editor with VS Code features, including syntax highlighting, auto-completion, and error detection for HTML, CSS, and JavaScript.</p>
+            </div>
+            <div class="feature-card">
+                <h3>👁️ Live Preview</h3>
+                <p>Real-time preview of your HTML content with immediate visual feedback as you type. Switch between editor and preview modes.</p>
+            </div>
+            <div class="feature-card">
+                <h3>⚡ Quick Templates</h3>
+                <p>Pre-built templates for common email patterns like buttons, cards, and interactive elements to get started quickly.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🏷️ Multi-Language Support</h3>
+                <p>Separate tabs for HTML, CSS, and JavaScript with appropriate syntax highlighting and IntelliSense for each language.</p>
+            </div>
+            <div class="feature-card">
+                <h3>📱 Email Compatibility</h3>
+                <p>Built-in warnings and tips for email client compatibility, with recommendations for inline styles and fallbacks.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🎯 Advanced Features</h3>
+                <p>Code folding, bracket matching, multi-cursor editing, and all the modern editor features you expect.</p>
+            </div>
+        </div>
+
+        <div class="test-steps">
+            <h3>🧪 Testing Instructions</h3>
+            <ol>
+                <li><strong>Select HTML Block:</strong> Click on the HTML block in the canvas below to open the settings panel</li>
+                <li><strong>Open Monaco Editor:</strong> The HTML Editor should appear in the settings panel with syntax highlighting</li>
+                <li><strong>Test Language Tabs:</strong> Switch between HTML, CSS, and JS tabs to see different syntax highlighting</li>
+                <li><strong>Try Templates:</strong> Click the template buttons (Basic, Button, Card, Interactive) to insert code</li>
+                <li><strong>Live Preview:</strong> Watch the preview update in real-time as you edit the HTML</li>
+                <li><strong>Test Features:</strong> Try the interactive button in the demo block to verify JavaScript execution</li>
+                <li><strong>Editor Modes:</strong> Toggle between "Editor + Preview" and "Preview Only" modes</li>
+                <li><strong>Code Quality:</strong> Test auto-completion, syntax validation, and error highlighting</li>
+            </ol>
+        </div>
+
+        <div class="app-container">
+            <div id="root"></div>
+        </div>
+    </div>
+
+    <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

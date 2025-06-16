@@ -1,4 +1,4 @@
-import type { EditorBlockData, ImageBlockData, ButtonBlockData, ConditionalLayoutBlockData, BlockStyles, HeadingBlockData } from '@/lib/types';
+import type { EditorBlockData, ImageBlockData, ButtonBlockData, ConditionalLayoutBlockData, BlockStyles, HeadingBlockData, HtmlBlockData } from '@/lib/types';
 
 export interface BaseSettingsProps {
   block: EditorBlockData;
@@ -36,4 +36,8 @@ export interface ContainerStylesProps {
 export interface DocumentSettingsProps {
   settings: any;
   onUpdate: (settings: any) => void;
+}
+
+export interface HtmlSettingsProps extends BaseSettingsProps {
+  block: HtmlBlockData;
 }
