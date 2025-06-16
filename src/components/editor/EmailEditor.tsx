@@ -14,6 +14,7 @@ import Toolbar from './Toolbar';
 import Canvas from './Canvas';
 import SettingsPanel from './SettingsPanel';
 import HeaderBranding from './HeaderBranding';
+import DragPreview from './dnd/DragPreview';
 import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import type { DragEndEvent } from '@dnd-kit/core';
 import { DragDropProvider } from '@/components/editor/dnd/FriendlyDndProvider';
@@ -352,13 +353,10 @@ const EmailEditor = React.forwardRef<EmailEditorRef, EmailEditorProps>(  ({ plac
               <Toolbar />
               <Canvas />
               <SettingsPanel />
-            </div>
-             {isClient && typeof window !== 'undefined' && window.document && window.document.body && createPortal(
+            </div>             {isClient && typeof window !== 'undefined' && window.document && window.document.body && createPortal(
               <DragOverlay>
                 {activeDragItem ? (
-                  <div className="p-2 bg-primary/20 border border-primary rounded-md shadow-lg">
-                    Dragging: {activeDragItem.type}
-                  </div>
+                  <DragPreview item={activeDragItem} />
                 ) : null}
               </DragOverlay>,
               window.document.body

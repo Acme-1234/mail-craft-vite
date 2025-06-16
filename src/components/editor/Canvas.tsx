@@ -128,15 +128,29 @@ const ColumnComponent: React.FC<ColumnComponentProps> = ({ column, rowId, parent
   return (
     <div
       ref={setNodeRef}      className={cn(
-        'border border-dashed border-transparent min-h-[50px] hover:border-blue-300 hover:bg-blue-50/20 transition-all duration-200', 
+        'border-2 border-dashed border-transparent min-h-[60px] transition-all duration-300 relative', 
         getColumnWidthClass(column.span),
-        isOver && 'bg-blue-100/60 border-blue-400 border-solid'
+        'hover:border-blue-300 hover:bg-blue-50/20',
+        isOver && 'bg-gradient-to-br from-blue-100/80 to-blue-200/60 border-blue-400 border-solid shadow-lg shadow-blue-200/50 transform scale-[1.02]'
       )}
       onClick={(e) => e.stopPropagation()} 
-      style={{padding: column.blocks.length === 0 ? '0.5rem' : '0'}}
+      style={{padding: column.blocks.length === 0 ? '1rem' : '0'}}
     >
       {column.blocks.length === 0 && (
-         <div className="flex items-center justify-center text-blue-400 h-full text-sm p-4 font-medium" onClick={(e) => e.stopPropagation()} >Drop block here</div> 
+        <div className={cn(
+          "flex items-center justify-center text-center h-full min-h-[60px] transition-all duration-300",
+          isOver ? "text-blue-700 font-semibold" : "text-blue-400 font-medium"
+        )} onClick={(e) => e.stopPropagation()}>
+          <div className="flex flex-col items-center gap-2">
+            <div className={cn(
+              "w-8 h-8 rounded-full border-2 border-dashed flex items-center justify-center transition-all duration-300",
+              isOver ? "border-blue-600 bg-blue-100 scale-110" : "border-blue-300"
+            )}>
+              <PlusCircle className={cn("h-4 w-4", isOver ? "text-blue-700" : "text-blue-400")} />
+            </div>
+            <span className="text-xs">{isOver ? "Drop here!" : "Drop block here"}</span>
+          </div>
+        </div>
       )}
       {column.blocks.map((block) => (
         <BlockWrapper key={block.id} block={block} rowId={rowId} columnId={column.id} parentConditionalBlockId={parentConditionalBlockId}/>
@@ -171,9 +185,11 @@ const RowComponent: React.FC<RowComponentProps> = ({ row, parentConditionalBlock
     moveRow(row.id, direction, parentConditionalBlockId);
   };
 
-  return (
-    <div      className={cn(
-        "relative border-2 border-dashed border-gray-200 hover:border-blue-400 hover:bg-blue-50/20 transition-all duration-200 group bg-card"
+  return (    <div
+      className={cn(
+        "relative border-2 border-dashed border-gray-200 transition-all duration-300 group bg-card",
+        "hover:border-blue-400 hover:bg-blue-50/20",
+        isOver && "border-blue-500 bg-blue-50/40 shadow-lg shadow-blue-200/30"
       )}
       onClick={(e) => e.stopPropagation()} 
     >
@@ -187,7 +203,10 @@ const RowComponent: React.FC<RowComponentProps> = ({ row, parentConditionalBlock
         <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive hover:text-destructive" onClick={handleRemoveRow} title="Delete row">
           <Trash2 className="h-5 w-5" />
         </Button>
-      </div>      <div ref={setDroppableRowRef} className={cn("flex flex-wrap gap-0", isOver && 'bg-blue-100/50 border-2 border-blue-300 border-dashed')}>
+      </div>      <div ref={setDroppableRowRef} className={cn(
+        "flex flex-wrap transition-all duration-300", 
+        isOver && 'bg-gradient-to-r from-blue-100/30 to-blue-200/20 border-2 border-blue-300 border-dashed'
+      )}>
         {row.columns.map((col) => (
           <ColumnComponent key={col.id} column={col} rowId={row.id} parentConditionalBlockId={parentConditionalBlockId} />
         ))}
@@ -214,27 +233,56 @@ const Canvas: React.FC = () => {
     <main 
       ref={setCanvasDroppableRef} 
       className={cn(
-        "flex-1 overflow-auto", // Removed bg-background, will be set by inline style or default
-        isCanvasOver && "bg-accent/10" // Keep hover effect distinct
+        "flex-1 overflow-auto transition-all duration-300", 
+        isCanvasOver && "bg-gradient-to-br from-blue-50/60 to-blue-100/40 ring-2 ring-blue-300 ring-inset"
       )} 
       style={{ backgroundColor: canvasBackgroundColor }}
       onClick={handleCanvasClick}
-    >      <ScrollArea className="h-full">        <div 
+    >
+      <ScrollArea className="h-full">
+        <div 
           className="mx-auto p-6 pl-20" 
           style={{ 
             width: document.settings?.contentWidth || '600px',
             maxWidth: 'none' // Remove max-width constraint
           }} 
         >
-          {document.rows.length === 0 && (            <div 
-              className="flex flex-col items-center justify-center h-[calc(100vh-200px)] text-muted-foreground border-2 border-dashed border-border p-8"
+          {document.rows.length === 0 && (
+            <div 
+              className={cn(
+                "flex flex-col items-center justify-center h-[calc(100vh-200px)] border-2 border-dashed transition-all duration-300 p-8 rounded-lg",
+                isCanvasOver 
+                  ? "border-blue-400 bg-gradient-to-br from-blue-100/80 to-blue-200/60 text-blue-800 shadow-lg shadow-blue-200/50 scale-105" 
+                  : "border-border text-muted-foreground bg-card"
+              )}
               onClick={(e) => e.stopPropagation()} 
             >
-              <p className="text-lg mb-2">Canvas is empty.</p>
-              <p className="mb-4">Drag layouts or blocks from the toolbar here to start building your email.</p>
-              <Button onClick={() => addRow({ type: 'layout-1-col' })}>
-                <PlusCircle className="mr-2 h-4 w-4" /> Add 1 Column Row
-              </Button>
+              <div className={cn(
+                "w-16 h-16 rounded-full border-2 border-dashed flex items-center justify-center mb-4 transition-all duration-300",
+                isCanvasOver ? "border-blue-500 bg-blue-200/50 scale-110" : "border-muted-foreground/30"
+              )}>
+                <PlusCircle className={cn(
+                  "h-8 w-8 transition-all duration-300",
+                  isCanvasOver ? "text-blue-600" : "text-muted-foreground"
+                )} />
+              </div>
+              <p className={cn(
+                "text-lg mb-2 font-semibold transition-all duration-300",
+                isCanvasOver ? "text-blue-800" : "text-muted-foreground"
+              )}>
+                {isCanvasOver ? "Drop to add content!" : "Canvas is empty."}
+              </p>
+              <p className="mb-4 text-center max-w-md">
+                {isCanvasOver 
+                  ? "Release to add your layout or block here." 
+                  : "Drag layouts or blocks from the toolbar here to start building your email."
+                }
+              </p>
+              {!isCanvasOver && (
+                <Button onClick={() => addRow({ type: 'layout-1-col' })} variant="outline" className="mt-2">
+                  <PlusCircle className="mr-2 h-4 w-4" /> Add 1 Column Row
+                </Button>
+              )}
             </div>
           )}
           {document.rows.map((row) => (
