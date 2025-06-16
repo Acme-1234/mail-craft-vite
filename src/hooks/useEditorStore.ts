@@ -14,6 +14,11 @@ import type {
   TextBlockData,
   ImageBlockData,
   ImageElementStyles,
+  HeadingBlockData,
+  AvatarBlockData,
+  DividerBlockData,
+  SpacerBlockData,
+  HtmlBlockData,
 } from '@/lib/types';
 import { DEFAULT_PLACEHOLDERS } from '@/config/editorConfig';
 
@@ -79,8 +84,12 @@ const createNewBlock = (type: BlockType): EditorBlockData => {
   switch (type) {
     case 'text':
       return { ...baseBlock, type: 'text', content: '<p>Type your text here...</p>' } as TextBlockData;
+    case 'heading':
+      return { ...baseBlock, type: 'heading', content: 'Your Heading Here', level: 2, align: 'left' } as HeadingBlockData;
     case 'image':
       return { ...baseBlock, type: 'image', src: 'https://placehold.co/600x400.png', alt: 'Placeholder Image', imageElementStyles: {} } as ImageBlockData;
+    case 'avatar':
+      return { ...baseBlock, type: 'avatar', src: 'https://placehold.co/100x100.png', alt: 'Avatar', size: 'medium', shape: 'circle', align: 'center' } as AvatarBlockData;
     case 'button':
       return { 
         ...baseBlock, 
@@ -92,6 +101,12 @@ const createNewBlock = (type: BlockType): EditorBlockData => {
         imageUrl: undefined, 
         imagePosition: 'none',
       } as ButtonBlockData;
+    case 'divider':
+      return { ...baseBlock, type: 'divider', thickness: '1px', color: '#e5e7eb', style: 'solid', width: '100%', align: 'center' } as DividerBlockData;
+    case 'spacer':
+      return { ...baseBlock, type: 'spacer', height: '20px' } as SpacerBlockData;
+    case 'html':
+      return { ...baseBlock, type: 'html', content: '<div>Custom HTML content goes here...</div>' } as HtmlBlockData;
     case 'conditionalLayout':
       return {
         ...baseBlock,
