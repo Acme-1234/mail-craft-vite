@@ -28,6 +28,7 @@ export interface ButtonSpecificStyles {
   fontWeight?: string; // e.g., "normal", "bold", "600"
   fontSize?: string; // e.g., "16px"
   border?: string; // Border for the button element itself, e.g., "1px solid #000000"
+  width?: string; // Width for the button element, e.g., "200px", "100%", "auto"
 }
 
 export interface ImageElementStyles {
@@ -79,17 +80,6 @@ export interface HeadingBlockData extends BaseBlockData {
   align?: 'left' | 'center' | 'right'; // Text alignment
 }
 
-export interface AvatarBlockData extends BaseBlockData {
-  type: 'avatar';
-  src: string;
-  alt: string;
-  size?: 'small' | 'medium' | 'large' | 'custom'; // Predefined sizes or custom
-  customSize?: string; // Custom size when size is 'custom' (e.g., "80px")
-  shape?: 'circle' | 'square' | 'rounded'; // Avatar shape
-  align?: 'left' | 'center' | 'right'; // Alignment within container
-  linkHref?: string; // Optional URL to make the avatar a link
-}
-
 export interface DividerBlockData extends BaseBlockData {
   type: 'divider';
   thickness?: string; // e.g., "1px", "2px"
@@ -109,11 +99,11 @@ export interface HtmlBlockData extends BaseBlockData {
   content: string; // Raw HTML content
 }
 
-export type EditorBlockData = TextBlockData | ImageBlockData | ButtonBlockData | ConditionalLayoutBlockData | HeadingBlockData | AvatarBlockData | DividerBlockData | SpacerBlockData | HtmlBlockData;
+export type EditorBlockData = TextBlockData | ImageBlockData | ButtonBlockData | ConditionalLayoutBlockData | HeadingBlockData | DividerBlockData | SpacerBlockData | HtmlBlockData;
 
 export interface EditorColumn {
   id: string;
-  span: 4 | 6 | 12; // Represents col-4, col-6, col-12 like spans
+  span: 3 | 4 | 6 | 12; // Represents col-3, col-4, col-6, col-12 like spans
   blocks: EditorBlockData[];
   parentId?: string; // ID of the parent ConditionalLayoutBlockData, if nested
 }
@@ -153,7 +143,7 @@ export interface EmailEditorRef {
 }
 
 // Types for draggable items
-export type DraggableItemType = BlockType | 'layout-1-col' | 'layout-2-col' | 'layout-3-col';
+export type DraggableItemType = BlockType | 'layout-1-col' | 'layout-2-col' | 'layout-3-col' | 'layout-4-col';
 
 export interface DraggableItem {
   type: DraggableItemType;

@@ -111,27 +111,8 @@ function blockToHtml(block: EditorBlockData, documentSettings?: DocumentSettings
       return `
         <tr>
           <td style="width:100%; text-align:${headingAlign}; ${containerStylesString}">
-            <${headingTag} style="font-family: ${globalFontFamily}; margin: 0; padding: 0; color: ${defaultTextColor}; font-weight: bold;">
-              ${headingContent}
+            <${headingTag} style="font-family: ${globalFontFamily}; margin: 0; padding: 0; color: ${defaultTextColor}; font-weight: bold;">              ${headingContent}
             </${headingTag}>
-          </td>
-        </tr>`;
-
-    case 'avatar':
-      const avatarBlock = block as import('./types').AvatarBlockData;
-      const avatarAlign = avatarBlock.align || 'center';
-      const avatarSize = avatarBlock.size === 'custom' ? avatarBlock.customSize || '60px' : 
-                        avatarBlock.size === 'small' ? '40px' : 
-                        avatarBlock.size === 'large' ? '80px' : '60px';
-      const avatarBorderRadius = avatarBlock.shape === 'circle' ? '50%' : 
-                                 avatarBlock.shape === 'rounded' ? '8px' : '0';
-      
-      const avatarImg = `<img src="${avatarBlock.src}" alt="${avatarBlock.alt}" style="width:${avatarSize}; height:${avatarSize}; border-radius:${avatarBorderRadius}; display:block; max-width:100%;" />`;
-      
-      return `
-        <tr>
-          <td style="width:100%; text-align:${avatarAlign}; ${containerStylesString}">
-            ${avatarBlock.linkHref ? `<a href="${avatarBlock.linkHref}" target="_blank" rel="noopener noreferrer" style="text-decoration:none; display:inline-block;">${avatarImg}</a>` : avatarImg}
           </td>
         </tr>`;
 

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test: No Rounded Borders on Layout Elements</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .highlight {
+            background-color: #f0f8ff;
+            padding: 15px;
+            border-left: 4px solid #0066cc;
+            margin: 10px 0;
+        }
+        .test-item {
+            margin: 15px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        .checklist {
+            list-style-type: none;
+            padding: 0;
+        }
+        .checklist li {
+            margin: 8px 0;
+            padding: 5px;
+        }
+        .checklist li:before {
+            content: "☐ ";
+            font-size: 18px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Test: No Rounded Borders on Layout Elements</h1>
+    
+    <div class="highlight">
+        <strong>Objective:</strong> Verify that all rounded borders have been removed from layout selection elements to achieve a clean, rectangular UI appearance.
+    </div>
+
+    <h2>✅ Testing Checklist</h2>
+    
+    <div class="test-item">
+        <h3>Canvas Layout Elements</h3>
+        <ul class="checklist">
+            <li>Row containers should have no rounded borders</li>
+            <li>Column containers should have no rounded borders</li>
+            <li>Drop zones should have sharp, rectangular borders</li>
+            <li>Row/column hover states should maintain rectangular appearance</li>
+            <li>Empty canvas message should have no rounded borders</li>
+        </ul>
+    </div>
+
+    <div class="test-item">
+        <h3>Block Selection Visual Feedback</h3>
+        <ul class="checklist">
+            <li>Selected block rings should be rectangular (no rounded-md)</li>
+            <li>Text block selection should have sharp borders</li>
+            <li>Image block selection should have sharp borders</li>
+            <li>Button block selection should have sharp borders</li>
+            <li>Hover states should maintain rectangular appearance</li>
+        </ul>
+    </div>
+
+    <div class="test-item">
+        <h3>Control Buttons and UI Elements</h3>
+        <ul class="checklist">
+            <li>Block control buttons (move/delete) should have no rounded backgrounds</li>
+            <li>Row control buttons should have no rounded backgrounds</li>
+            <li>Button shadows should be rectangular</li>
+            <li>All layout control panels should have sharp edges</li>
+        </ul>
+    </div>
+
+    <div class="test-item">
+        <h3>Conditional Layout Components</h3>
+        <ul class="checklist">
+            <li>Conditional block containers should have no rounded borders</li>
+            <li>Conditional row elements should have sharp borders</li>
+            <li>Conditional column drop zones should be rectangular</li>
+            <li>If/endif headers should have no rounded backgrounds</li>
+            <li>Empty conditional content areas should be rectangular</li>
+        </ul>
+    </div>
+
+    <h2>🧪 Manual Testing Steps</h2>
+    
+    <div class="test-item">
+        <h3>Step 1: Basic Layout Testing</h3>
+        <ol>
+            <li>Open the Mail Craft editor</li>
+            <li>Add multiple rows with different column layouts</li>
+            <li>Hover over rows and columns to check border styles</li>
+            <li>Select different blocks and verify selection feedback</li>
+            <li>Verify all borders appear rectangular and sharp</li>
+        </ol>
+    </div>
+
+    <div class="test-item">
+        <h3>Step 2: Interaction Testing</h3>
+        <ol>
+            <li>Click on various layout elements</li>
+            <li>Use drag and drop functionality</li>
+            <li>Test move up/down controls</li>
+            <li>Verify delete operations</li>
+            <li>Check that all UI feedback maintains rectangular appearance</li>
+        </ol>
+    </div>
+
+    <div class="test-item">
+        <h3>Step 3: Conditional Layout Testing</h3>
+        <ol>
+            <li>Add conditional layout blocks</li>
+            <li>Add content inside conditional blocks</li>
+            <li>Test nested layouts within conditional blocks</li>
+            <li>Verify all conditional UI elements are rectangular</li>
+        </ol>
+    </div>
+
+    <h2>🎯 Expected Results</h2>
+    
+    <div class="highlight">
+        <p><strong>All layout selection elements should have:</strong></p>
+        <ul>
+            <li>Sharp, rectangular borders with no rounded corners</li>
+            <li>Clean, professional appearance</li>
+            <li>Consistent rectangular visual feedback</li>
+            <li>No remnants of rounded-md, rounded-lg, or rounded-sm classes</li>
+            <li>Seamless connection between layout elements</li>
+        </ul>
+    </div>
+
+    <div class="test-item">
+        <h3>🔧 Technical Implementation</h3>
+        <p><strong>Changes Made:</strong></p>
+        <ul>
+            <li>Removed <code>rounded</code> classes from Canvas.tsx control buttons</li>
+            <li>Removed <code>rounded-md</code> from row drop zone hover states</li>
+            <li>Removed <code>rounded-lg</code> from empty canvas message</li>
+            <li>Removed <code>rounded-sm</code> from conditional layout components</li>
+            <li>Removed <code>rounded-md</code> from block selection rings</li>
+            <li>Updated all layout-related UI elements to use sharp, rectangular borders</li>
+        </ul>
+    </div>
+
+    <div class="highlight">
+        <strong>Note:</strong> This change creates a more professional, modern appearance with clean lines and seamless layout connections. The rectangular design provides better visual clarity for layout structure and selection states.
+    </div>
+
+    <p><em>Test completed on: <span id="date"></span></em></p>
+    
+    <script>
+        document.getElementById('date').textContent = new Date().toLocaleDateString();
+    </script>
+</body>
+</html>

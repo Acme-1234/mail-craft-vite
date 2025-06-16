@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Size Input Test - Mail Craft</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #f8fafc;
+        }
+        .header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 2rem;
+        }
+        .header h1 {
+            margin: 0;
+            color: #1e293b;
+            font-size: 1.5rem;
+        }
+        .header p {
+            margin: 0.5rem 0 0 0;
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        .test-steps {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .test-steps h2 {
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+        .step-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .step-card h3 {
+            margin: 0 0 0.5rem 0;
+            color: #1e293b;
+        }
+        .step-card p {
+            margin: 0;
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        .features-list {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+        .features-list h3 {
+            margin: 0 0 1rem 0;
+            color: #1e293b;
+        }
+        .features-list ul {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+        .features-list li {
+            color: #64748b;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+        .badge {
+            background: #dcfce7;
+            color: #166534;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .size-demo {
+            background: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📏 Size Input Enhancement Test</h1>
+        <p>Test the new advanced size input controls with sliders, units, and box model support</p>
+    </div>
+
+    <div class="test-steps">
+        <h2>Testing Instructions</h2>
+        
+        <div class="step-card">
+            <h3>1. Add a Button Block</h3>
+            <p>Add a button block to the canvas and select it to open the settings panel. You should see enhanced size inputs for padding and border radius.</p>
+        </div>
+
+        <div class="step-card">
+            <h3>2. Test Button Padding</h3>
+            <p>Test the new padding control:</p>
+            <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                <li>Use the slider to adjust padding values</li>
+                <li>Switch between Slider, Input, and Box tabs</li>
+                <li>Try the Box model view for individual sides</li>
+                <li>Test preset buttons (None, Small, Medium, Large)</li>
+                <li>Change units (px, em, rem, %)</li>
+                <li>Use the reset button to clear values</li>
+            </ul>
+        </div>
+
+        <div class="step-card">
+            <h3>3. Test Border Radius</h3>
+            <p>Test the border radius control with slider and presets (None, Small, Medium, Large, Round).</p>
+        </div>
+
+        <div class="step-card">
+            <h3>4. Test Container Styles</h3>
+            <p>Add any block and test the Container Styles section:</p>
+            <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                <li>Test padding with box model controls</li>
+                <li>Test margin with negative values support</li>
+                <li>Try the Auto preset for margin</li>
+            </ul>
+        </div>
+
+        <div class="step-card">
+            <h3>5. Visual Feedback Test</h3>
+            <p>Verify that size changes are immediately reflected in the canvas and that the controls provide visual feedback.</p>
+        </div>
+
+        <div class="size-demo">
+            <h4>Size Input Demo</h4>
+            <p>Padding: 16px 24px | Margin: 8px auto | Border Radius: 8px</p>
+        </div>
+
+        <div class="features-list">
+            <h3>🎯 Expected Features</h3>
+            <ul>
+                <li><span class="badge">Slider</span> Visual slider control for numeric values</li>
+                <li><span class="badge">Units</span> Support for px, em, rem, % units</li>
+                <li><span class="badge">Box Model</span> Individual side controls for padding/margin</li>
+                <li><span class="badge">Presets</span> Quick-access common values</li>
+                <li><span class="badge">Reset</span> Clear/reset functionality</li>
+                <li><span class="badge">Tabs</span> Multiple input methods (Slider, Input, Box)</li>
+                <li><span class="badge">Negative</span> Support for negative margins</li>
+                <li><span class="badge">Live Preview</span> Real-time canvas updates</li>
+                <li><span class="badge">Format</span> Smart value parsing and formatting</li>
+            </ul>
+        </div>
+
+        <div style="margin-top: 2rem; padding: 1rem; background: #fef3c7; border: 1px solid #f59e0b; border-radius: 0.5rem;">
+            <h3 style="margin: 0 0 0.5rem 0; color: #92400e;">💡 Tips</h3>
+            <ul style="margin: 0; padding-left: 1.5rem; color: #92400e; font-size: 0.875rem;">
+                <li>Use the Box model tab for precise control over individual sides</li>
+                <li>Presets provide quick access to common email-safe values</li>
+                <li>Sliders are great for fine-tuning values visually</li>
+                <li>Negative margins can be useful for overlapping elements</li>
+            </ul>
+        </div>
+    </div>
+
+    <script type="module">
+        // Auto-redirect to app after a moment
+        setTimeout(() => {
+            if (confirm('Ready to test the size inputs? This will open the main application.')) {
+                window.location.href = '/';
+            }
+        }, 2000);
+    </script>
+</body>
+</html>

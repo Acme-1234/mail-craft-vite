@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test: Enhanced Toolbar & Button Width Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .highlight {
+            background-color: #f0f8ff;
+            padding: 15px;
+            border-left: 4px solid #0066cc;
+            margin: 10px 0;
+        }
+        .test-item {
+            margin: 15px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        .checklist {
+            list-style-type: none;
+            padding: 0;
+        }
+        .checklist li {
+            margin: 8px 0;
+            padding: 5px;
+        }
+        .checklist li:before {
+            content: "☐ ";
+            font-size: 18px;
+            margin-right: 10px;
+        }
+        .new-feature {
+            background-color: #e8f5e8;
+            border-left: 4px solid #28a745;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎨 Test: Enhanced Toolbar & Button Width Control</h1>
+    
+    <div class="highlight">
+        <strong>Version:</strong> v1.4.0 - Enhanced UI/UX with Modern Toolbar & Button Width Control
+    </div>
+
+    <div class="new-feature">
+        <h3>🆕 New Features</h3>
+        <ul>
+            <li><strong>Enhanced Toolbar:</strong> Modern grid layout with visual icons (like the screenshot)</li>
+            <li><strong>Button Width Control:</strong> Users can now control button width with slider and presets</li>
+            <li><strong>Avatar Removal:</strong> Removed avatar blocks to streamline the interface</li>
+        </ul>
+    </div>
+
+    <h2>✅ Enhanced Toolbar Testing</h2>
+    
+    <div class="test-item">
+        <h3>Visual Layout (Screenshot-style)</h3>
+        <ul class="checklist">
+            <li>Toolbar displays blocks in a 2x4 grid layout</li>
+            <li>Each block has an icon on top and label below</li>
+            <li>White background with gray borders, hover effects (blue accent)</li>
+            <li>Square aspect ratio for clean, modern appearance</li>
+            <li>No more list-style layout with grip handles</li>
+        </ul>
+    </div>
+
+    <div class="test-item">
+        <h3>Available Blocks (Avatar Removed)</h3>
+        <ul class="checklist">
+            <li><strong>Layouts Section:</strong> 1 Column, 2 Columns, 3 Columns</li>
+            <li><strong>Blocks Section:</strong> Heading, Text, Button, Image, Divider, Spacer, Html</li>
+            <li>Avatar block completely removed from interface</li>
+            <li>Clean 7-block layout in 2x4 grid (with 1 empty slot)</li>
+        </ul>
+    </div>
+
+    <div class="test-item">
+        <h3>Drag & Drop Functionality</h3>
+        <ul class="checklist">
+            <li>All blocks remain draggable despite visual changes</li>
+            <li>Cursor changes to grab/grabbing during drag operations</li>
+            <li>Hover effects work during drag (visual feedback)</li>
+            <li>Drop zones on canvas work correctly</li>
+        </ul>
+    </div>
+
+    <h2>🎛️ Button Width Control Testing</h2>
+    
+    <div class="test-item">
+        <h3>Button Settings Panel</h3>
+        <ul class="checklist">
+            <li>New "Button Width" control appears in Button Settings</li>
+            <li>SizeInput component with slider and text input</li>
+            <li>Units: px, %, em, rem supported</li>
+            <li>Range: 50px to 800px for pixel values</li>
+        </ul>
+    </div>
+
+    <div class="test-item">
+        <h3>Width Presets</h3>
+        <ul class="checklist">
+            <li><strong>Auto:</strong> Button width adapts to content</li>
+            <li><strong>Small:</strong> 120px fixed width</li>
+            <li><strong>Medium:</strong> 200px fixed width</li>
+            <li><strong>Large:</strong> 300px fixed width</li>
+            <li><strong>Full Width:</strong> 100% width (spans container)</li>
+        </ul>
+    </div>
+
+    <div class="test-item">
+        <h3>Visual Results on Canvas</h3>
+        <ul class="checklist">
+            <li>Button width changes immediately when adjusted</li>
+            <li>Percentage widths respect container boundaries</li>
+            <li>Auto width shrinks to fit text content</li>
+            <li>Fixed pixel widths display consistently</li>
+            <li>Width setting persists in exported HTML</li>
+        </ul>
+    </div>
+
+    <h2>🧪 Manual Testing Steps</h2>
+    
+    <div class="test-item">
+        <h3>Step 1: Toolbar UI Testing</h3>
+        <ol>
+            <li>Open the Mail Craft editor</li>
+            <li>Observe the new grid-based toolbar layout</li>
+            <li>Hover over different blocks to see hover effects</li>
+            <li>Verify all 7 blocks are present (no Avatar)</li>
+            <li>Test drag and drop functionality for each block type</li>
+        </ol>
+    </div>
+
+    <div class="test-item">
+        <h3>Step 2: Button Width Control Testing</h3>
+        <ol>
+            <li>Add a button block to the canvas</li>
+            <li>Select the button and open settings panel</li>
+            <li>Locate the "Button Width" control</li>
+            <li>Test each preset: Auto, Small, Medium, Large, Full Width</li>
+            <li>Test custom pixel values (100px, 250px, 400px)</li>
+            <li>Test percentage values (50%, 75%, 100%)</li>
+            <li>Test em/rem units (10em, 15rem)</li>
+        </ol>
+    </div>
+
+    <div class="test-item">
+        <h3>Step 3: Integration Testing</h3>
+        <ol>
+            <li>Create buttons with different widths in the same row</li>
+            <li>Test button width with different text lengths</li>
+            <li>Export HTML and verify width styles are included</li>
+            <li>Test in preview mode to ensure proper rendering</li>
+            <li>Verify width control works with other button styles</li>
+        </ol>
+    </div>
+
+    <h2>🎯 Expected Results</h2>
+    
+    <div class="highlight">
+        <p><strong>Enhanced Toolbar:</strong></p>
+        <ul>
+            <li>Modern, grid-based layout matching the provided screenshot</li>
+            <li>Clean, professional appearance with hover effects</li>
+            <li>Improved usability with visual icon representation</li>
+            <li>Streamlined interface without avatar complexity</li>
+        </ul>
+    </div>
+
+    <div class="highlight">
+        <p><strong>Button Width Control:</strong></p>
+        <ul>
+            <li>Full control over button width with multiple units</li>
+            <li>Intuitive slider and preset system</li>
+            <li>Real-time visual feedback on canvas</li>
+            <li>Proper export of width styles to HTML</li>
+            <li>Professional email-compatible CSS output</li>
+        </ul>
+    </div>
+
+    <div class="test-item">
+        <h3>🔧 Technical Implementation</h3>
+        <p><strong>Changes Made:</strong></p>
+        <ul>
+            <li>Restructured Toolbar.tsx with grid layout and modern styling</li>
+            <li>Added width property to ButtonSpecificStyles interface</li>
+            <li>Enhanced ButtonSettings.tsx with SizeInput width control</li>
+            <li>Updated ButtonBlockComponent.tsx to apply width styles</li>
+            <li>Removed AvatarBlockData type and all avatar-related code</li>
+            <li>Updated export.ts to handle button width in HTML generation</li>
+            <li>Removed avatar references from Canvas, EmailEditor, and store</li>
+        </ul>
+    </div>
+
+    <div class="new-feature">
+        <strong>Note:</strong> This update significantly improves the user experience with a modern, intuitive interface and provides essential button width control that was previously missing. The removal of avatar blocks simplifies the interface and focuses on core email building functionality.
+    </div>
+
+    <p><em>Test completed on: <span id="date"></span></em></p>
+    
+    <script>
+        document.getElementById('date').textContent = new Date().toLocaleDateString();
+    </script>
+</body>
+</html>

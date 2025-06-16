@@ -11,11 +11,9 @@ import type {
   ButtonSpecificStyles,
   DocumentSettings,
   ConditionalLayoutBlockData,
-  TextBlockData,
-  ImageBlockData,
+  TextBlockData,  ImageBlockData,
   ImageElementStyles,
   HeadingBlockData,
-  AvatarBlockData,
   DividerBlockData,
   SpacerBlockData,
   HtmlBlockData,
@@ -62,7 +60,7 @@ interface EmailEditorState {
   clearDocument: () => void;
   updateDocumentSettings: (newSettings: Partial<DocumentSettings>) => void;
   
-  addRow: (config: { type: 'layout-1-col' | 'layout-2-col' | 'layout-3-col' }, rowIndex?: number, parentConditionalBlockId?: string) => void;
+  addRow: (config: { type: 'layout-1-col' | 'layout-2-col' | 'layout-3-col' | 'layout-4-col' }, rowIndex?: number, parentConditionalBlockId?: string) => void;
   removeRow: (rowId: string, parentConditionalBlockId?: string) => void;
   moveRow: (rowId: string, direction: 'up' | 'down', parentConditionalBlockId?: string) => void;
   
@@ -83,13 +81,10 @@ const createNewBlock = (type: BlockType): EditorBlockData => {
   const baseBlock = { id, type, styles: {} };
   switch (type) {
     case 'text':
-      return { ...baseBlock, type: 'text', content: '<p>Type your text here...</p>' } as TextBlockData;
-    case 'heading':
+      return { ...baseBlock, type: 'text', content: '<p>Type your text here...</p>' } as TextBlockData;    case 'heading':
       return { ...baseBlock, type: 'heading', content: 'Your Heading Here', level: 2, align: 'left' } as HeadingBlockData;
     case 'image':
       return { ...baseBlock, type: 'image', src: 'https://placehold.co/600x400.png', alt: 'Placeholder Image', imageElementStyles: {} } as ImageBlockData;
-    case 'avatar':
-      return { ...baseBlock, type: 'avatar', src: 'https://placehold.co/100x100.png', alt: 'Avatar', size: 'medium', shape: 'circle', align: 'center' } as AvatarBlockData;
     case 'button':
       return { 
         ...baseBlock, 
@@ -156,11 +151,15 @@ export const useEditorStore = create<EmailEditorState>((set, get) => ({
       newRow.columns.push({ id: generateId(), span: 12, blocks: [] });
     } else if (config.type === 'layout-2-col') {
       newRow.columns.push({ id: generateId(), span: 6, blocks: [] });
-      newRow.columns.push({ id: generateId(), span: 6, blocks: [] });
-    } else if (config.type === 'layout-3-col') {
+      newRow.columns.push({ id: generateId(), span: 6, blocks: [] });    } else if (config.type === 'layout-3-col') {
       newRow.columns.push({ id: generateId(), span: 4, blocks: [] });
       newRow.columns.push({ id: generateId(), span: 4, blocks: [] });
       newRow.columns.push({ id: generateId(), span: 4, blocks: [] });
+    } else if (config.type === 'layout-4-col') {
+      newRow.columns.push({ id: generateId(), span: 3, blocks: [] });
+      newRow.columns.push({ id: generateId(), span: 3, blocks: [] });
+      newRow.columns.push({ id: generateId(), span: 3, blocks: [] });
+      newRow.columns.push({ id: generateId(), span: 3, blocks: [] });
     }
 
     set((state) => {

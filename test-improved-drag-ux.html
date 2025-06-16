@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mail Craft - Improved Drag UX Test</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8fafc;
+        }
+        .test-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .improvement-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .improvement-item {
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+        .improvement-item h3 {
+            color: #1e40af;
+            margin-top: 0;
+        }
+        .feature-highlight {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .test-steps {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .test-steps h3 {
+            color: #92400e;
+            margin-top: 0;
+        }
+        .test-steps ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .test-steps li {
+            margin: 8px 0;
+            color: #451a03;
+        }
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="header">
+            <h1>🎯 Mail Craft - Improved Drag & Drop UX</h1>
+            <p>Enhanced visual feedback and animations for better user experience</p>
+            <p style="color: #6b7280; margin-top: 20px;"><strong>Test Date:</strong> June 17, 2025</p>
+        </div>
+
+        <div class="feature-highlight">
+            <h2>✨ Key UX Improvements</h2>
+            <p>The drag-and-drop system has been completely redesigned with modern animations, better visual cues, and intuitive feedback.</p>
+        </div>
+
+        <div class="improvement-list">
+            <div class="improvement-item">
+                <h3><span class="emoji">🎨</span>Enhanced Drop Zones</h3>
+                <ul>
+                    <li>Smooth gradient backgrounds when dragging over</li>
+                    <li>Scale and shadow effects for depth</li>
+                    <li>Blue border highlighting with animations</li>
+                    <li>Clear visual boundaries for drop areas</li>
+                </ul>
+            </div>
+
+            <div class="improvement-item">
+                <h3><span class="emoji">🌟</span>Improved Drag Preview</h3>
+                <ul>
+                    <li>Larger, more prominent preview card</li>
+                    <li>Glassmorphism design with backdrop blur</li>
+                    <li>Animated pulsing indicators</li>
+                    <li>Subtle rotation and scale for depth</li>
+                </ul>
+            </div>
+
+            <div class="improvement-item">
+                <h3><span class="emoji">🎯</span>Smart Empty States</h3>
+                <ul>
+                    <li>Interactive empty column indicators</li>
+                    <li>Animated plus icons and drop targets</li>
+                    <li>Context-aware messaging</li>
+                    <li>Beautiful gradient transitions</li>
+                </ul>
+            </div>
+
+            <div class="improvement-item">
+                <h3><span class="emoji">⚡</span>Enhanced Canvas</h3>
+                <ul>
+                    <li>Responsive empty canvas state</li>
+                    <li>Ring highlighting when dragging over</li>
+                    <li>Smooth scale animations</li>
+                    <li>Better visual hierarchy</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="test-steps">
+            <h3>🧪 Testing Instructions</h3>
+            <ol>
+                <li><strong>Start the Dev Server:</strong> Run <code>npm run dev</code> in your terminal</li>
+                <li><strong>Open the Editor:</strong> Navigate to <code>http://localhost:5173</code></li>
+                <li><strong>Test Empty Canvas:</strong> 
+                    <ul>
+                        <li>Notice the improved empty state with animated plus icon</li>
+                        <li>Drag any layout from toolbar - watch the canvas transform</li>
+                        <li>See the gradient background and ring highlighting</li>
+                    </ul>
+                </li>
+                <li><strong>Test Column Drop Zones:</strong>
+                    <ul>
+                        <li>Add a 2-column or 3-column layout</li>
+                        <li>Drag blocks over empty columns</li>
+                        <li>Notice the scale effects and gradient backgrounds</li>
+                        <li>See the animated drop target indicators</li>
+                    </ul>
+                </li>
+                <li><strong>Test Drag Preview:</strong>
+                    <ul>
+                        <li>Start dragging any element from the toolbar</li>
+                        <li>Observe the enhanced preview card</li>
+                        <li>Notice the glassmorphism effect and animations</li>
+                        <li>See the pulsing indicators and "DRAG TO DROP" text</li>
+                    </ul>
+                </li>
+                <li><strong>Test Row Drop Zones:</strong>
+                    <ul>
+                        <li>Drag layouts over existing rows</li>
+                        <li>Watch for gradient highlighting</li>
+                        <li>Notice the improved visual feedback</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <div style="background: #dcfce7; border: 1px solid #16a34a; border-radius: 8px; padding: 20px; margin: 20px 0;">
+            <h3 style="color: #15803d; margin-top: 0;">✅ Expected Results</h3>
+            <ul style="color: #166534;">
+                <li>Smooth, fluid animations throughout the drag process</li>
+                <li>Clear visual feedback when hovering over drop zones</li>
+                <li>Professional-looking drag preview that follows cursor</li>
+                <li>Intuitive empty states that guide user actions</li>
+                <li>Consistent blue color scheme for all drag interactions</li>
+                <li>No jarring transitions or visual glitches</li>
+            </ul>
+        </div>
+
+        <div style="background: #fef2f2; border: 1px solid #ef4444; border-radius: 8px; padding: 20px; margin: 20px 0;">
+            <h3 style="color: #dc2626; margin-top: 0;">🚨 Watch For Issues</h3>
+            <ul style="color: #7f1d1d;">
+                <li>Performance issues with multiple animations</li>
+                <li>Drag preview not following cursor properly</li>
+                <li>Drop zones not highlighting correctly</li>
+                <li>Empty states not showing proper animations</li>
+                <li>Color inconsistencies in the blue theme</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #e2e8f0;">
+            <h3>🚀 Ready to Test!</h3>
+            <p>Run <code>npm run dev</code> and experience the improved drag & drop UX</p>
+            <p style="color: #6b7280; font-size: 0.9em;">All improvements maintain the clean, rectangular design while adding modern polish</p>
+        </div>
+    </div>
+</body>
+</html>

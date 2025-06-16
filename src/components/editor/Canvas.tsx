@@ -8,14 +8,13 @@ import ImageBlockComponent from '@/components/blocks/ImageBlockComponent';
 import ButtonBlockComponent from '@/components/blocks/ButtonBlockComponent';
 import ConditionalLayoutBlockComponent from '@/components/blocks/ConditionalLayoutBlockComponent';
 import HeadingBlockComponent from '@/components/blocks/HeadingBlockComponent';
-import AvatarBlockComponent from '@/components/blocks/AvatarBlockComponent';
 import DividerBlockComponent from '@/components/blocks/DividerBlockComponent';
 import SpacerBlockComponent from '@/components/blocks/SpacerBlockComponent';
 import HtmlBlockComponent from '@/components/blocks/HtmlBlockComponent';
 import { ScrollArea } from '@/components/ui/scroll-area-simple';
 import { Button } from '@/components/ui/button';
-import { GripVertical, PlusCircle, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
-import { useDroppable, useDraggable } from '@dnd-kit/core';
+import { PlusCircle, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
+import { useDroppable } from '@dnd-kit/core';
 import { cn } from '@/lib/utils';
 
 interface BlockWrapperProps {
@@ -28,13 +27,6 @@ interface BlockWrapperProps {
 const BlockWrapper: React.FC<BlockWrapperProps> = ({ block, rowId, columnId, parentConditionalBlockId }) => {
   const { selectedBlockId, setSelectedBlockId, removeBlock, moveBlockInColumn } = useEditorStore();
   const isSelected = selectedBlockId === block.id;
-
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
-    id: `block-${block.id}`, 
-    data: { type: 'block', blockId: block.id, rowId, columnId, parentConditionalBlockId },
-  });
-
-  const style = transform ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`, zIndex: isDragging ? 100: 'auto' } : {};
 
   const handleSelectBlock = (e: React.MouseEvent) => {
     e.stopPropagation(); 
@@ -57,12 +49,8 @@ const BlockWrapper: React.FC<BlockWrapperProps> = ({ block, rowId, columnId, par
       break;
     case 'heading':
       blockComponent = <HeadingBlockComponent block={block} />;
-      break;
-    case 'image':
+      break;    case 'image':
       blockComponent = <ImageBlockComponent block={block} />;
-      break;
-    case 'avatar':
-      blockComponent = <AvatarBlockComponent block={block} />;
       break;
     case 'button':
       blockComponent = <ButtonBlockComponent block={block} />;
@@ -81,23 +69,14 @@ const BlockWrapper: React.FC<BlockWrapperProps> = ({ block, rowId, columnId, par
       break;
     default:
       return null;
-  }
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className={cn(
-        'relative border border-dashed border-transparent hover:border-primary transition-colors group', 
-        isSelected && 'border-primary border-solid shadow-lg',
-        isDragging && 'opacity-50'
+  }  return (
+    <div      className={cn(
+        'relative border-2 border-dashed border-transparent hover:border-blue-400 hover:bg-blue-50/30 transition-all duration-200 group', 
+        isSelected && 'border-blue-500 border-solid bg-blue-50/50 shadow-lg shadow-blue-200/50'
       )}
       onClick={handleSelectBlock}
     >
-      <div className="absolute top-1 right-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1 bg-background p-1 rounded shadow">
-        <Button variant="ghost" size="icon" className="h-6 w-6 cursor-grab" {...listeners} {...attributes} title="Move block">
-           <GripVertical className="h-4 w-4" />
-        </Button>
+      <div className="absolute top-1 -left-12 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1 bg-background p-1 shadow">
         <Button variant="ghost" size="icon" className="h-6 w-6" onClick={(e) => handleMoveBlock(e, 'up')} title="Move up">
            <ArrowUp className="h-4 w-4" />
         </Button>
@@ -148,17 +127,30 @@ const ColumnComponent: React.FC<ColumnComponentProps> = ({ column, rowId, parent
 
   return (
     <div
-      ref={setNodeRef}
-      className={cn(
-        'border border-dashed border-transparent min-h-[50px]', 
+      ref={setNodeRef}      className={cn(
+        'border-2 border-dashed border-transparent min-h-[60px] transition-all duration-300 relative', 
         getColumnWidthClass(column.span),
-        isOver && 'bg-primary/10 border-primary'
+        'hover:border-blue-300 hover:bg-blue-50/20',
+        isOver && 'bg-gradient-to-br from-blue-100/80 to-blue-200/60 border-blue-400 border-solid shadow-lg shadow-blue-200/50 transform scale-[1.02]'
       )}
       onClick={(e) => e.stopPropagation()} 
-      style={{padding: column.blocks.length === 0 ? '0.5rem' : '0'}}
+      style={{padding: column.blocks.length === 0 ? '1rem' : '0'}}
     >
       {column.blocks.length === 0 && (
-         <div className="flex items-center justify-center text-muted-foreground h-full text-sm p-2" onClick={(e) => e.stopPropagation()} >Drop block here</div> 
+        <div className={cn(
+          "flex items-center justify-center text-center h-full min-h-[60px] transition-all duration-300",
+          isOver ? "text-blue-700 font-semibold" : "text-blue-400 font-medium"
+        )} onClick={(e) => e.stopPropagation()}>
+          <div className="flex flex-col items-center gap-2">
+            <div className={cn(
+              "w-8 h-8 rounded-full border-2 border-dashed flex items-center justify-center transition-all duration-300",
+              isOver ? "border-blue-600 bg-blue-100 scale-110" : "border-blue-300"
+            )}>
+              <PlusCircle className={cn("h-4 w-4", isOver ? "text-blue-700" : "text-blue-400")} />
+            </div>
+            <span className="text-xs">{isOver ? "Drop here!" : "Drop block here"}</span>
+          </div>
+        </div>
       )}
       {column.blocks.map((block) => (
         <BlockWrapper key={block.id} block={block} rowId={rowId} columnId={column.id} parentConditionalBlockId={parentConditionalBlockId}/>
@@ -184,40 +176,24 @@ const RowComponent: React.FC<RowComponentProps> = ({ row, parentConditionalBlock
     data: { type: 'row', rowId: row.id, parentConditionalBlockId },
   });
 
-  const draggableId = parentConditionalBlockId 
-  ? `row-drag-${row.id}-parent-${parentConditionalBlockId}`
-  : `row-drag-${row.id}`;
-
-  const { attributes, listeners, setNodeRef: setDraggableNodeRef, transform, isDragging } = useDraggable({
-    id: draggableId,
-    data: { type: 'row-drag', rowId: row.id, parentConditionalBlockId },
-  });
-  const style = transform ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`, zIndex: isDragging ? 200 : 'auto' } : {};
-
   const handleRemoveRow = (e: React.MouseEvent) => {
     e.stopPropagation();
     removeRow(row.id, parentConditionalBlockId);
   }
-
   const handleMoveRow = (e: React.MouseEvent, direction: 'up' | 'down') => {
     e.stopPropagation();
     moveRow(row.id, direction, parentConditionalBlockId);
-  }
+  };
 
-  return (
-    <div
-      ref={setDraggableNodeRef} 
-      style={style}
+  return (    <div
       className={cn(
-        "relative border border-muted-foreground/20 rounded-md hover:border-primary transition-colors group bg-card shadow-sm", 
-        isDragging && 'opacity-70 shadow-xl'
+        "relative border-2 border-dashed border-gray-200 transition-all duration-300 group bg-card",
+        "hover:border-blue-400 hover:bg-blue-50/20",
+        isOver && "border-blue-500 bg-blue-50/40 shadow-lg shadow-blue-200/30"
       )}
       onClick={(e) => e.stopPropagation()} 
     >
-      <div className="absolute top-2 right-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 bg-background p-1 rounded shadow-md">
-        <Button variant="ghost" size="icon" className="h-7 w-7 cursor-grab" {...listeners} {...attributes} title="Move row">
-           <GripVertical className="h-5 w-5" />
-        </Button>
+      <div className="absolute top-2 -left-12 z-20 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center gap-1 bg-background p-1 shadow-md">
         <Button variant="ghost" size="icon" className="h-7 w-7" onClick={(e) => handleMoveRow(e, 'up')} title="Move row up">
            <ArrowUp className="h-5 w-5" />
         </Button>
@@ -227,8 +203,10 @@ const RowComponent: React.FC<RowComponentProps> = ({ row, parentConditionalBlock
         <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive hover:text-destructive" onClick={handleRemoveRow} title="Delete row">
           <Trash2 className="h-5 w-5" />
         </Button>
-      </div>
-      <div ref={setDroppableRowRef} className={cn("flex flex-wrap -m-0.5", isOver && !isDragging && 'bg-primary/5')}> {/* Added -m-0.5 to counteract p-0.5 on columns */}
+      </div>      <div ref={setDroppableRowRef} className={cn(
+        "flex flex-wrap transition-all duration-300", 
+        isOver && 'bg-gradient-to-r from-blue-100/30 to-blue-200/20 border-2 border-blue-300 border-dashed'
+      )}>
         {row.columns.map((col) => (
           <ColumnComponent key={col.id} column={col} rowId={row.id} parentConditionalBlockId={parentConditionalBlockId} />
         ))}
@@ -255,27 +233,56 @@ const Canvas: React.FC = () => {
     <main 
       ref={setCanvasDroppableRef} 
       className={cn(
-        "flex-1 overflow-auto", // Removed bg-background, will be set by inline style or default
-        isCanvasOver && "bg-accent/10" // Keep hover effect distinct
+        "flex-1 overflow-auto transition-all duration-300", 
+        isCanvasOver && "bg-gradient-to-br from-blue-50/60 to-blue-100/40 ring-2 ring-blue-300 ring-inset"
       )} 
       style={{ backgroundColor: canvasBackgroundColor }}
       onClick={handleCanvasClick}
     >
       <ScrollArea className="h-full">
         <div 
-          className="max-w-3xl mx-auto p-6 space-y-2" 
-          style={{ width: document.settings?.contentWidth || '600px' }} // Apply content width here
-        > 
+          className="mx-auto p-6 pl-20" 
+          style={{ 
+            width: document.settings?.contentWidth || '600px',
+            maxWidth: 'none' // Remove max-width constraint
+          }} 
+        >
           {document.rows.length === 0 && (
             <div 
-              className="flex flex-col items-center justify-center h-[calc(100vh-200px)] text-muted-foreground border-2 border-dashed border-border rounded-lg p-8"
+              className={cn(
+                "flex flex-col items-center justify-center h-[calc(100vh-200px)] border-2 border-dashed transition-all duration-300 p-8 rounded-lg",
+                isCanvasOver 
+                  ? "border-blue-400 bg-gradient-to-br from-blue-100/80 to-blue-200/60 text-blue-800 shadow-lg shadow-blue-200/50 scale-105" 
+                  : "border-border text-muted-foreground bg-card"
+              )}
               onClick={(e) => e.stopPropagation()} 
             >
-              <p className="text-lg mb-2">Canvas is empty.</p>
-              <p className="mb-4">Drag layouts or blocks from the toolbar here to start building your email.</p>
-              <Button onClick={() => addRow({ type: 'layout-1-col' })}>
-                <PlusCircle className="mr-2 h-4 w-4" /> Add 1 Column Row
-              </Button>
+              <div className={cn(
+                "w-16 h-16 rounded-full border-2 border-dashed flex items-center justify-center mb-4 transition-all duration-300",
+                isCanvasOver ? "border-blue-500 bg-blue-200/50 scale-110" : "border-muted-foreground/30"
+              )}>
+                <PlusCircle className={cn(
+                  "h-8 w-8 transition-all duration-300",
+                  isCanvasOver ? "text-blue-600" : "text-muted-foreground"
+                )} />
+              </div>
+              <p className={cn(
+                "text-lg mb-2 font-semibold transition-all duration-300",
+                isCanvasOver ? "text-blue-800" : "text-muted-foreground"
+              )}>
+                {isCanvasOver ? "Drop to add content!" : "Canvas is empty."}
+              </p>
+              <p className="mb-4 text-center max-w-md">
+                {isCanvasOver 
+                  ? "Release to add your layout or block here." 
+                  : "Drag layouts or blocks from the toolbar here to start building your email."
+                }
+              </p>
+              {!isCanvasOver && (
+                <Button onClick={() => addRow({ type: 'layout-1-col' })} variant="outline" className="mt-2">
+                  <PlusCircle className="mr-2 h-4 w-4" /> Add 1 Column Row
+                </Button>
+              )}
             </div>
           )}
           {document.rows.map((row) => (
