@@ -61,13 +61,10 @@ const HeadingBlockComponent: React.FC<HeadingBlockProps> = ({ block }) => {
       sel?.addRange(range);
     }
   }, [isEditing]);
-    const renderHeading = () => {
-    const headingStyles: React.CSSProperties = {
+    const renderHeading = () => {    const headingStyles: React.CSSProperties = {
       margin: 0,
       padding: '8px',
       textAlign: block.align || 'left',
-      fontSize: getHeadingSize(block.level),
-      fontWeight: getHeadingWeight(block.level),
       lineHeight: '1.2',
       fontFamily: block.styles?.fontFamily,
       color: block.styles?.color,
@@ -76,7 +73,10 @@ const HeadingBlockComponent: React.FC<HeadingBlockProps> = ({ block }) => {
       borderRadius: isEditing ? '4px' : '0',
       cursor: isSelected && !isEditing ? 'text' : 'inherit',
       ...parseStyleString(block.styles),
-    };    const commonProps = {
+      // Apply heading-level-specific styles last to ensure they take precedence
+      fontSize: block.styles?.fontSize || getHeadingSize(block.level),
+      fontWeight: block.styles?.fontWeight || getHeadingWeight(block.level),
+    };const commonProps = {
       ref: contentRef,
       style: headingStyles,
       onDoubleClick: handleDoubleClick,
@@ -162,10 +162,9 @@ function parseStyleString(styles?: any): React.CSSProperties {
   
   return {
     fontFamily: styles.fontFamily,
-    fontSize: styles.fontSize,
-    fontWeight: styles.fontWeight,
     color: styles.color,
     lineHeight: styles.lineHeight,
+    // fontSize and fontWeight are handled separately to preserve heading level defaults
   };
 }
 
