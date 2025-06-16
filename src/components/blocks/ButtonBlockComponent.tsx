@@ -45,7 +45,7 @@ const ButtonBlockComponent: React.FC<ButtonBlockProps> = ({ block }) => {
 
   return (
     <div 
-      className={cn(isSelected ? 'ring-2 ring-primary rounded-md' : '')}
+      className={cn(isSelected ? 'ring-2 ring-primary' : '')}
       style={containerStyles}
     >
       <ShadButton

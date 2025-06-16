@@ -47,7 +47,7 @@ const ImageBlockComponent: React.FC<ImageBlockProps> = ({ block }) => {
 
   return (
     <div 
-      className={cn(isSelected ? 'ring-2 ring-primary rounded-md' : '', 'block-element-image')}
+      className={cn(isSelected ? 'ring-2 ring-primary' : '', 'block-element-image')}
       style={blockStyles}
     >
       {block.linkHref ? (

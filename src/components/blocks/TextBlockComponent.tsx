@@ -93,7 +93,7 @@ const TextBlockComponent: React.FC<TextBlockProps> = ({ block }) => {
 
   return (
     <div
-      className={cn("relative w-full", isSelected && "ring-2 ring-primary rounded-md")}
+      className={cn("relative w-full", isSelected && "ring-2 ring-primary")}
       style={blockStyles}
       onClick={(e) => {
         e.stopPropagation();

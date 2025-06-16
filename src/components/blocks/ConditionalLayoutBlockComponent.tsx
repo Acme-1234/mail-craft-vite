@@ -90,7 +90,7 @@ const InteractiveBlockRenderer: React.FC<InteractiveBlockRendererProps> = ({ blo
       )}
       onClick={handleSelectBlock}
     >
-      <div className="absolute top-1 right-1 z-10 opacity-0 group-hover/inner-block:opacity-100 transition-opacity flex gap-1 bg-background p-1 rounded shadow">
+      <div className="absolute top-1 right-1 z-10 opacity-0 group-hover/inner-block:opacity-100 transition-opacity flex gap-1 bg-background p-1 shadow">
         <Button variant="ghost" size="icon" className="h-6 w-6 cursor-grab" {...listeners} {...attributes} title="Move block">
            <GripVertical className="h-4 w-4" />
         </Button>
@@ -137,7 +137,7 @@ const ConditionalColumnRenderer: React.FC<ConditionalColumnRendererProps> = ({ c
       <div
         ref={setNodeRef}
         className={cn(
-          "border border-dashed border-muted-foreground/20 rounded-sm p-2 min-h-[70px] flex flex-col justify-start bg-card/30", // Increased min-height
+          "border border-dashed border-muted-foreground/20 p-2 min-h-[70px] flex flex-col justify-start bg-card/30", // Increased min-height
           isOver && "bg-primary/10 ring-1 ring-primary outline-none"
         )}
       >
@@ -181,8 +181,8 @@ const ConditionalRowRenderer: React.FC<ConditionalRowRendererProps> = ({ row, pa
 
 
   return (
-    <div className="p-1 border border-dashed border-muted-foreground/20 my-0.5 rounded-sm bg-background/30 relative group/conditional-row">
-       <div className="absolute top-1 right-1 z-20 opacity-0 group-hover/conditional-row:opacity-100 transition-opacity flex items-center gap-0.5 bg-background/70 p-0.5 rounded shadow-md">
+    <div className="p-1 border border-dashed border-muted-foreground/20 my-0.5 bg-background/30 relative group/conditional-row">
+       <div className="absolute top-1 right-1 z-20 opacity-0 group-hover/conditional-row:opacity-100 transition-opacity flex items-center gap-0.5 bg-background/70 p-0.5 shadow-md">
             {/* No drag handle for inner rows for now to keep it simple */}
             <Button variant="ghost" size="icon" className="h-5 w-5" onClick={(e) => handleMoveRow(e, 'up')} title="Move row up">
                <ArrowUp className="h-3 w-3" />
@@ -231,7 +231,7 @@ const ConditionalLayoutBlockComponent: React.FC<ConditionalLayoutBlockProps> = (
 
   return (
     <div style={containerStyles} onClick={handleSelect} className="min-h-[60px] group/conditional-block relative">
-      <div className="mb-1 p-1.5 bg-muted/40 rounded-sm border border-transparent group-hover/conditional-block:border-purple-300/50 transition-colors">
+      <div className="mb-1 p-1.5 bg-muted/40 border border-transparent group-hover/conditional-block:border-purple-300/50 transition-colors">
         <p className="text-xs font-semibold text-foreground font-code">
           <span className="font-bold text-purple-500">{"{% if"}</span> <span className="text-purple-700">{block.condition || 'your_condition_here'}</span> <span className="font-bold text-purple-500">{"%}"}</span>
         </p>
@@ -241,9 +241,8 @@ const ConditionalLayoutBlockComponent: React.FC<ConditionalLayoutBlockProps> = (
         {block.rows.map(itemRow => (
           <ConditionalRowRenderer key={itemRow.id} row={itemRow} parentConditionalBlockId={block.id} />
         ))}
-        {block.rows.length === 0 && (
-           <div 
-            className="p-3 text-center text-xs text-muted-foreground italic border border-dashed border-muted-foreground/30 rounded-sm min-h-[50px] flex items-center justify-center"
+        {block.rows.length === 0 && (           <div 
+            className="p-3 text-center text-xs text-muted-foreground italic border border-dashed border-muted-foreground/30 min-h-[50px] flex items-center justify-center"
             // This inner div could also be a drop target for new rows if needed in the future
            >
             Conditional content is empty. Drag blocks into columns or add new rows via settings.
@@ -251,7 +250,7 @@ const ConditionalLayoutBlockComponent: React.FC<ConditionalLayoutBlockProps> = (
         )}
       </div>
 
-      <div className="mt-1 p-1.5 bg-muted/40 rounded-sm border border-transparent group-hover/conditional-block:border-purple-300/50 transition-colors">
+      <div className="mt-1 p-1.5 bg-muted/40 border border-transparent group-hover/conditional-block:border-purple-300/50 transition-colors">
         <p className="text-xs font-semibold text-foreground font-code">
           <span className="font-bold text-purple-500">{"{% endif %}"}</span>
         </p>

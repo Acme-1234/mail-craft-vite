@@ -75,14 +75,13 @@ const BlockWrapper: React.FC<BlockWrapperProps> = ({ block, rowId, columnId, par
     default:
       return null;
   }  return (
-    <div
-      className={cn(
-        'relative border-2 border-dashed border-transparent hover:border-blue-400 hover:bg-blue-50/30 transition-all duration-200 group rounded-md', 
+    <div      className={cn(
+        'relative border-2 border-dashed border-transparent hover:border-blue-400 hover:bg-blue-50/30 transition-all duration-200 group', 
         isSelected && 'border-blue-500 border-solid bg-blue-50/50 shadow-lg shadow-blue-200/50'
       )}
       onClick={handleSelectBlock}
     >
-      <div className="absolute top-1 -left-12 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1 bg-background p-1 rounded shadow">
+      <div className="absolute top-1 -left-12 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1 bg-background p-1 shadow">
         <Button variant="ghost" size="icon" className="h-6 w-6" onClick={(e) => handleMoveBlock(e, 'up')} title="Move up">
            <ArrowUp className="h-4 w-4" />
         </Button>
@@ -134,7 +133,7 @@ const ColumnComponent: React.FC<ColumnComponentProps> = ({ column, rowId, parent
   return (
     <div
       ref={setNodeRef}      className={cn(
-        'border border-dashed border-transparent min-h-[50px] hover:border-blue-300 hover:bg-blue-50/20 transition-all duration-200 rounded-md', 
+        'border border-dashed border-transparent min-h-[50px] hover:border-blue-300 hover:bg-blue-50/20 transition-all duration-200', 
         getColumnWidthClass(column.span),
         isOver && 'bg-blue-100/60 border-blue-400 border-solid'
       )}
@@ -178,13 +177,12 @@ const RowComponent: React.FC<RowComponentProps> = ({ row, parentConditionalBlock
   };
 
   return (
-    <div
-      className={cn(
-        "relative border-2 border-dashed border-gray-200 hover:border-blue-400 hover:bg-blue-50/20 transition-all duration-200 group bg-card rounded-lg"
+    <div      className={cn(
+        "relative border-2 border-dashed border-gray-200 hover:border-blue-400 hover:bg-blue-50/20 transition-all duration-200 group bg-card"
       )}
       onClick={(e) => e.stopPropagation()} 
     >
-      <div className="absolute top-2 -left-12 z-20 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center gap-1 bg-background p-1 rounded shadow-md">
+      <div className="absolute top-2 -left-12 z-20 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center gap-1 bg-background p-1 shadow-md">
         <Button variant="ghost" size="icon" className="h-7 w-7" onClick={(e) => handleMoveRow(e, 'up')} title="Move row up">
            <ArrowUp className="h-5 w-5" />
         </Button>
@@ -194,7 +192,7 @@ const RowComponent: React.FC<RowComponentProps> = ({ row, parentConditionalBlock
         <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive hover:text-destructive" onClick={handleRemoveRow} title="Delete row">
           <Trash2 className="h-5 w-5" />
         </Button>
-      </div>      <div ref={setDroppableRowRef} className={cn("flex flex-wrap gap-0", isOver && 'bg-blue-100/50 border-2 border-blue-300 border-dashed rounded-md')}>
+      </div>      <div ref={setDroppableRowRef} className={cn("flex flex-wrap gap-0", isOver && 'bg-blue-100/50 border-2 border-blue-300 border-dashed')}>
         {row.columns.map((col) => (
           <ColumnComponent key={col.id} column={col} rowId={row.id} parentConditionalBlockId={parentConditionalBlockId} />
         ))}
@@ -233,9 +231,8 @@ const Canvas: React.FC = () => {
             maxWidth: 'none' // Remove max-width constraint
           }} 
         >
-          {document.rows.length === 0 && (
-            <div 
-              className="flex flex-col items-center justify-center h-[calc(100vh-200px)] text-muted-foreground border-2 border-dashed border-border rounded-lg p-8"
+          {document.rows.length === 0 && (            <div 
+              className="flex flex-col items-center justify-center h-[calc(100vh-200px)] text-muted-foreground border-2 border-dashed border-border p-8"
               onClick={(e) => e.stopPropagation()} 
             >
               <p className="text-lg mb-2">Canvas is empty.</p>
