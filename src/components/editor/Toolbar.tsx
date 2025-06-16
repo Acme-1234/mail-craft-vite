@@ -55,11 +55,11 @@ const Toolbar: React.FC = () => {  const draggableBlocks: { id: string; item: Dr
     { id: 'tb-html', item: { type: 'html' }, label: 'Html', icon: <Code className="h-5 w-5" /> },
     { id: 'tb-conditional', item: { type: 'conditionalLayout' }, label: 'Conditional', icon: <TerminalSquare className="h-5 w-5" /> },
   ];
-
   const draggableLayouts: { id: string; item: DraggableItem; label: string; icon: React.ReactNode }[] = [
     { id: 'tb-layout-1', item: { type: 'layout-1-col' }, label: '1 Column', icon: <Rows className="h-5 w-5" /> },
     { id: 'tb-layout-2', item: { type: 'layout-2-col' }, label: '2 Columns', icon: <Columns className="h-5 w-5 rotate-90 transform scale-y-[-1]" /> },
     { id: 'tb-layout-3', item: { type: 'layout-3-col' }, label: '3 Columns', icon: <Columns className="h-5 w-5" /> },
+    { id: 'tb-layout-4', item: { type: 'layout-4-col' }, label: '4 Columns', icon: <Columns className="h-5 w-5 scale-x-110" /> },
   ];
 
   return (

@@ -103,7 +103,7 @@ export type EditorBlockData = TextBlockData | ImageBlockData | ButtonBlockData |
 
 export interface EditorColumn {
   id: string;
-  span: 4 | 6 | 12; // Represents col-4, col-6, col-12 like spans
+  span: 3 | 4 | 6 | 12; // Represents col-3, col-4, col-6, col-12 like spans
   blocks: EditorBlockData[];
   parentId?: string; // ID of the parent ConditionalLayoutBlockData, if nested
 }
@@ -143,7 +143,7 @@ export interface EmailEditorRef {
 }
 
 // Types for draggable items
-export type DraggableItemType = BlockType | 'layout-1-col' | 'layout-2-col' | 'layout-3-col';
+export type DraggableItemType = BlockType | 'layout-1-col' | 'layout-2-col' | 'layout-3-col' | 'layout-4-col';
 
 export interface DraggableItem {
   type: DraggableItemType;

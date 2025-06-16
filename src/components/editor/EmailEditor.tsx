@@ -285,13 +285,11 @@ const EmailEditor = React.forwardRef<EmailEditorRef, EmailEditorProps>(  ({ plac
         blockId?: string;
         isCanvas?: boolean;
         parentConditionalBlockId?: string;
-      };
-
-      if (draggedItem.type.startsWith('layout-')) {
+      };      if (draggedItem.type.startsWith('layout-')) {
         if (overData?.isCanvas || overData?.type === 'row') {
-           addRow({ type: draggedItem.type as 'layout-1-col' | 'layout-2-col' | 'layout-3-col' }, undefined, overData.parentConditionalBlockId);
+           addRow({ type: draggedItem.type as 'layout-1-col' | 'layout-2-col' | 'layout-3-col' | 'layout-4-col' }, undefined, overData.parentConditionalBlockId);
         } else if (overData?.type === 'column' && overData.parentConditionalBlockId) {
-           addRow({ type: draggedItem.type as 'layout-1-col' | 'layout-2-col' | 'layout-3-col' }, undefined, overData.parentConditionalBlockId);
+           addRow({ type: draggedItem.type as 'layout-1-col' | 'layout-2-col' | 'layout-3-col' | 'layout-4-col' }, undefined, overData.parentConditionalBlockId);
         }
       } else if (['text', 'image', 'button', 'conditionalLayout', 'heading', 'divider', 'spacer', 'html'].includes(draggedItem.type)) {
         if (overData?.type === 'column' && overData.columnId && overData.rowId) {
