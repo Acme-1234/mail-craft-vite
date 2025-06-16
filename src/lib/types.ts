@@ -75,7 +75,7 @@ export interface ConditionalLayoutBlockData extends BaseBlockData {
 export interface HeadingBlockData extends BaseBlockData {
   type: 'heading';
   content: string; // HTML content or text with {{field}} placeholders
-  level: 1 | 2 | 3 | 4 | 5 | 6; // Heading level (h1, h2, h3, etc.)
+  level: 1 | 2 | 3 | 4; // Heading level (h1, h2, h3, h4)
   align?: 'left' | 'center' | 'right'; // Text alignment
 }
 

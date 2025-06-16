@@ -60,9 +60,8 @@ const HeadingSettings: React.FC<HeadingSettingsProps> = ({ block, onUpdate }) =>
     setIsPlaceholderPopoverOpen(false);
     setSearchTerm('');
   };
-
   const handleLevelChange = (value: string) => {
-    const level = parseInt(value) as 1 | 2 | 3 | 4 | 5 | 6;
+    const level = parseInt(value) as 1 | 2 | 3 | 4;
     onUpdate({ level });
   };
 
@@ -85,14 +84,11 @@ const HeadingSettings: React.FC<HeadingSettingsProps> = ({ block, onUpdate }) =>
           <Select value={block.level.toString()} onValueChange={handleLevelChange}>
             <SelectTrigger id="heading-level">
               <SelectValue placeholder="Select heading level" />
-            </SelectTrigger>
-            <SelectContent>
+            </SelectTrigger>            <SelectContent>
               <SelectItem value="1">H1 - Main Title</SelectItem>
               <SelectItem value="2">H2 - Section Title</SelectItem>
               <SelectItem value="3">H3 - Subsection</SelectItem>
               <SelectItem value="4">H4 - Minor Heading</SelectItem>
-              <SelectItem value="5">H5 - Small Heading</SelectItem>
-              <SelectItem value="6">H6 - Smallest Heading</SelectItem>
             </SelectContent>
           </Select>
           <p className="text-xs text-muted-foreground">
@@ -223,10 +219,8 @@ function getHeadingSize(level: number): string {
     2: '28px',
     3: '24px',
     4: '20px',
-    5: '18px',
-    6: '16px',
   };
-  return sizes[level as keyof typeof sizes] || '16px';
+  return sizes[level as keyof typeof sizes] || '20px';
 }
 
 function getHeadingWeight(level: number): string {
@@ -235,10 +229,8 @@ function getHeadingWeight(level: number): string {
     2: '700',
     3: '600',
     4: '600',
-    5: '500',
-    6: '500',
   };
-  return weights[level as keyof typeof weights] || '500';
+  return weights[level as keyof typeof weights] || '600';
 }
 
 export default HeadingSettings;

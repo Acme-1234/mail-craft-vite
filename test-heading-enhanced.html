@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Heading Block Test - Mail Craft</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .test-header {
+            background: #2563eb;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .test-info {
+            background: #f8fafc;
+            padding: 15px;
+            margin: 20px;
+            border-radius: 6px;
+            border-left: 4px solid #3b82f6;
+        }
+        .test-instructions {
+            background: #fffbeb;
+            padding: 15px;
+            margin: 20px;
+            border-radius: 6px;
+            border-left: 4px solid #f59e0b;
+        }
+        .test-instructions h3 {
+            margin-top: 0;
+            color: #92400e;
+        }
+        .test-instructions ul {
+            margin-bottom: 0;
+        }
+        .test-instructions li {
+            margin-bottom: 8px;
+        }
+        #root {
+            height: calc(100vh - 140px);
+        }
+        .test-steps {
+            background: #f0fdf4;
+            padding: 15px;
+            margin: 20px;
+            border-radius: 6px;
+            border-left: 4px solid #22c55e;
+        }
+        .test-steps h3 {
+            margin-top: 0;
+            color: #166534;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-header">
+            <h1>Enhanced Heading Block Test</h1>
+            <p>Testing configurable heading levels (h1-h4), inline editing, and placeholder suggestions</p>
+        </div>
+
+        <div class="test-info">
+            <h3>🎯 Test Objectives</h3>
+            <p>This test page verifies the enhanced heading block functionality including level switching, content editing, and placeholder insertion.</p>
+        </div>
+
+        <div class="test-instructions">
+            <h3>📋 Test Features</h3>
+            <ul>
+                <li><strong>Heading Levels:</strong> Switch between H1, H2, H3, and H4 in settings panel</li>
+                <li><strong>Inline Editing:</strong> Double-click on heading to edit content directly</li>
+                <li><strong>Placeholder Support:</strong> Add dynamic placeholders with autocomplete suggestions</li>
+                <li><strong>Content Editor:</strong> Rich text editor in settings panel with placeholder insertion</li>
+                <li><strong>Real-time Preview:</strong> See changes immediately in the settings panel preview</li>
+            </ul>
+        </div>
+
+        <div class="test-steps">
+            <h3>🧪 Test Steps</h3>
+            <ol>
+                <li>Drag a Heading block from the toolbar to the canvas</li>
+                <li>Select the heading block to open the settings panel</li>
+                <li>Try changing the heading level from H2 to H1, H3, and H4</li>
+                <li>Edit the content in the settings panel textarea</li>
+                <li>Click "Add Placeholder" to insert dynamic content ({{user.name}}, {{user.email}}, etc.)</li>
+                <li>Double-click on the heading in the canvas to edit inline</li>
+                <li>Test Enter/Escape keys during inline editing</li>
+                <li>Try different text alignments (left, center, right)</li>
+                <li>Verify the preview in settings panel matches the canvas</li>
+            </ol>
+        </div>
+
+        <div id="root"></div>
+    </div>
+
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+        // Configure window.editor API for testing
+        window.editor = {
+            config: {
+                buttons: {
+                    showPreview: true,
+                    showImport: true,
+                    showExport: true,
+                    showClear: true
+                }
+            },
+            branding: {
+                title: "Enhanced Heading Test",
+                logo: null,
+                customHeader: null
+            },
+            theme: {
+                mode: 'light',
+                colors: {
+                    primary: '#2563eb',
+                    secondary: '#64748b',
+                    accent: '#f59e0b'
+                }
+            },
+            placeholders: [
+                { label: "User Full Name", field: "user.name" },
+                { label: "User Email", field: "user.email" },
+                { label: "Company Name", field: "company.name" },
+                { label: "Product Name", field: "product.name" },
+                { label: "Order Number", field: "order.number" },
+                { label: "Order Date", field: "order.date" },
+                { label: "Support Email", field: "support.email" },
+                { label: "Website URL", field: "website.url" },
+                { label: "Custom Field 1", field: "custom.field1" },
+                { label: "Custom Field 2", field: "custom.field2" }
+            ],
+            handlers: {
+                onPreview: (html) => {
+                    console.log('Preview HTML:', html);
+                    alert('Preview feature working! Check console for HTML output.');
+                },
+                onExport: (html) => {
+                    console.log('Export HTML:', html);
+                    const blob = new Blob([html], { type: 'text/html' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'enhanced-heading-test.html';
+                    a.click();
+                    URL.revokeObjectURL(url);
+                },
+                onImport: (callback) => {
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.accept = '.json';
+                    input.onchange = (e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = (e) => {
+                                try {
+                                    const data = JSON.parse(e.target.result);
+                                    callback(data);
+                                } catch (err) {
+                                    alert('Invalid JSON file');
+                                }
+                            };
+                            reader.readAsText(file);
+                        }
+                    };
+                    input.click();
+                },
+                onImageSelect: (callback) => {
+                    const imageUrl = prompt('Enter image URL:');
+                    if (imageUrl) {
+                        callback(imageUrl);
+                    }
+                }
+            }
+        };
+
+        // Add some test logs
+        console.log('Enhanced Heading Block Test initialized');
+        console.log('Available placeholders:', window.editor.placeholders);
+    </script>
+</body>
+</html>

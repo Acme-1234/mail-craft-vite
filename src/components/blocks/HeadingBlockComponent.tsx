@@ -23,13 +23,18 @@ const HeadingBlockComponent: React.FC<HeadingBlockProps> = ({ block }) => {
     e.stopPropagation();
     setIsEditing(true);
   };
-
   // Handle blur to save content
   const handleBlur = () => {
     setIsEditing(false);
     if (editContent !== block.content) {
       updateBlock(block.id, { content: editContent });
     }
+  };
+
+  // Handle input change when editing
+  const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
+    const newContent = e.currentTarget.textContent || '';
+    setEditContent(newContent);
   };
 
   // Handle key press (Enter to save, Escape to cancel)
@@ -71,38 +76,42 @@ const HeadingBlockComponent: React.FC<HeadingBlockProps> = ({ block }) => {
       borderRadius: isEditing ? '4px' : '0',
       cursor: isSelected && !isEditing ? 'text' : 'inherit',
       ...parseStyleString(block.styles),
-    };
-
-    const commonProps = {
+    };    const commonProps = {
       ref: contentRef,
       style: headingStyles,
       onDoubleClick: handleDoubleClick,
       onBlur: handleBlur,
       onKeyDown: handleKeyDown,
+      onInput: handleInput,
       contentEditable: isEditing,
       suppressContentEditableWarning: true,
-      dangerouslySetInnerHTML: isEditing ? undefined : { __html: editContent || 'Double-click to edit' }
-    };
-
-    // If editing, show text content for editing
+    };    // If editing, show text content for editing
     if (isEditing) {
-      const EditableHeading = `h${block.level}` as keyof JSX.IntrinsicElements;
-      return React.createElement(EditableHeading, {
-        ...commonProps,
-        dangerouslySetInnerHTML: undefined,
-        children: editContent
-      });
+      switch (block.level) {
+        case 1: return <h1 {...commonProps}>{editContent}</h1>;
+        case 2: return <h2 {...commonProps}>{editContent}</h2>;
+        case 3: return <h3 {...commonProps}>{editContent}</h3>;
+        case 4: return <h4 {...commonProps}>{editContent}</h4>;
+        default: return <h2 {...commonProps}>{editContent}</h2>;
+      }
     }
+
+    // Normal display mode - show placeholder if empty
+    const displayContent = editContent || 'Double-click to edit heading';
+    const displayProps = {
+      ...commonProps,
+      contentEditable: false,
+      onInput: undefined,
+      dangerouslySetInnerHTML: { __html: displayContent }
+    };
 
     // Normal display mode
     switch (block.level) {
-      case 1: return <h1 {...commonProps} />;
-      case 2: return <h2 {...commonProps} />;
-      case 3: return <h3 {...commonProps} />;
-      case 4: return <h4 {...commonProps} />;
-      case 5: return <h5 {...commonProps} />;
-      case 6: return <h6 {...commonProps} />;
-      default: return <h2 {...commonProps} />;
+      case 1: return <h1 {...displayProps} />;
+      case 2: return <h2 {...displayProps} />;
+      case 3: return <h3 {...displayProps} />;
+      case 4: return <h4 {...displayProps} />;
+      default: return <h2 {...displayProps} />;
     }
   };
 
@@ -132,10 +141,8 @@ function getHeadingSize(level: number): string {
     2: '28px',
     3: '24px',
     4: '20px',
-    5: '18px',
-    6: '16px',
   };
-  return sizes[level as keyof typeof sizes] || '16px';
+  return sizes[level as keyof typeof sizes] || '20px';
 }
 
 // Helper function to get default font weight for heading levels
@@ -145,10 +152,8 @@ function getHeadingWeight(level: number): string {
     2: '700',
     3: '600',
     4: '600',
-    5: '500',
-    6: '500',
   };
-  return weights[level as keyof typeof weights] || '500';
+  return weights[level as keyof typeof weights] || '600';
 }
 
 // Helper function to parse style properties from BlockStyles
