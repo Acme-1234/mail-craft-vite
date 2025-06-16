@@ -3,7 +3,8 @@ import { CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { PaletteIcon, Ruler, BoxSelect } from 'lucide-react';
+import ColorPicker from '@/components/ui/color-picker';
+import { Ruler, BoxSelect } from 'lucide-react';
 import type { ContainerStylesProps } from './types';
 import { googleFontsList, fontWeights } from './constants';
 
@@ -78,23 +79,15 @@ const ContainerStyles: React.FC<ContainerStylesProps> = ({ block, onUpdate }) =>
               className="text-xs mt-1"
             />
           </div>
-        </div>
-
-        <div>
-          <Label htmlFor="background-color" className="text-xs flex items-center gap-1">
-            <PaletteIcon className="h-3 w-3" /> Background Color
-          </Label>
-          <Input
-            id="background-color"
-            value={localBackgroundColor}
-            onChange={(e) => {
-              setLocalBackgroundColor(e.target.value);
-              handleStyleChange('backgroundColor', e.target.value);
-            }}
-            placeholder="#FFFFFF"
-            className="text-xs mt-1"
-          />
-        </div>
+        </div>        <ColorPicker
+          label="Background Color"
+          value={localBackgroundColor}
+          onChange={(value) => {
+            setLocalBackgroundColor(value);
+            handleStyleChange('backgroundColor', value);
+          }}
+          placeholder="#FFFFFF"
+        />
 
         <div>
           <Label className="text-xs">Text Alignment</Label>
@@ -173,22 +166,16 @@ const ContainerStyles: React.FC<ContainerStylesProps> = ({ block, onUpdate }) =>
               </SelectContent>
             </Select>
           </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-2">
-          <div>
-            <Label htmlFor="text-color" className="text-xs">Text Color</Label>
-            <Input
-              id="text-color"
-              value={localTextColor}
-              onChange={(e) => {
-                setLocalTextColor(e.target.value);
-                handleStyleChange('color', e.target.value);
-              }}
-              placeholder="#000000"
-              className="text-xs mt-1"
-            />
-          </div>
+        </div>        <div className="grid grid-cols-2 gap-2">
+          <ColorPicker
+            label="Text Color"
+            value={localTextColor}
+            onChange={(value) => {
+              setLocalTextColor(value);
+              handleStyleChange('color', value);
+            }}
+            placeholder="#000000"
+          />
           <div>
             <Label htmlFor="line-height" className="text-xs">Line Height</Label>
             <Input

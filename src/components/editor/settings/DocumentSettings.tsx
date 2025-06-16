@@ -3,7 +3,8 @@ import { CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { FileCog, PaletteIcon } from 'lucide-react';
+import ColorPicker from '@/components/ui/color-picker';
+import { FileCog } from 'lucide-react';
 import type { DocumentSettingsProps } from './types';
 import { googleFontsList } from './constants';
 
@@ -48,26 +49,18 @@ const DocumentSettings: React.FC<DocumentSettingsProps> = ({ settings, onUpdate 
           <p className="text-xs text-muted-foreground mt-1">
             Maximum width for the email content (e.g., 600px, 100%)
           </p>
-        </div>
-
-        <div>
-          <Label htmlFor="doc-background-color" className="text-xs flex items-center gap-1">
-            <PaletteIcon className="h-3 w-3" /> Background Color
-          </Label>
-          <Input
-            id="doc-background-color"
-            value={localBackgroundColor}
-            onChange={(e) => {
-              setLocalBackgroundColor(e.target.value);
-              handleDocumentSettingChange('backgroundColor', e.target.value);
-            }}
-            placeholder="#F0F4F8"
-            className="text-xs mt-1"
-          />
-          <p className="text-xs text-muted-foreground mt-1">
-            Background color for the entire email
-          </p>
-        </div>
+        </div>        <ColorPicker
+          label="Background Color"
+          value={localBackgroundColor}
+          onChange={(value) => {
+            setLocalBackgroundColor(value);
+            handleDocumentSettingChange('backgroundColor', value);
+          }}
+          placeholder="#F0F4F8"
+        />
+        <p className="text-xs text-muted-foreground mt-1">
+          Background color for the entire email
+        </p>
 
         <div>
           <Label className="text-xs">Default Font Family</Label>

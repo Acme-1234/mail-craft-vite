@@ -4,6 +4,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import ColorPicker from '@/components/ui/color-picker';
 import { MousePointerSquareDashed, ImagePlus } from 'lucide-react';
 import type { ButtonSettingsProps } from './types';
 import type { ButtonBlockData } from '@/lib/types';
@@ -125,35 +126,25 @@ const ButtonSettings: React.FC<ButtonSettingsProps> = ({ block, onUpdate, onImag
               ))}
             </SelectContent>
           </Select>
-        </div>
+        </div>        <ColorPicker
+          label="Background Color"
+          value={localButtonBackgroundColor}
+          onChange={(value) => {
+            setLocalButtonBackgroundColor(value);
+            handleButtonStyleChange('backgroundColor', value);
+          }}
+          placeholder="#64B5F6"
+        />
 
-        <div>
-          <Label htmlFor="button-bg-color" className="text-xs">Background Color</Label>
-          <Input
-            id="button-bg-color"
-            value={localButtonBackgroundColor}
-            onChange={(e) => {
-              setLocalButtonBackgroundColor(e.target.value);
-              handleButtonStyleChange('backgroundColor', e.target.value);
-            }}
-            placeholder="#64B5F6"
-            className="text-xs mt-1"
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="button-text-color" className="text-xs">Text Color</Label>
-          <Input
-            id="button-text-color"
-            value={localButtonTextColor}
-            onChange={(e) => {
-              setLocalButtonTextColor(e.target.value);
-              handleButtonStyleChange('color', e.target.value);
-            }}
-            placeholder="#FFFFFF"
-            className="text-xs mt-1"
-          />
-        </div>
+        <ColorPicker
+          label="Text Color"
+          value={localButtonTextColor}
+          onChange={(value) => {
+            setLocalButtonTextColor(value);
+            handleButtonStyleChange('color', value);
+          }}
+          placeholder="#FFFFFF"
+        />
 
         <div>
           <Label htmlFor="button-padding" className="text-xs">Padding</Label>
