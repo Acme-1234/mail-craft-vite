@@ -3,7 +3,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area-simple';
-import { Type, Image as ImageIcon, MousePointerSquareDashed, Columns, Rows, Heading1, Minus, Square, Code } from 'lucide-react';
+import { Type, Image as ImageIcon, MousePointerSquareDashed, Columns, Rows, Heading1, Minus, Square, Code, TerminalSquare } from 'lucide-react';
 import type { DraggableItem } from '@/lib/types';
 import { useDraggable } from '@dnd-kit/core';
 
@@ -45,8 +45,7 @@ const DraggableToolbarItem: React.FC<DraggableToolbarItemProps> = ({ id, item, l
 };
 
 
-const Toolbar: React.FC = () => {
-  const draggableBlocks: { id: string; item: DraggableItem; label: string; icon: React.ReactNode }[] = [
+const Toolbar: React.FC = () => {  const draggableBlocks: { id: string; item: DraggableItem; label: string; icon: React.ReactNode }[] = [
     { id: 'tb-heading', item: { type: 'heading' }, label: 'Heading', icon: <Heading1 className="h-5 w-5" /> },
     { id: 'tb-text', item: { type: 'text' }, label: 'Text', icon: <Type className="h-5 w-5" /> },
     { id: 'tb-button', item: { type: 'button' }, label: 'Button', icon: <MousePointerSquareDashed className="h-5 w-5" /> },
@@ -54,6 +53,7 @@ const Toolbar: React.FC = () => {
     { id: 'tb-divider', item: { type: 'divider' }, label: 'Divider', icon: <Minus className="h-5 w-5" /> },
     { id: 'tb-spacer', item: { type: 'spacer' }, label: 'Spacer', icon: <Square className="h-5 w-5" /> },
     { id: 'tb-html', item: { type: 'html' }, label: 'Html', icon: <Code className="h-5 w-5" /> },
+    { id: 'tb-conditional', item: { type: 'conditionalLayout' }, label: 'Conditional', icon: <TerminalSquare className="h-5 w-5" /> },
   ];
 
   const draggableLayouts: { id: string; item: DraggableItem; label: string; icon: React.ReactNode }[] = [
