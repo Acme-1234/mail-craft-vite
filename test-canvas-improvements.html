@@ -101,18 +101,19 @@
 
         <div class="test-section">
             <h2>📋 Issues Identified & Fixed</h2>
-            
-            <div class="issue-list">
+              <div class="issue-list">
                 <h3>🚨 Previous Issues:</h3>
                 <ul>
                     <li><strong>Drag/Sort/Delete Controls:</strong> Located on the right side, could interfere with content</li>
+                    <li><strong>Non-functional Drag Sorting:</strong> Drag handles for blocks/rows didn't work properly</li>
                     <li><strong>Row Spacing:</strong> Ugly gaps between stacked column layouts</li>
                     <li><strong>Canvas Width:</strong> Limited by max-width constraint, wouldn't expand beyond 900px</li>
                 </ul>
             </div>            <div class="fix-list">
                 <h3>✅ Improvements Made:</h3>
                 <ul>
-                    <li><strong>Left-Side Controls:</strong> Moved drag/sort/delete controls to the left side with vertical layout</li>
+                    <li><strong>Left-Side Controls:</strong> Moved sort/delete controls to the left side with vertical layout</li>
+                    <li><strong>Functional Sorting:</strong> Removed non-functional drag handles, kept working up/down arrow buttons</li>
                     <li><strong>Zero Spacing:</strong> Completely removed spacing between rows (`space-y-1` → no spacing classes)</li>
                     <li><strong>Seamless Rows:</strong> Removed borders and border-radius from rows for seamless connection</li>
                     <li><strong>Unrestricted Width:</strong> Removed `max-w-3xl` constraint and added `maxWidth: 'none'`</li>
@@ -123,12 +124,11 @@
 
         <div class="test-section">
             <h2>🧪 Testing Instructions</h2>
-            
-            <div class="step">
-                <h3>1. Test Drag Controls Position</h3>
+              <div class="step">
+                <h3>1. Test Control Position & Functionality</h3>
                 <p>Add some blocks to the canvas and hover over them:</p>
                 <div class="highlight">
-                    <strong>Expected:</strong> Drag, sort, and delete controls should appear on the <strong>left side</strong> of blocks and rows in a vertical layout.
+                    <strong>Expected:</strong> Up/down arrow and delete controls should appear on the <strong>left side</strong> of blocks and rows in a vertical layout. <strong>No drag handles</strong> should be visible.
                 </div>
             </div>
 
@@ -137,21 +137,23 @@
                 <p>Add multiple rows with different layouts:</p>                <div class="highlight">
                     <strong>Expected:</strong> <strong>ZERO gap</strong> between stacked rows. Rows should appear seamlessly connected with no visible spacing.
                 </div>
-            </div>
-
-            <div class="step">
+            </div>            <div class="step">
                 <h3>3. Test Canvas Width Beyond 900px</h3>
                 <p>Go to Document Settings and set content width to values larger than 900px (e.g., 1000px, 1200px):</p>
                 <div class="highlight">
                     <strong>Expected:</strong> Canvas should expand to accommodate the specified width without being constrained.
                 </div>
-            </div>
-
-            <div class="step">
-                <h3>4. Test Overall Layout</h3>
+            </div>            <div class="step">
+                <h3>5. Test Overall Layout</h3>
                 <p>Create a complex email with multiple rows and columns:</p>
                 <div class="highlight">
-                    <strong>Expected:</strong> Clean, professional layout with controls that don't interfere with content editing.
+                    <strong>Expected:</strong> Clean, professional layout with functional controls that don't interfere with content editing.
+                </div>
+            </div><div class="step">
+                <h3>4. Test Sorting Functionality</h3>
+                <p>Use the up/down arrow buttons to reorder blocks and rows:</p>
+                <div class="highlight">
+                    <strong>Expected:</strong> Up/down arrows should work to move blocks within columns and rows within the document. This replaces the non-functional drag sorting.
                 </div>
             </div>
         </div>
@@ -161,11 +163,19 @@
             
             <div class="improvement">
                 <h3>Canvas.tsx Modifications:</h3>                <div class="code">
-// Block controls moved to left side with vertical layout
+// Block controls on left side - no drag handles, just functional buttons
 &lt;div className="absolute top-1 -left-12 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1 bg-background p-1 rounded shadow"&gt;
+  &lt;Button onClick={handleMoveBlock('up')}&gt;&lt;ArrowUp /&gt;&lt;/Button&gt;
+  &lt;Button onClick={handleMoveBlock('down')}&gt;&lt;ArrowDown /&gt;&lt;/Button&gt;
+  &lt;Button onClick={handleRemoveBlock}&gt;&lt;Trash2 /&gt;&lt;/Button&gt;
+&lt;/div&gt;
 
-// Row controls moved to left side with vertical layout  
+// Row controls on left side - no drag handles, just functional buttons  
 &lt;div className="absolute top-2 -left-12 z-20 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center gap-1 bg-background p-1 rounded shadow-md"&gt;
+  &lt;Button onClick={handleMoveRow('up')}&gt;&lt;ArrowUp /&gt;&lt;/Button&gt;
+  &lt;Button onClick={handleMoveRow('down')}&gt;&lt;ArrowDown /&gt;&lt;/Button&gt;
+  &lt;Button onClick={handleRemoveRow}&gt;&lt;Trash2 /&gt;&lt;/Button&gt;
+&lt;/div&gt;
 
 // Completely removed spacing between rows
 &lt;div className="mx-auto p-6 pl-20" style={{ width: document.settings?.contentWidth || '600px', maxWidth: 'none' }}&gt;
@@ -174,7 +184,7 @@
 className="relative hover:border-primary transition-colors group bg-card"
 
 // Removed column margins
-&lt;div className={cn("flex flex-wrap gap-0", isOver && !isDragging && 'bg-primary/5')}&gt;
+&lt;div className={cn("flex flex-wrap gap-0", isOver && 'bg-primary/5')}&gt;
                 </div>
             </div>
         </div>
@@ -187,15 +197,15 @@ className="relative hover:border-primary transition-colors group bg-card"
                 <li><strong>Flexible Canvas:</strong> Can accommodate any content width without artificial constraints</li>
                 <li><strong>Improved Workflow:</strong> Less visual clutter when editing email content</li>
             </ul>
-        </div>
-
-        <div style="margin-top: 2rem; padding: 1rem; background: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 0.5rem;">
+        </div>            <div style="margin-top: 2rem; padding: 1rem; background: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 0.5rem;">
             <h3>🎯 Success Criteria</h3>
-            <p>All three issues should be resolved:</p>
+            <p>All issues should be resolved:</p>
             <ol>
-                <li>✅ Drag controls appear on the left side in vertical layout</li>
-                <li>✅ Minimal gaps between rows and columns</li>
+                <li>✅ Up/down and delete controls appear on the left side in vertical layout</li>
+                <li>✅ No non-functional drag handles visible</li>
+                <li>✅ Minimal gaps between rows and columns (seamless layout)</li>
                 <li>✅ Canvas width can exceed 900px when specified in document settings</li>
+                <li>✅ Functional up/down sorting with arrow buttons</li>
             </ol>
         </div>
     </div>

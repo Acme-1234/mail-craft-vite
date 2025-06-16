@@ -14,8 +14,8 @@ import SpacerBlockComponent from '@/components/blocks/SpacerBlockComponent';
 import HtmlBlockComponent from '@/components/blocks/HtmlBlockComponent';
 import { ScrollArea } from '@/components/ui/scroll-area-simple';
 import { Button } from '@/components/ui/button';
-import { GripVertical, PlusCircle, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
-import { useDroppable, useDraggable } from '@dnd-kit/core';
+import { PlusCircle, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
+import { useDroppable } from '@dnd-kit/core';
 import { cn } from '@/lib/utils';
 
 interface BlockWrapperProps {
@@ -28,13 +28,6 @@ interface BlockWrapperProps {
 const BlockWrapper: React.FC<BlockWrapperProps> = ({ block, rowId, columnId, parentConditionalBlockId }) => {
   const { selectedBlockId, setSelectedBlockId, removeBlock, moveBlockInColumn } = useEditorStore();
   const isSelected = selectedBlockId === block.id;
-
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
-    id: `block-${block.id}`, 
-    data: { type: 'block', blockId: block.id, rowId, columnId, parentConditionalBlockId },
-  });
-
-  const style = transform ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`, zIndex: isDragging ? 100: 'auto' } : {};
 
   const handleSelectBlock = (e: React.MouseEvent) => {
     e.stopPropagation(); 
@@ -82,21 +75,15 @@ const BlockWrapper: React.FC<BlockWrapperProps> = ({ block, rowId, columnId, par
     default:
       return null;
   }
-
   return (
     <div
-      ref={setNodeRef}
-      style={style}
       className={cn(
         'relative border border-dashed border-transparent hover:border-primary transition-colors group', 
-        isSelected && 'border-primary border-solid shadow-lg',
-        isDragging && 'opacity-50'
+        isSelected && 'border-primary border-solid shadow-lg'
       )}
       onClick={handleSelectBlock}
-    >      <div className="absolute top-1 -left-12 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1 bg-background p-1 rounded shadow">
-        <Button variant="ghost" size="icon" className="h-6 w-6 cursor-grab" {...listeners} {...attributes} title="Move block">
-           <GripVertical className="h-4 w-4" />
-        </Button>
+    >
+      <div className="absolute top-1 -left-12 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1 bg-background p-1 rounded shadow">
         <Button variant="ghost" size="icon" className="h-6 w-6" onClick={(e) => handleMoveBlock(e, 'up')} title="Move up">
            <ArrowUp className="h-4 w-4" />
         </Button>
@@ -183,16 +170,6 @@ const RowComponent: React.FC<RowComponentProps> = ({ row, parentConditionalBlock
     data: { type: 'row', rowId: row.id, parentConditionalBlockId },
   });
 
-  const draggableId = parentConditionalBlockId 
-  ? `row-drag-${row.id}-parent-${parentConditionalBlockId}`
-  : `row-drag-${row.id}`;
-
-  const { attributes, listeners, setNodeRef: setDraggableNodeRef, transform, isDragging } = useDraggable({
-    id: draggableId,
-    data: { type: 'row-drag', rowId: row.id, parentConditionalBlockId },
-  });
-  const style = transform ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`, zIndex: isDragging ? 200 : 'auto' } : {};
-
   const handleRemoveRow = (e: React.MouseEvent) => {
     e.stopPropagation();
     removeRow(row.id, parentConditionalBlockId);
@@ -202,19 +179,14 @@ const RowComponent: React.FC<RowComponentProps> = ({ row, parentConditionalBlock
     e.stopPropagation();
     moveRow(row.id, direction, parentConditionalBlockId);
   }
-
   return (
     <div
-      ref={setDraggableNodeRef} 
-      style={style}      className={cn(
-        "relative hover:border-primary transition-colors group bg-card", 
-        isDragging && 'opacity-70 shadow-xl'
+      className={cn(
+        "relative hover:border-primary transition-colors group bg-card"
       )}
       onClick={(e) => e.stopPropagation()} 
-    >      <div className="absolute top-2 -left-12 z-20 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center gap-1 bg-background p-1 rounded shadow-md">
-        <Button variant="ghost" size="icon" className="h-7 w-7 cursor-grab" {...listeners} {...attributes} title="Move row">
-           <GripVertical className="h-5 w-5" />
-        </Button>
+    >
+      <div className="absolute top-2 -left-12 z-20 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center gap-1 bg-background p-1 rounded shadow-md">
         <Button variant="ghost" size="icon" className="h-7 w-7" onClick={(e) => handleMoveRow(e, 'up')} title="Move row up">
            <ArrowUp className="h-5 w-5" />
         </Button>
@@ -225,7 +197,7 @@ const RowComponent: React.FC<RowComponentProps> = ({ row, parentConditionalBlock
           <Trash2 className="h-5 w-5" />
         </Button>
       </div>
-      <div ref={setDroppableRowRef} className={cn("flex flex-wrap gap-0", isOver && !isDragging && 'bg-primary/5')}>
+      <div ref={setDroppableRowRef} className={cn("flex flex-wrap gap-0", isOver && 'bg-primary/5')}>
         {row.columns.map((col) => (
           <ColumnComponent key={col.id} column={col} rowId={row.id} parentConditionalBlockId={parentConditionalBlockId} />
         ))}
