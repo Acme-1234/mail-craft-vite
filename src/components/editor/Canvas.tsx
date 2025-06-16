@@ -7,6 +7,11 @@ import TextBlockComponent from '@/components/blocks/TextBlockComponent';
 import ImageBlockComponent from '@/components/blocks/ImageBlockComponent';
 import ButtonBlockComponent from '@/components/blocks/ButtonBlockComponent';
 import ConditionalLayoutBlockComponent from '@/components/blocks/ConditionalLayoutBlockComponent';
+import HeadingBlockComponent from '@/components/blocks/HeadingBlockComponent';
+import AvatarBlockComponent from '@/components/blocks/AvatarBlockComponent';
+import DividerBlockComponent from '@/components/blocks/DividerBlockComponent';
+import SpacerBlockComponent from '@/components/blocks/SpacerBlockComponent';
+import HtmlBlockComponent from '@/components/blocks/HtmlBlockComponent';
 import { ScrollArea } from '@/components/ui/scroll-area-simple';
 import { Button } from '@/components/ui/button';
 import { GripVertical, PlusCircle, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
@@ -45,17 +50,31 @@ const BlockWrapper: React.FC<BlockWrapperProps> = ({ block, rowId, columnId, par
     e.stopPropagation();
     moveBlockInColumn(rowId, columnId, block.id, direction, parentConditionalBlockId);
   }
-
   let blockComponent;
   switch (block.type) {
     case 'text':
       blockComponent = <TextBlockComponent block={block} />;
       break;
+    case 'heading':
+      blockComponent = <HeadingBlockComponent block={block} />;
+      break;
     case 'image':
       blockComponent = <ImageBlockComponent block={block} />;
       break;
+    case 'avatar':
+      blockComponent = <AvatarBlockComponent block={block} />;
+      break;
     case 'button':
       blockComponent = <ButtonBlockComponent block={block} />;
+      break;
+    case 'divider':
+      blockComponent = <DividerBlockComponent block={block} />;
+      break;
+    case 'spacer':
+      blockComponent = <SpacerBlockComponent block={block} />;
+      break;
+    case 'html':
+      blockComponent = <HtmlBlockComponent block={block} />;
       break;
     case 'conditionalLayout':
       blockComponent = <ConditionalLayoutBlockComponent block={block as ConditionalLayoutBlockData} />;

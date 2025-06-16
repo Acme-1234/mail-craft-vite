@@ -4,7 +4,8 @@ import { useEditorStore } from '@/hooks/useEditorStore';
 import type { 
   EditorBlockData, 
   ImageBlockData, 
-  ButtonBlockData, 
+  ButtonBlockData,
+  HeadingBlockData,
   ConditionalLayoutBlockData,
   BlockStyles, 
   ButtonSpecificStyles, 
@@ -15,6 +16,7 @@ import { ScrollArea } from '@/components/ui/scroll-area-simple';
 import { Separator } from '@/components/ui/separator';
 import {
   TextSettings,
+  HeadingSettings,
   ImageSettings,
   ButtonSettings,
   ConditionalLayoutSettings,
@@ -55,7 +57,6 @@ const SettingsPanel: React.FC = () => {
       </aside>
     );
   }
-
   // Block selected - show block settings and container styles
   const renderBlockSettings = () => {
     switch (selectedBlock.type) {
@@ -63,6 +64,13 @@ const SettingsPanel: React.FC = () => {
         return (
           <TextSettings
             block={selectedBlock}
+            onUpdate={handleUpdateBlock}
+          />
+        );
+      case 'heading':
+        return (
+          <HeadingSettings
+            block={selectedBlock as HeadingBlockData}
             onUpdate={handleUpdateBlock}
           />
         );

@@ -1,4 +1,5 @@
 export { default as TextSettings } from './TextSettings';
+export { default as HeadingSettings } from './HeadingSettings';
 export { default as ImageSettings } from './ImageSettings';
 export { default as ButtonSettings } from './ButtonSettings';
 export { default as ConditionalLayoutSettings } from './ConditionalLayoutSettings';

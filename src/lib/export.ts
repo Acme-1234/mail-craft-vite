@@ -102,7 +102,75 @@ function blockToHtml(block: EditorBlockData, documentSettings?: DocumentSettings
               </tr>
             </table>
           </td>
+        </tr>`;    case 'heading':
+      const headingBlock = block as import('./types').HeadingBlockData;
+      const headingAlign = headingBlock.align || 'left';
+      let headingContent = headingBlock.content.replace(/\{\{([^}]+)\}\}/g, (_, field) => `{{${field.trim()}}}`);
+      const headingTag = `h${headingBlock.level}`;
+      
+      return `
+        <tr>
+          <td style="width:100%; text-align:${headingAlign}; ${containerStylesString}">
+            <${headingTag} style="font-family: ${globalFontFamily}; margin: 0; padding: 0; color: ${defaultTextColor}; font-weight: bold;">
+              ${headingContent}
+            </${headingTag}>
+          </td>
         </tr>`;
+
+    case 'avatar':
+      const avatarBlock = block as import('./types').AvatarBlockData;
+      const avatarAlign = avatarBlock.align || 'center';
+      const avatarSize = avatarBlock.size === 'custom' ? avatarBlock.customSize || '60px' : 
+                        avatarBlock.size === 'small' ? '40px' : 
+                        avatarBlock.size === 'large' ? '80px' : '60px';
+      const avatarBorderRadius = avatarBlock.shape === 'circle' ? '50%' : 
+                                 avatarBlock.shape === 'rounded' ? '8px' : '0';
+      
+      const avatarImg = `<img src="${avatarBlock.src}" alt="${avatarBlock.alt}" style="width:${avatarSize}; height:${avatarSize}; border-radius:${avatarBorderRadius}; display:block; max-width:100%;" />`;
+      
+      return `
+        <tr>
+          <td style="width:100%; text-align:${avatarAlign}; ${containerStylesString}">
+            ${avatarBlock.linkHref ? `<a href="${avatarBlock.linkHref}" target="_blank" rel="noopener noreferrer" style="text-decoration:none; display:inline-block;">${avatarImg}</a>` : avatarImg}
+          </td>
+        </tr>`;
+
+    case 'divider':
+      const dividerBlock = block as import('./types').DividerBlockData;
+      const dividerAlign = dividerBlock.align || 'center';
+      const dividerThickness = dividerBlock.thickness || '1px';
+      const dividerColor = dividerBlock.color || '#cccccc';
+      const dividerStyle = dividerBlock.style || 'solid';
+      const dividerWidth = dividerBlock.width || '100%';
+      
+      return `
+        <tr>
+          <td style="width:100%; text-align:${dividerAlign}; ${containerStylesString}">
+            <hr style="border: 0; border-top: ${dividerThickness} ${dividerStyle} ${dividerColor}; width: ${dividerWidth}; margin: 10px auto;" />
+          </td>
+        </tr>`;
+
+    case 'spacer':
+      const spacerBlock = block as import('./types').SpacerBlockData;
+      const spacerHeight = spacerBlock.height || '20px';
+      
+      return `
+        <tr>
+          <td style="width:100%; height:${spacerHeight}; line-height:${spacerHeight}; font-size:0; ${containerStylesString}">
+            &nbsp;
+          </td>
+        </tr>`;
+
+    case 'html':
+      const htmlBlock = block as import('./types').HtmlBlockData;
+      
+      return `
+        <tr>
+          <td style="width:100%; ${containerStylesString}">
+            ${htmlBlock.content}
+          </td>
+        </tr>`;
+
     case 'conditionalLayout':
       const conditionalBlock = block as ConditionalLayoutBlockData;
       const innerContentHtml = conditionalBlock.rows.map(row => rowToHtml(row, documentSettings, true)).join('');
