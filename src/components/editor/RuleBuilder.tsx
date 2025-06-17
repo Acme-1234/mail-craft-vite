@@ -69,13 +69,13 @@ const RuleBuilder: React.FC<RuleBuilderProps> = ({ value, onChange, placeholders
 
   // Common user fields for rule building
   const commonFields = [
-    { value: 'user.email', label: 'User Email' },
-    { value: 'user.first_name', label: 'User First Name' },
-    { value: 'user.last_name', label: 'User Last Name' },
-    { value: 'user.is_premium', label: 'User Is Premium' },
-    { value: 'user.subscription_status', label: 'Subscription Status' },
-    { value: 'user.tags', label: 'User Tags' },
-    { value: 'user.created_at', label: 'User Created Date' },
+    { value: 'email', label: 'Email' },
+    { value: 'first_name', label: 'First Name' },
+    { value: 'last_name', label: 'Last Name' },
+    { value: 'is_premium', label: 'Is Premium' },
+    { value: 'subscription_tier', label: 'Subscription Tier' },
+    // { value: 'user.tags', label: 'User Tags' }, // Removed as per "remove user" and no direct fakeData match
+    // { value: 'user.created_at', label: 'User Created Date' }, // Removed as per "remove user" and no direct fakeData match
     { value: 'order.total', label: 'Order Total' },
     { value: 'order.status', label: 'Order Status' },
     { value: 'order.items_count', label: 'Order Items Count' },
@@ -175,34 +175,41 @@ const RuleBuilder: React.FC<RuleBuilderProps> = ({ value, onChange, placeholders
             condition = `${field} != "${value}"`;
             break;
           case '>':
-            condition = `${field} > ${value}`;
+            condition = `${field} > ${value}`; // Assuming numeric, no quotes
             break;
           case '<':
-            condition = `${field} < ${value}`;
+            condition = `${field} < ${value}`; // Assuming numeric, no quotes
             break;
           case '>=':
-            condition = `${field} >= ${value}`;
+            condition = `${field} >= ${value}`; // Assuming numeric, no quotes
             break;
           case '<=':
-            condition = `${field} <= ${value}`;
+            condition = `${field} <= ${value}`; // Assuming numeric, no quotes
             break;
           case 'contains':
             condition = `${field} contains "${value}"`;
             break;
           case 'not_contains':
-            condition = `${field} contains "${value}" == false`;
+            // Corrected Liquid for 'not contains' might be more complex depending on exact Liquid flavor
+            // For basic check, often it's `unless field contains "value" }` or checking for `false`
+            // A common way is `(field contains "${value}") == false` or `!(field contains "${value}")`
+            // Sticking to simpler direct Liquid for now, though this might need refinement for complex cases.
+            // For now, let's assume a direct negation if available, or a comparison to false.
+            // Shopify Liquid example: `unless {{ field | contains: "value" }}` - but we are generating the condition string.
+            // A more robust way for general Liquid:
+            condition = `(${field} contains "${value}") == false`;
             break;
           case 'starts_with':
-            condition = `${field} contains "${value}"`;
+            condition = `${field} startswith "${value}"`; // Corrected: Liquid has startswith
             break;
           case 'ends_with':
-            condition = `${field} contains "${value}"`;
+            condition = `${field} endswith "${value}"`; // Corrected: Liquid has endswith
             break;
           case 'exists':
-            condition = `${field}`;
+            condition = `${field} != blank and ${field} != nil`; // More robust check for existence
             break;
           case 'not_exists':
-            condition = `${field} == blank`;
+            condition = `${field} == blank or ${field} == nil`; // More robust check for non-existence
             break;
           default:
             condition = `${field} == "${value}"`;
@@ -212,16 +219,39 @@ const RuleBuilder: React.FC<RuleBuilderProps> = ({ value, onChange, placeholders
       }).filter(Boolean);
 
       if (ruleConditions.length === 0) return '';
-      if (ruleConditions.length === 1) return ruleConditions[0];
+      // For multiple rules in a group, default to 'and' (as per current UI for rule.logicalOperator)
+      // The UI allows 'AND'/'OR' for rule.logicalOperator, but it's only applied *between* rules.
+      // The join below correctly uses the rule's logicalOperator if set, defaulting to 'and'.
+      // Let's refine how rule.logicalOperator is used. It should be between ruleConditions[i-1] and ruleConditions[i].
       
-      return `(${ruleConditions.join(' and ')})`;
+      let groupConditionString = '';
+      if (ruleConditions.length > 0) {
+        groupConditionString = ruleConditions[0];
+        for (let i = 1; i < ruleConditions.length; i++) {
+          // The logicalOperator for the current rule (group.rules[i]) defines how it connects to the *previous* rule.
+          const logicalOp = (group.rules[i]?.logicalOperator || 'and').toLowerCase(); // Default to 'and'
+          groupConditionString += ` ${logicalOp} ${ruleConditions[i]}`;
+        }
+      }
+      
+      return group.rules.length > 1 ? `(${groupConditionString})` : groupConditionString;
     }).filter(Boolean);
 
     if (groupConditions.length === 0) return '';
-    if (groupConditions.length === 1) return `{{ ${groupConditions[0]} }}`;
     
-    return `{{ ${groupConditions.join(' or ')} }}`;
-  };  useEffect(() => {
+    // Join group conditions using the group's logicalOperator (defaulting to 'or')
+    let finalCondition = '';
+    if (groupConditions.length > 0) {
+      finalCondition = groupConditions[0];
+      for (let i = 1; i < groupConditions.length; i++) {
+        const logicalOp = (ruleGroups[i]?.logicalOperator || 'or').toLowerCase(); // Default to 'or' for groups
+        finalCondition += ` ${logicalOp} ${groupConditions[i]}`;
+      }
+    }
+    return finalCondition; // Return the raw condition string
+  };
+
+  useEffect(() => {
     try {
       if (mode === 'visual') {
         const code = generateLiquidCode();

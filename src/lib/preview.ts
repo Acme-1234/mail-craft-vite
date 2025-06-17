@@ -1,4 +1,4 @@
-import type { EditorDocument, Placeholder } from './types';
+import type { EditorDocument } from './types';
 import { exportDocumentAsHtml } from './export';
 import { Liquid } from 'liquidjs';
 
@@ -12,158 +12,113 @@ const liquid = new Liquid({
   trimOutputRight: true,
 });
 
-// Define a simple set of fake data for placeholders
-const fakeData: Record<string, string> = {
+// Define a comprehensive set of fake data for placeholders
+const fakeData: Record<string, any> = {
+  // User data
   first_name: 'John',
   last_name: 'Doe',
   email: 'john.doe@example.com',
   company_name: 'Acme Corp',
+  
+  // Links
   unsubscribe_link: '#unsubscribe',
   view_online_link: '#view-online',
+  
+  // Order data
   order_id: '12345XYZ',
   tracking_number: 'TN987654321',
-  // Add more fake data as needed for your custom placeholders
+  order_count: 5,
+  order_total: 299.99,
+  
+  // Advanced user data
   'user.name': 'Alice Wonderland',
   'user.email_address': 'alice@wonderland.io',
+  
+  // Product data
   'product.name': 'Magic Potion',
   'product.price': '$99.99',
+  
+  // Promotional data
   'coupon.code': 'SUMMER25',
+  discount_percent: 25,
+  
+  // Event data
   'event.title': 'Annual Tech Conference',
   'event.date': 'October 26, 2024',
   'event.location': 'Virtual',
-  // Conditional logic test fields
-  'is_premium': 'true',
-  'show_discount': 'true',
-  'user_type': 'premium',
-  'your_condition_here': 'true',
+  
+  // Boolean flags for conditional logic
+  is_premium: true,
+  show_discount: true,
+  has_order: true,
+  is_new_user: false,
+  is_vip: true,
+  
+  // String conditionals
+  user_type: 'premium',
+  subscription_tier: 'gold',
+  your_condition_here: true,
+  
+  // Arrays for loop testing
+  items: [
+    { name: 'Product 1', price: 99.99 },
+    { name: 'Product 2', price: 149.99 },
+    { name: 'Product 3', price: 199.99 }
+  ],
+  
+  // Nested objects
+  user: {
+    name: 'John Doe',
+    email: 'john@example.com',
+    preferences: {
+      newsletter: true,
+      notifications: false
+    }
+  }
 };
 
-function replacePlaceholdersInHtml(html: string, availablePlaceholders: Placeholder[], data: Record<string, string>): string {
-  let processedHtml = html;
-
-  if (!Array.isArray(availablePlaceholders)) {
-    console.warn('Available placeholders is not an array. Skipping placeholder replacement.');
-    return html;
-  }
-
-  availablePlaceholders.forEach(placeholder => {
-    if (typeof placeholder.field !== 'string' || typeof placeholder.label !== 'string') {
-        console.warn('Invalid placeholder object encountered:', placeholder);
-        return; // Skip this placeholder
-    }
-    const regex = new RegExp(`\\{\\{\\s*${placeholder.field.trim()}\\s*\\}\\}`, 'g');
-    const replacementValue = data[placeholder.field.trim()] || `[${placeholder.label}]`; // Fallback to label if no data
-    processedHtml = processedHtml.replace(regex, replacementValue);
-  });
-
-  return processedHtml;
-}
-
-// Process HTML using Liquid template engine for full template support
-async function processLiquidTemplate(html: string, data: Record<string, string>): Promise<string> {
+// Process HTML using Liquid template engine - works directly with exported HTML
+async function processLiquidTemplate(html: string, data: Record<string, any>): Promise<string> {
   try {
-    // Convert string values to proper types for Liquid
-    const liquidData: Record<string, any> = {};
-    Object.entries(data).forEach(([key, value]) => {
-      // Convert string booleans to actual booleans
-      if (value === 'true') {
-        liquidData[key] = true;
-      } else if (value === 'false') {
-        liquidData[key] = false;
-      } else if (!isNaN(Number(value)) && value !== '') {
-        // Convert numeric strings to numbers
-        liquidData[key] = Number(value);
-      } else {
-        liquidData[key] = value;
-      }
-    });
-
-    // Use LiquidJS to render the template with the provided data
-    const processedHtml = await liquid.parseAndRender(html, liquidData);
+    // Merge provided data with our comprehensive fake data
+    const mergedData = { ...fakeData, ...data };
+    
+    // Use LiquidJS to render the template with the merged data
+    const processedHtml = await liquid.parseAndRender(html, mergedData);
     return processedHtml;
   } catch (error) {
-    console.warn('Liquid template processing failed, using fallback:', error);
-    // Fallback to basic conditional processing if Liquid fails
-    return processConditionalLogic(html, data);
-  }
-}
-
-// Fallback conditional processing (keeping the original logic as backup)
-function processConditionalLogic(html: string, data: Record<string, string>): string {
-  let processedHtml = html;
-  
-  // Process {% if condition %} ... {% endif %} blocks
-  const conditionalRegex = /\{%\s*if\s+([^%]+)\s*%\}([\s\S]*?)\{%\s*endif\s*%\}/g;
-  
-  processedHtml = processedHtml.replace(conditionalRegex, (_match, condition, content) => {
-    // Evaluate the condition
-    const shouldShow = evaluateCondition(condition.trim(), data);
-    return shouldShow ? content : '';
-  });
-  
-  return processedHtml;
-}
-
-function evaluateCondition(condition: string, data: Record<string, string>): boolean {
-  // Handle basic conditional logic for preview
-  // Support common patterns like: field_name, !field_name, field_name == 'value', etc.
-  
-  try {
-    // Remove quotes and trim
-    condition = condition.replace(/['"]/g, '').trim();
+    console.error('Liquid template processing failed:', error);
+    console.log('HTML that failed to process:', html.substring(0, 500) + '...');
     
-    // Handle negation (!field_name)
-    if (condition.startsWith('!')) {
-      const field = condition.slice(1).trim();
-      return !data[field] || data[field] === 'false' || data[field] === '';
-    }
-    
-    // Handle equality checks (field_name == value)
-    if (condition.includes('==')) {
-      const [field, value] = condition.split('==').map(s => s.trim());
-      return data[field] === value;
-    }
-    
-    // Handle inequality checks (field_name != value) 
-    if (condition.includes('!=')) {
-      const [field, value] = condition.split('!=').map(s => s.trim());
-      return data[field] !== value;
-    }
-    
-    // Simple field existence check
-    return !!data[condition] && data[condition] !== 'false';
-  } catch (error) {
-    console.warn('Error evaluating condition:', condition, error);
-    return false; // Default to false if condition can't be evaluated
+    // Return original HTML as fallback if Liquid processing fails
+    return html;
   }
 }
 
 export async function generatePreviewHtml(
   document: EditorDocument, 
-  availablePlaceholders: Placeholder[], 
-  customData?: Record<string, string>
+  customData?: Record<string, any>
 ): Promise<string> {
+  // 1. Export document as HTML (contains Liquid syntax like {% if %}, {{placeholders}})
   const baseHtml = exportDocumentAsHtml(document);
-  const dataToUse = customData || fakeData;
   
-  // Process with Liquid template engine for full template support
-  const conditionalProcessedHtml = await processLiquidTemplate(baseHtml, dataToUse);
-  const previewHtml = replacePlaceholdersInHtml(conditionalProcessedHtml, availablePlaceholders, dataToUse);
-  return previewHtml;
+  // 2. Process Liquid templates and placeholders in one step using LiquidJS
+  const dataToUse = customData || {};
+  const processedHtml = await processLiquidTemplate(baseHtml, dataToUse);
+  
+  return processedHtml;
 }
 
 export async function generatePreviewHtmlWithMockData(
   document: EditorDocument, 
-  availablePlaceholders: Placeholder[], 
-  mockData: Record<string, string>
+  mockData: Record<string, any>
 ): Promise<string> {
-  // Merge mock data with fake data as fallback
-  const mergedData = { ...fakeData, ...mockData };
+  // 1. Export document as HTML (contains Liquid syntax)
   const baseHtml = exportDocumentAsHtml(document);
   
-  // Process with Liquid template engine for full template support
-  const conditionalProcessedHtml = await processLiquidTemplate(baseHtml, mergedData);
-  const previewHtml = replacePlaceholdersInHtml(conditionalProcessedHtml, availablePlaceholders, mergedData);
-  return previewHtml;
+  // 2. Process with merged mock data using LiquidJS (handles both {% %} and {{ }} syntax)
+  const processedHtml = await processLiquidTemplate(baseHtml, mockData);
+  
+  return processedHtml;
 }
 

@@ -69,9 +69,8 @@ const EnhancedPreviewModal: React.FC<EnhancedPreviewModalProps> = ({
   useEffect(() => {
     if (isOpen && document) {
       setIsRefreshing(true);
-      
-      // Handle async Liquid template processing
-      generatePreviewHtmlWithMockData(document, placeholders, mockData)
+        // Handle async Liquid template processing
+      generatePreviewHtmlWithMockData(document, mockData)
         .then(html => {
           setPreviewHtml(html);
         })
@@ -84,7 +83,7 @@ const EnhancedPreviewModal: React.FC<EnhancedPreviewModalProps> = ({
           setTimeout(() => setIsRefreshing(false), 300);
         });
     }
-  }, [isOpen, document, placeholders, mockData]);
+  }, [isOpen, document, mockData]);
 
   const getSampleData = (field: string): string => {
     const sampleMap: { [key: string]: string } = {
