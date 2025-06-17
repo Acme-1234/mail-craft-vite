@@ -1,0 +1,118 @@
+{
+  "rows": [
+    {
+      "id": "row-1",
+      "columns": [
+        {
+          "id": "col-1",
+          "width": 100,
+          "blocks": [
+            {
+              "id": "heading-test",
+              "type": "heading",
+              "content": "Welcome to Mail Craft",
+              "level": 1,
+              "align": "center",
+              "styles": {
+                "padding": "20px",
+                "margin": "10px 0"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "row-2",
+      "columns": [
+        {
+          "id": "col-2",
+          "width": 100,
+          "blocks": [
+            {
+              "id": "conditional-test",
+              "type": "conditionalLayout",
+              "condition": "is_premium",
+              "conditionalBlocks": [
+                {
+                  "id": "premium-content",
+                  "type": "text",
+                  "content": "<h3>🎉 Premium User Benefits!</h3><p>Thank you for being a premium member! You get:</p><ul><li>Priority support</li><li>Advanced features</li><li>Exclusive content</li></ul>"
+                }
+              ],
+              "styles": {
+                "padding": "20px",
+                "backgroundColor": "#f0f8ff",
+                "border": "2px solid #4CAF50"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "row-3",
+      "columns": [
+        {
+          "id": "col-3",
+          "width": 100,
+          "blocks": [
+            {
+              "id": "conditional-discount",
+              "type": "conditionalLayout", 
+              "condition": "show_discount",
+              "conditionalBlocks": [
+                {
+                  "id": "discount-text",
+                  "type": "text",
+                  "content": "<div style='background: #ff6b6b; color: white; padding: 15px; text-align: center; border-radius: 8px;'><h3>🔥 Special Discount Available!</h3><p>Use code <strong>SAVE20</strong> for 20% off your next purchase!</p></div>"
+                }
+              ],
+              "styles": {
+                "padding": "10px"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "row-4",
+      "columns": [
+        {
+          "id": "col-4",
+          "width": 100,
+          "blocks": [
+            {
+              "id": "regular-text",
+              "type": "text",
+              "content": "This text always shows regardless of conditions. Order ID: {{order_id}} | Customer: {{first_name}} {{last_name}}",
+              "styles": {
+                "padding": "15px"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "row-5",
+      "columns": [
+        {
+          "id": "col-5",
+          "width": 100,
+          "blocks": [
+            {
+              "id": "liquid-advanced",
+              "type": "text", 
+              "content": "{% if user_type == 'premium' %}<p style='color: gold;'>⭐ You are a Premium User!</p>{% elsif user_type == 'basic' %}<p style='color: silver;'>You are a Basic User</p>{% else %}<p>Welcome New User!</p>{% endif %}",
+              "styles": {
+                "padding": "10px"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

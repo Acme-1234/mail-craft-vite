@@ -1,0 +1,45 @@
+{
+  "rows": [
+    {
+      "id": "row-1",
+      "columns": [
+        {
+          "id": "col-1",
+          "width": 100,
+          "blocks": [
+            {
+              "id": "heading-test",
+              "type": "heading",
+              "content": "Welcome to Mail Craft",
+              "level": 1,
+              "align": "center",
+              "styles": {
+                "padding": "20px",
+                "margin": "10px 0"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "row-2",
+      "columns": [
+        {
+          "id": "col-2",
+          "width": 100,
+          "blocks": [
+            {
+              "id": "text-test",
+              "type": "text",
+              "content": "This is a test email with a heading block and text block.",
+              "styles": {
+                "padding": "10px"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

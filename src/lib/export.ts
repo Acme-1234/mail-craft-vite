@@ -108,10 +108,22 @@ function blockToHtml(block: EditorBlockData, documentSettings?: DocumentSettings
       let headingContent = headingBlock.content.replace(/\{\{([^}]+)\}\}/g, (_, field) => `{{${field.trim()}}}`);
       const headingTag = `h${headingBlock.level}`;
       
+      // Set explicit font sizes for better email client compatibility
+      const headingFontSizes = {
+        1: '32px',
+        2: '28px', 
+        3: '24px',
+        4: '20px',
+        5: '18px',
+        6: '16px'
+      };
+      const fontSize = headingFontSizes[headingBlock.level as keyof typeof headingFontSizes] || '24px';
+      
       return `
         <tr>
           <td style="width:100%; text-align:${headingAlign}; ${containerStylesString}">
-            <${headingTag} style="font-family: ${globalFontFamily}; margin: 0; padding: 0; color: ${defaultTextColor}; font-weight: bold;">              ${headingContent}
+            <${headingTag} style="font-family: ${globalFontFamily}; font-size: ${fontSize}; line-height: 1.2; margin: 0; padding: 0; color: ${defaultTextColor}; font-weight: bold; display: block;">
+              ${headingContent}
             </${headingTag}>
           </td>
         </tr>`;
