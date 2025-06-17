@@ -55,10 +55,40 @@ interface EmailEditorState {
   selectedBlockId: string | null;
   placeholders: Placeholder[];
   onImageSelect?: (callback: (imageUrl: string) => void) => void;
+  
+  // UI State for panel controls and device preview
+  ui: {
+    leftPanel: {
+      isCollapsed: boolean;
+      width: number;
+    };
+    rightPanel: {
+      isVisible: boolean;
+      width: number;
+    };
+    canvas: {
+      deviceMode: 'desktop' | 'tablet' | 'mobile' | 'custom';
+      width: number;
+      zoomLevel: number;
+    };
+    preferences: {
+      autoHideOnDrag: boolean;
+      keyboardShortcuts: boolean;
+      showDeviceFrame: boolean;
+    };
+  };
+  
   // Actions
   setDocument: (document: EditorDocument) => void;
   clearDocument: () => void;
   updateDocumentSettings: (newSettings: Partial<DocumentSettings>) => void;
+  
+  // UI Actions
+  toggleLeftPanel: () => void;
+  toggleRightPanel: () => void;
+  setDeviceMode: (mode: 'desktop' | 'tablet' | 'mobile' | 'custom') => void;
+  setCanvasZoom: (level: number) => void;
+  updateUIPreferences: (preferences: Partial<EmailEditorState['ui']['preferences']>) => void;
   
   addRow: (config: { type: 'layout-1-col' | 'layout-2-col' | 'layout-3-col' | 'layout-4-col' }, rowIndex?: number, parentConditionalBlockId?: string) => void;
   removeRow: (rowId: string, parentConditionalBlockId?: string) => void;
@@ -118,7 +148,29 @@ export const useEditorStore = create<EmailEditorState>((set, get) => ({
   document: { rows: [], settings: { ...defaultDocumentSettings } },
   selectedBlockId: null,
   placeholders: DEFAULT_PLACEHOLDERS,
-  onImageSelect: undefined,  setDocument: (document) => set({ 
+  onImageSelect: undefined,
+  
+  // UI State initialization
+  ui: {
+    leftPanel: {
+      isCollapsed: false,
+      width: 240,
+    },
+    rightPanel: {
+      isVisible: true,
+      width: 400,
+    },
+    canvas: {
+      deviceMode: 'desktop',
+      width: 600,
+      zoomLevel: 1,
+    },
+    preferences: {
+      autoHideOnDrag: true,
+      keyboardShortcuts: true,
+      showDeviceFrame: false,
+    },
+  },setDocument: (document) => set({ 
     document: { 
       ...document, 
       settings: document.settings ? { ...defaultDocumentSettings, ...document.settings } : { ...defaultDocumentSettings } 
@@ -453,10 +505,69 @@ export const useEditorStore = create<EmailEditorState>((set, get) => ({
       return { document: { ...state.document, rows: updatedDocumentRows } };
     });
   },
-
   setSelectedBlockId: (blockId) => set({ selectedBlockId: blockId }),
   setPlaceholders: (placeholders) => set({ placeholders }),
   setOnImageSelect: (onImageSelect) => set({ onImageSelect }),
+
+  // UI Actions
+  toggleLeftPanel: () => set((state) => ({
+    ui: {
+      ...state.ui,
+      leftPanel: {
+        ...state.ui.leftPanel,
+        isCollapsed: !state.ui.leftPanel.isCollapsed,
+      },
+    },
+  })),
+
+  toggleRightPanel: () => set((state) => ({
+    ui: {
+      ...state.ui,
+      rightPanel: {
+        ...state.ui.rightPanel,
+        isVisible: !state.ui.rightPanel.isVisible,
+      },
+    },
+  })),
+
+  setDeviceMode: (mode) => set((state) => {
+    const deviceWidths = {
+      desktop: 1200,
+      tablet: 768,
+      mobile: 375,
+      custom: state.ui.canvas.width,
+    };
+    return {
+      ui: {
+        ...state.ui,
+        canvas: {
+          ...state.ui.canvas,
+          deviceMode: mode,
+          width: deviceWidths[mode],
+        },
+      },
+    };
+  }),
+
+  setCanvasZoom: (level) => set((state) => ({
+    ui: {
+      ...state.ui,
+      canvas: {
+        ...state.ui.canvas,
+        zoomLevel: level,
+      },
+    },
+  })),
+
+  updateUIPreferences: (preferences) => set((state) => ({
+    ui: {
+      ...state.ui,
+      preferences: {
+        ...state.ui.preferences,
+        ...preferences,
+      },
+    },
+  })),
 
   getBlockById: (blockId: string): EditorBlockData | undefined => {
     const { rows } = get().document;

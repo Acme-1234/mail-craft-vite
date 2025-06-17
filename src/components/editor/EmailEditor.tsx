@@ -10,11 +10,14 @@ import type {
 } from '@/lib/types';
 import { useEditorStore } from '@/hooks/useEditorStore';
 import { useWindowEditorAPI } from '@/hooks/useWindowEditorAPI';
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import Toolbar from './Toolbar';
 import Canvas from './Canvas';
 import SettingsPanel from './SettingsPanel';
 import HeaderBranding from './HeaderBranding';
 import DragPreview from './dnd/DragPreview';
+import PanelToggleButtons from './PanelToggleButtons';
+import DevicePreviewControls from './DevicePreviewControls';
 import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import type { DragEndEvent } from '@dnd-kit/core';
 import { DragDropProvider } from '@/components/editor/dnd/FriendlyDndProvider';
@@ -28,6 +31,7 @@ import {
 import { importJsonToDocument, importHtmlToDocument } from '@/lib/import';
 import { extractLinksFromDocument } from '@/lib/link-extraction';
 import PreviewModal from './PreviewModal'; // Import PreviewModal
+import { cn } from '@/lib/utils';
 
 const EmailEditor = React.forwardRef<EmailEditorRef, EmailEditorProps>(  ({ placeholders, onImageSelect, initialDocument }, ref) => {    const {
       document,
@@ -37,9 +41,13 @@ const EmailEditor = React.forwardRef<EmailEditorRef, EmailEditorProps>(  ({ plac
       setOnImageSelect,
       addRow,
       addBlock: storeAddBlock,
+      ui,
     } = useEditorStore();    const { getButtonConfig, configure, getBranding } = useWindowEditorAPI();
     const configureRef = useRef(configure);
     const [currentBranding, setCurrentBranding] = useState(getBranding());
+    
+    // Initialize keyboard shortcuts
+    useKeyboardShortcuts();
     
     configureRef.current = configure;
     
@@ -347,13 +355,42 @@ const EmailEditor = React.forwardRef<EmailEditorRef, EmailEditorProps>(  ({ plac
                     <ListChecks className="mr-2 h-4 w-4" /> Get Links
                   </Button>
                 )}
+              </div>            </header>
+            <div className="flex flex-1 overflow-hidden relative">
+              {/* Panel Toggle Buttons */}
+              <PanelToggleButtons className="absolute top-4 left-4 z-10" />
+              
+              {/* Left Toolbar Panel */}
+              <div 
+                className={cn(
+                  "transition-all duration-300 ease-in-out border-r border-border bg-background",
+                  ui.leftPanel.isCollapsed ? "w-12" : "w-60"
+                )}
+              >
+                <Toolbar isCollapsed={ui.leftPanel.isCollapsed} />
               </div>
-            </header>
-            <div className="flex flex-1 overflow-hidden">
-              <Toolbar />
-              <Canvas />
-              <SettingsPanel />
-            </div>             {isClient && typeof window !== 'undefined' && window.document && window.document.body && createPortal(
+                {/* Main Canvas Area */}
+              <div className="flex-1 relative flex flex-col">
+                {/* Device Preview Controls */}
+                <div className="p-4 border-b border-border flex justify-center">
+                  <DevicePreviewControls />
+                </div>
+                
+                {/* Canvas Container */}
+                <div className="flex-1 overflow-auto">
+                  <Canvas />
+                </div>
+              </div>
+              
+              {/* Right Settings Panel */}
+              {ui.rightPanel.isVisible && (
+                <div 
+                  className="w-96 border-l border-border bg-background transition-all duration-300 ease-in-out"
+                >
+                  <SettingsPanel />
+                </div>
+              )}
+            </div>{isClient && typeof window !== 'undefined' && window.document && window.document.body && createPortal(
               <DragOverlay>
                 {activeDragItem ? (
                   <DragPreview item={activeDragItem} />

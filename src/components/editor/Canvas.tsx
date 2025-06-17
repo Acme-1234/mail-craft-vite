@@ -217,7 +217,7 @@ const RowComponent: React.FC<RowComponentProps> = ({ row, parentConditionalBlock
 
 
 const Canvas: React.FC = () => {
-  const { document, addRow, setSelectedBlockId } = useEditorStore();
+  const { document, addRow, setSelectedBlockId, ui } = useEditorStore();
   const { setNodeRef: setCanvasDroppableRef, isOver: isCanvasOver } = useDroppable({
     id: 'canvas-droppable', 
     data: { type: 'canvas', isCanvas: true },
@@ -229,6 +229,26 @@ const Canvas: React.FC = () => {
 
   const canvasBackgroundColor = document.settings?.backgroundColor || 'hsl(var(--background))'; // Fallback to theme
 
+  // Calculate canvas width based on device mode
+  const getCanvasWidth = () => {
+    switch (ui.canvas.deviceMode) {
+      case 'mobile':
+        return '320px';
+      case 'tablet':
+        return '480px';
+      case 'desktop':
+        return document.settings?.contentWidth || '600px';
+      case 'custom':
+        return `${ui.canvas.width}px`;
+      default:
+        return document.settings?.contentWidth || '600px';
+    }
+  };
+
+  const canvasWidth = getCanvasWidth();
+  const transform = `scale(${ui.canvas.zoomLevel})`;
+  const transformOrigin = 'top center';
+
   return (
     <main 
       ref={setCanvasDroppableRef} 
@@ -238,16 +258,23 @@ const Canvas: React.FC = () => {
       )} 
       style={{ backgroundColor: canvasBackgroundColor }}
       onClick={handleCanvasClick}
-    >
-      <ScrollArea className="h-full">
-        <div 
-          className="mx-auto p-6 pl-20" 
-          style={{ 
-            width: document.settings?.contentWidth || '600px',
-            maxWidth: 'none' // Remove max-width constraint
-          }} 
-        >
-          {document.rows.length === 0 && (
+    >      <ScrollArea className="h-full">
+        {/* Canvas Container with Device Frame */}
+        <div className="flex justify-center p-6 min-h-full">
+          <div 
+            className={cn(
+              "transition-all duration-300 bg-white shadow-lg",
+              ui.preferences.showDeviceFrame && "border border-gray-300 rounded-lg overflow-hidden"
+            )}
+            style={{ 
+              width: canvasWidth,
+              transform: transform,
+              transformOrigin: transformOrigin,
+              backgroundColor: canvasBackgroundColor
+            }}
+          >
+            <div className="pl-20">
+              {document.rows.length === 0 && (
             <div 
               className={cn(
                 "flex flex-col items-center justify-center h-[calc(100vh-200px)] border-2 border-dashed transition-all duration-300 p-8 rounded-lg",
@@ -284,10 +311,11 @@ const Canvas: React.FC = () => {
                 </Button>
               )}
             </div>
-          )}
-          {document.rows.map((row) => (
-             <RowComponent key={row.id} row={row} />
-          ))}
+          )}              {document.rows.map((row) => (
+                 <RowComponent key={row.id} row={row} />
+              ))}
+            </div>
+          </div>
         </div>
       </ScrollArea>
     </main>
