@@ -10,17 +10,16 @@ interface PanelToggleButtonsProps {
 
 const PanelToggleButtons: React.FC<PanelToggleButtonsProps> = ({ className }) => {
   const { ui, toggleLeftPanel, toggleRightPanel } = useEditorStore();
-
   return (
-    <div className={cn("flex items-center gap-2", className)}>
+    <div className={cn("flex flex-col gap-1.5", className)}>
       {/* Left Panel Toggle */}
       <Button
         variant="ghost"
         size="sm"
         onClick={toggleLeftPanel}
         className={cn(
-          "h-8 w-8 p-0 border border-border/50 bg-background/80 backdrop-blur-sm transition-all duration-200",
-          "hover:bg-blue-50 hover:border-blue-300",
+          "h-9 w-9 p-0 border border-gray-200 bg-white backdrop-blur-sm transition-all duration-200 shadow-md",
+          "hover:bg-blue-50 hover:border-blue-300 hover:shadow-lg",
           ui.leftPanel.isCollapsed && "bg-blue-50 border-blue-300"
         )}
         title={ui.leftPanel.isCollapsed ? "Expand Toolbar (Ctrl+[)" : "Collapse Toolbar (Ctrl+[)"}
@@ -38,8 +37,8 @@ const PanelToggleButtons: React.FC<PanelToggleButtonsProps> = ({ className }) =>
         size="sm"
         onClick={toggleRightPanel}
         className={cn(
-          "h-8 w-8 p-0 border border-border/50 bg-background/80 backdrop-blur-sm transition-all duration-200",
-          "hover:bg-blue-50 hover:border-blue-300",
+          "h-9 w-9 p-0 border border-gray-200 bg-white backdrop-blur-sm transition-all duration-200 shadow-md",
+          "hover:bg-blue-50 hover:border-blue-300 hover:shadow-lg",
           !ui.rightPanel.isVisible && "bg-blue-50 border-blue-300"
         )}
         title={ui.rightPanel.isVisible ? "Hide Settings (Ctrl+])" : "Show Settings (Ctrl+])"}

@@ -39,10 +39,13 @@ export const useKeyboardShortcuts = () => {
           case '2':
             event.preventDefault();
             setDeviceMode('tablet');
-            break;
-          case '3':
+            break;          case '3':
             event.preventDefault();
             setDeviceMode('mobile');
+            break;
+          case '4':
+            event.preventDefault();
+            setDeviceMode('custom');
             break;
           case '0':
             event.preventDefault();

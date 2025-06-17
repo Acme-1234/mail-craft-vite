@@ -12,7 +12,6 @@ import type {
   ButtonSpecificStyles, 
   ImageElementStyles 
 } from '@/lib/types';
-import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area-simple';
 import { Separator } from '@/components/ui/separator';
 import {
@@ -43,18 +42,17 @@ const SettingsPanel: React.FC = () => {
       updateBlock(selectedBlockId, updates);
     }
   }, [selectedBlockId, updateBlock]);
-
   // No block selected - show document settings
   if (!selectedBlockId || !selectedBlock) {
     return (
-      <aside className="w-80 border-l border-border bg-card flex flex-col">
+      <aside className="w-96 border-l border-gray-200 bg-white flex flex-col shadow-sm">
         <ScrollArea className="flex-1 p-0">
-          <Card className="shadow-none border-none rounded-none h-full">
+          <div className="shadow-none border-none rounded-none h-full">
             <DocumentSettings 
               settings={editorDocument.settings || {}}
               onUpdate={updateDocumentSettings}
             />
-          </Card>
+          </div>
         </ScrollArea>
       </aside>
     );
@@ -109,20 +107,19 @@ const SettingsPanel: React.FC = () => {
         return null;
     }
   };
-
   return (
-    <aside className="w-80 border-l border-border bg-card flex flex-col">
+    <aside className="w-96 border-l border-gray-200 bg-white flex flex-col shadow-sm">
       <ScrollArea className="flex-1 p-0">
-        <Card className="shadow-none border-none rounded-none h-full">
+        <div className="shadow-none border-none rounded-none h-full">
           {renderBlockSettings()}
-          {selectedBlock && <Separator className="my-2" />}
+          {selectedBlock && <Separator className="my-4" />}
           {selectedBlock && (
             <ContainerStyles
               block={selectedBlock}
               onUpdate={handleUpdateBlock}
             />
           )}
-        </Card>
+        </div>
       </ScrollArea>
     </aside>
   );

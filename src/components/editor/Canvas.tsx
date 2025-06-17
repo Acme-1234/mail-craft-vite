@@ -76,7 +76,7 @@ const BlockWrapper: React.FC<BlockWrapperProps> = ({ block, rowId, columnId, par
       )}
       onClick={handleSelectBlock}
     >
-      <div className="absolute top-1 -left-12 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1 bg-background p-1 shadow">
+      <div className="absolute top-1 -left-10 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1 bg-background p-1 shadow rounded border">
         <Button variant="ghost" size="icon" className="h-6 w-6" onClick={(e) => handleMoveBlock(e, 'up')} title="Move up">
            <ArrowUp className="h-4 w-4" />
         </Button>
@@ -193,7 +193,7 @@ const RowComponent: React.FC<RowComponentProps> = ({ row, parentConditionalBlock
       )}
       onClick={(e) => e.stopPropagation()} 
     >
-      <div className="absolute top-2 -left-12 z-20 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center gap-1 bg-background p-1 shadow-md">
+      <div className="absolute top-2 -left-10 z-20 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center gap-1 bg-background p-1 shadow-md rounded border">
         <Button variant="ghost" size="icon" className="h-7 w-7" onClick={(e) => handleMoveRow(e, 'up')} title="Move row up">
            <ArrowUp className="h-5 w-5" />
         </Button>
@@ -227,53 +227,132 @@ const Canvas: React.FC = () => {
     setSelectedBlockId(null);
   };
 
-  const canvasBackgroundColor = document.settings?.backgroundColor || 'hsl(var(--background))'; // Fallback to theme
-
-  // Calculate canvas width based on device mode
-  const getCanvasWidth = () => {
+  const canvasBackgroundColor = document.settings?.backgroundColor || 'hsl(var(--background))'; // Fallback to theme  // Calculate device area width (fixed based on device mode)
+  const getDeviceWidth = () => {
     switch (ui.canvas.deviceMode) {
       case 'mobile':
-        return '320px';
+        return 320;
       case 'tablet':
-        return '480px';
+        return 480;
       case 'desktop':
-        return document.settings?.contentWidth || '600px';
+        return 600; // Fixed desktop width for email standard
       case 'custom':
-        return `${ui.canvas.width}px`;
+        // For custom mode, device area uses document width but constrained
+        const customWidth = parseInt(document.settings?.contentWidth || '600');
+        return Math.max(320, Math.min(customWidth, 1200));
       default:
-        return document.settings?.contentWidth || '600px';
+        return 600;
     }
   };
 
-  const canvasWidth = getCanvasWidth();
+  // Calculate content area width (variable, from document settings)
+  const getContentWidth = () => {
+    return parseInt(document.settings?.contentWidth || '600');
+  };
+
+  const deviceWidth = getDeviceWidth();
+  const contentWidth = getContentWidth();
   const transform = `scale(${ui.canvas.zoomLevel})`;
   const transformOrigin = 'top center';
-
+  
+  // Check if content width is constrained in custom mode
+  const isCustomModeConstrained = ui.canvas.deviceMode === 'custom' && contentWidth > 1200;
+  
   return (
     <main 
       ref={setCanvasDroppableRef} 
       className={cn(
-        "flex-1 overflow-auto transition-all duration-300", 
+        "flex-1 overflow-auto transition-all duration-300 bg-slate-50", 
         isCanvasOver && "bg-gradient-to-br from-blue-50/60 to-blue-100/40 ring-2 ring-blue-300 ring-inset"
       )} 
-      style={{ backgroundColor: canvasBackgroundColor }}
       onClick={handleCanvasClick}
-    >      <ScrollArea className="h-full">
-        {/* Canvas Container with Device Frame */}
-        <div className="flex justify-center p-6 min-h-full">
+    >      <ScrollArea className="h-full">        {/* Canvas Area - Full workspace container */}
+        <div className="flex justify-center p-4 min-h-full relative">
+          
+          {/* Visual Width Legend */}
+          {ui.preferences.showWidthIndicators && (
+            <div className="absolute top-2 left-4 z-30 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg p-3 shadow-lg text-xs">
+              <div className="font-semibold mb-2 text-gray-700">Width Indicators:</div>
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-4 h-2 border border-yellow-400 border-dashed bg-yellow-50"></div>
+                <span className="text-gray-600">Device Area ({ui.canvas.deviceMode}: {deviceWidth}px)</span>
+              </div>
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-4 h-2 border border-blue-400 border-dashed bg-blue-50"></div>
+                <span className="text-gray-600">Content Area ({contentWidth}px)</span>
+              </div>
+              {contentWidth > deviceWidth && (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-2 border border-green-500 border-dashed bg-green-50"></div>
+                  <span className="text-gray-600">Overflow Area</span>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Visual Width Indicators */}
+          {ui.preferences.showWidthIndicators && (
+            <div className="absolute top-0 bottom-0 flex justify-center w-full pointer-events-none z-10">
+              <div className="relative" style={{ width: `${deviceWidth}px`, transform: transform, transformOrigin: transformOrigin }}>
+                {/* Device Area boundary indicator (yellow) */}
+                <div className="absolute inset-0 border-2 border-yellow-400 border-dashed opacity-60" />
+                
+                {/* Content Area boundary indicator (blue) */}
+                <div 
+                  className="absolute top-0 bottom-0 border-2 border-blue-400 border-dashed opacity-70 bg-blue-50/10"
+                  style={{ 
+                    left: '50%',
+                    transform: `translateX(-50%)`,
+                    width: `${Math.min(contentWidth, deviceWidth)}px`
+                  }}
+                />
+                
+                {/* Overflow indicator (green) when content exceeds device width */}
+                {contentWidth > deviceWidth && (
+                  <div 
+                    className="absolute top-0 bottom-0 border-2 border-green-500 border-dashed opacity-70 bg-green-50/10"
+                    style={{ 
+                      left: '50%',
+                      transform: `translateX(-50%)`,
+                      width: `${contentWidth}px`
+                    }}
+                  />
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Warning indicator for constrained custom width */}
+          {isCustomModeConstrained && (
+            <div className="absolute top-16 left-1/2 transform -translate-x-1/2 z-30">
+              <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 px-3 py-2 rounded text-xs shadow-lg">
+                Content width {contentWidth}px constrained to {deviceWidth}px (device maximum)
+              </div>
+            </div>
+          )}
+
+          {/* Device Area - Fixed width container */}
           <div 
             className={cn(
-              "transition-all duration-300 bg-white shadow-lg",
-              ui.preferences.showDeviceFrame && "border border-gray-300 rounded-lg overflow-hidden"
+              "transition-all duration-300 bg-white shadow-lg border border-gray-200 rounded-lg overflow-hidden relative z-20",
+              ui.preferences.showDeviceFrame && "border-2 border-gray-400"
             )}
             style={{ 
-              width: canvasWidth,
+              width: `${deviceWidth}px`,
               transform: transform,
               transformOrigin: transformOrigin,
               backgroundColor: canvasBackgroundColor
             }}
           >
-            <div className="pl-20">
+            {/* Content Area - Variable width area where blocks live */}
+            <div 
+              className="mx-auto transition-all duration-300"
+              style={{ 
+                width: `${Math.min(contentWidth, deviceWidth)}px`,
+                maxWidth: '100%'
+              }}
+            >
+              <div className="p-3">
               {document.rows.length === 0 && (
             <div 
               className={cn(
@@ -314,6 +393,7 @@ const Canvas: React.FC = () => {
           )}              {document.rows.map((row) => (
                  <RowComponent key={row.id} row={row} />
               ))}
+              </div>
             </div>
           </div>
         </div>

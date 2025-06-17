@@ -70,11 +70,11 @@ interface EmailEditorState {
       deviceMode: 'desktop' | 'tablet' | 'mobile' | 'custom';
       width: number;
       zoomLevel: number;
-    };
-    preferences: {
+    };    preferences: {
       autoHideOnDrag: boolean;
       keyboardShortcuts: boolean;
       showDeviceFrame: boolean;
+      showWidthIndicators: boolean;
     };
   };
   
@@ -86,9 +86,9 @@ interface EmailEditorState {
   // UI Actions
   toggleLeftPanel: () => void;
   toggleRightPanel: () => void;
-  setDeviceMode: (mode: 'desktop' | 'tablet' | 'mobile' | 'custom') => void;
-  setCanvasZoom: (level: number) => void;
+  setDeviceMode: (mode: 'desktop' | 'tablet' | 'mobile' | 'custom') => void;  setCanvasZoom: (level: number) => void;
   updateUIPreferences: (preferences: Partial<EmailEditorState['ui']['preferences']>) => void;
+  toggleWidthIndicators: () => void;
   
   addRow: (config: { type: 'layout-1-col' | 'layout-2-col' | 'layout-3-col' | 'layout-4-col' }, rowIndex?: number, parentConditionalBlockId?: string) => void;
   removeRow: (rowId: string, parentConditionalBlockId?: string) => void;
@@ -164,11 +164,11 @@ export const useEditorStore = create<EmailEditorState>((set, get) => ({
       deviceMode: 'desktop',
       width: 600,
       zoomLevel: 1,
-    },
-    preferences: {
+    },    preferences: {
       autoHideOnDrag: true,
       keyboardShortcuts: true,
       showDeviceFrame: false,
+      showWidthIndicators: true,
     },
   },setDocument: (document) => set({ 
     document: { 
@@ -558,13 +558,22 @@ export const useEditorStore = create<EmailEditorState>((set, get) => ({
       },
     },
   })),
-
   updateUIPreferences: (preferences) => set((state) => ({
     ui: {
       ...state.ui,
       preferences: {
         ...state.ui.preferences,
         ...preferences,
+      },
+    },
+  })),
+
+  toggleWidthIndicators: () => set((state) => ({
+    ui: {
+      ...state.ui,
+      preferences: {
+        ...state.ui.preferences,
+        showWidthIndicators: !state.ui.preferences.showWidthIndicators,
       },
     },
   })),
