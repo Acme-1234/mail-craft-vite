@@ -71,12 +71,11 @@ const BlockWrapper: React.FC<BlockWrapperProps> = ({ block, rowId, columnId, par
       return null;
   }  return (
     <div      className={cn(
-        'relative border-2 border-dashed border-transparent hover:border-blue-400 hover:bg-blue-50/30 transition-all duration-200 group', 
+        'relative border-2 border-dashed border-transparent hover:border-blue-400 hover:bg-blue-50/30 transition-all duration-200 group overflow-visible', 
         isSelected && 'border-blue-500 border-solid bg-blue-50/50 shadow-lg shadow-blue-200/50'
       )}
       onClick={handleSelectBlock}
-    >
-      <div className="absolute top-1 -left-10 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1 bg-background p-1 shadow rounded border">
+    ><div className="absolute top-1 -left-10 z-50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1 bg-background p-1 shadow rounded border">
         <Button variant="ghost" size="icon" className="h-6 w-6" onClick={(e) => handleMoveBlock(e, 'up')} title="Move up">
            <ArrowUp className="h-4 w-4" />
         </Button>
@@ -128,7 +127,7 @@ const ColumnComponent: React.FC<ColumnComponentProps> = ({ column, rowId, parent
   return (
     <div
       ref={setNodeRef}      className={cn(
-        'border-2 border-dashed border-transparent min-h-[60px] transition-all duration-300 relative', 
+        'border-2 border-dashed border-transparent min-h-[60px] transition-all duration-300 relative overflow-visible', 
         getColumnWidthClass(column.span),
         'hover:border-blue-300 hover:bg-blue-50/20',
         isOver && 'bg-gradient-to-br from-blue-100/80 to-blue-200/60 border-blue-400 border-solid shadow-lg shadow-blue-200/50 transform scale-[1.02]'
@@ -184,16 +183,14 @@ const RowComponent: React.FC<RowComponentProps> = ({ row, parentConditionalBlock
     e.stopPropagation();
     moveRow(row.id, direction, parentConditionalBlockId);
   };
-
   return (    <div
       className={cn(
-        "relative border-2 border-dashed border-gray-200 transition-all duration-300 group bg-card",
+        "relative border-2 border-dashed border-gray-200 transition-all duration-300 group bg-card overflow-visible",
         "hover:border-blue-400 hover:bg-blue-50/20",
         isOver && "border-blue-500 bg-blue-50/40 shadow-lg shadow-blue-200/30"
       )}
       onClick={(e) => e.stopPropagation()} 
-    >
-      <div className="absolute top-2 -left-10 z-20 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center gap-1 bg-background p-1 shadow-md rounded border">
+    ><div className="absolute top-2 -left-10 z-50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center gap-1 bg-background p-1 shadow-md rounded border">
         <Button variant="ghost" size="icon" className="h-7 w-7" onClick={(e) => handleMoveRow(e, 'up')} title="Move row up">
            <ArrowUp className="h-5 w-5" />
         </Button>
@@ -203,7 +200,7 @@ const RowComponent: React.FC<RowComponentProps> = ({ row, parentConditionalBlock
         <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive hover:text-destructive" onClick={handleRemoveRow} title="Delete row">
           <Trash2 className="h-5 w-5" />
         </Button>
-      </div>      <div ref={setDroppableRowRef} className={cn(
+      </div><div ref={setDroppableRowRef} className={cn(
         "flex flex-wrap transition-all duration-300", 
         isOver && 'bg-gradient-to-r from-blue-100/30 to-blue-200/20 border-2 border-blue-300 border-dashed'
       )}>
@@ -331,10 +328,9 @@ const Canvas: React.FC = () => {
             </div>
           )}
 
-          {/* Device Area - Fixed width container */}
-          <div 
+          {/* Device Area - Fixed width container */}          <div 
             className={cn(
-              "transition-all duration-300 bg-white shadow-lg border border-gray-200 rounded-lg overflow-hidden relative z-20",
+              "transition-all duration-300 bg-white shadow-lg border border-gray-200 rounded-lg relative z-20",
               ui.preferences.showDeviceFrame && "border-2 border-gray-400"
             )}
             style={{ 
@@ -344,15 +340,14 @@ const Canvas: React.FC = () => {
               backgroundColor: canvasBackgroundColor
             }}
           >
-            {/* Content Area - Variable width area where blocks live */}
-            <div 
-              className="mx-auto transition-all duration-300"
+            {/* Content Area - Variable width area where blocks live */}            <div 
+              className="mx-auto transition-all duration-300 overflow-visible"
               style={{ 
                 width: `${Math.min(contentWidth, deviceWidth)}px`,
                 maxWidth: '100%'
               }}
             >
-              <div className="p-3">
+              <div className="p-3 overflow-visible">
               {document.rows.length === 0 && (
             <div 
               className={cn(
