@@ -71,12 +71,11 @@ const BlockWrapper: React.FC<BlockWrapperProps> = ({ block, rowId, columnId, par
       return null;
   }  return (
     <div      className={cn(
-        'relative border-2 border-dashed border-transparent hover:border-blue-400 hover:bg-blue-50/30 transition-all duration-200 group', 
+        'relative border-2 border-dashed border-transparent hover:border-blue-400 hover:bg-blue-50/30 transition-all duration-200 group overflow-visible', 
         isSelected && 'border-blue-500 border-solid bg-blue-50/50 shadow-lg shadow-blue-200/50'
       )}
       onClick={handleSelectBlock}
-    >
-      <div className="absolute top-1 -left-12 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1 bg-background p-1 shadow">
+    ><div className="absolute top-1 -left-10 z-50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1 bg-background p-1 shadow rounded border">
         <Button variant="ghost" size="icon" className="h-6 w-6" onClick={(e) => handleMoveBlock(e, 'up')} title="Move up">
            <ArrowUp className="h-4 w-4" />
         </Button>
@@ -128,7 +127,7 @@ const ColumnComponent: React.FC<ColumnComponentProps> = ({ column, rowId, parent
   return (
     <div
       ref={setNodeRef}      className={cn(
-        'border-2 border-dashed border-transparent min-h-[60px] transition-all duration-300 relative', 
+        'border-2 border-dashed border-transparent min-h-[60px] transition-all duration-300 relative overflow-visible', 
         getColumnWidthClass(column.span),
         'hover:border-blue-300 hover:bg-blue-50/20',
         isOver && 'bg-gradient-to-br from-blue-100/80 to-blue-200/60 border-blue-400 border-solid shadow-lg shadow-blue-200/50 transform scale-[1.02]'
@@ -184,16 +183,14 @@ const RowComponent: React.FC<RowComponentProps> = ({ row, parentConditionalBlock
     e.stopPropagation();
     moveRow(row.id, direction, parentConditionalBlockId);
   };
-
   return (    <div
       className={cn(
-        "relative border-2 border-dashed border-gray-200 transition-all duration-300 group bg-card",
+        "relative border-2 border-dashed border-gray-200 transition-all duration-300 group bg-card overflow-visible",
         "hover:border-blue-400 hover:bg-blue-50/20",
         isOver && "border-blue-500 bg-blue-50/40 shadow-lg shadow-blue-200/30"
       )}
       onClick={(e) => e.stopPropagation()} 
-    >
-      <div className="absolute top-2 -left-12 z-20 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center gap-1 bg-background p-1 shadow-md">
+    ><div className="absolute top-2 -left-10 z-50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center gap-1 bg-background p-1 shadow-md rounded border">
         <Button variant="ghost" size="icon" className="h-7 w-7" onClick={(e) => handleMoveRow(e, 'up')} title="Move row up">
            <ArrowUp className="h-5 w-5" />
         </Button>
@@ -203,7 +200,7 @@ const RowComponent: React.FC<RowComponentProps> = ({ row, parentConditionalBlock
         <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive hover:text-destructive" onClick={handleRemoveRow} title="Delete row">
           <Trash2 className="h-5 w-5" />
         </Button>
-      </div>      <div ref={setDroppableRowRef} className={cn(
+      </div><div ref={setDroppableRowRef} className={cn(
         "flex flex-wrap transition-all duration-300", 
         isOver && 'bg-gradient-to-r from-blue-100/30 to-blue-200/20 border-2 border-blue-300 border-dashed'
       )}>
@@ -217,7 +214,7 @@ const RowComponent: React.FC<RowComponentProps> = ({ row, parentConditionalBlock
 
 
 const Canvas: React.FC = () => {
-  const { document, addRow, setSelectedBlockId } = useEditorStore();
+  const { document, addRow, setSelectedBlockId, ui } = useEditorStore();
   const { setNodeRef: setCanvasDroppableRef, isOver: isCanvasOver } = useDroppable({
     id: 'canvas-droppable', 
     data: { type: 'canvas', isCanvas: true },
@@ -227,27 +224,131 @@ const Canvas: React.FC = () => {
     setSelectedBlockId(null);
   };
 
-  const canvasBackgroundColor = document.settings?.backgroundColor || 'hsl(var(--background))'; // Fallback to theme
+  const canvasBackgroundColor = document.settings?.backgroundColor || 'hsl(var(--background))'; // Fallback to theme  // Calculate device area width (fixed based on device mode)
+  const getDeviceWidth = () => {
+    switch (ui.canvas.deviceMode) {
+      case 'mobile':
+        return 320;
+      case 'tablet':
+        return 480;
+      case 'desktop':
+        return 600; // Fixed desktop width for email standard
+      case 'custom':
+        // For custom mode, device area uses document width but constrained
+        const customWidth = parseInt(document.settings?.contentWidth || '600');
+        return Math.max(320, Math.min(customWidth, 1200));
+      default:
+        return 600;
+    }
+  };
 
+  // Calculate content area width (variable, from document settings)
+  const getContentWidth = () => {
+    return parseInt(document.settings?.contentWidth || '600');
+  };
+
+  const deviceWidth = getDeviceWidth();
+  const contentWidth = getContentWidth();
+  const transform = `scale(${ui.canvas.zoomLevel})`;
+  const transformOrigin = 'top center';
+  
+  // Check if content width is constrained in custom mode
+  const isCustomModeConstrained = ui.canvas.deviceMode === 'custom' && contentWidth > 1200;
+  
   return (
     <main 
       ref={setCanvasDroppableRef} 
       className={cn(
-        "flex-1 overflow-auto transition-all duration-300", 
+        "flex-1 overflow-auto transition-all duration-300 bg-slate-50", 
         isCanvasOver && "bg-gradient-to-br from-blue-50/60 to-blue-100/40 ring-2 ring-blue-300 ring-inset"
       )} 
-      style={{ backgroundColor: canvasBackgroundColor }}
       onClick={handleCanvasClick}
-    >
-      <ScrollArea className="h-full">
-        <div 
-          className="mx-auto p-6 pl-20" 
-          style={{ 
-            width: document.settings?.contentWidth || '600px',
-            maxWidth: 'none' // Remove max-width constraint
-          }} 
-        >
-          {document.rows.length === 0 && (
+    >      <ScrollArea className="h-full">        {/* Canvas Area - Full workspace container */}
+        <div className="flex justify-center p-4 min-h-full relative">
+          
+          {/* Visual Width Legend */}
+          {ui.preferences.showWidthIndicators && (
+            <div className="absolute top-2 left-4 z-30 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg p-3 shadow-lg text-xs">
+              <div className="font-semibold mb-2 text-gray-700">Width Indicators:</div>
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-4 h-2 border border-yellow-400 border-dashed bg-yellow-50"></div>
+                <span className="text-gray-600">Device Area ({ui.canvas.deviceMode}: {deviceWidth}px)</span>
+              </div>
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-4 h-2 border border-blue-400 border-dashed bg-blue-50"></div>
+                <span className="text-gray-600">Content Area ({contentWidth}px)</span>
+              </div>
+              {contentWidth > deviceWidth && (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-2 border border-green-500 border-dashed bg-green-50"></div>
+                  <span className="text-gray-600">Overflow Area</span>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Visual Width Indicators */}
+          {ui.preferences.showWidthIndicators && (
+            <div className="absolute top-0 bottom-0 flex justify-center w-full pointer-events-none z-10">
+              <div className="relative" style={{ width: `${deviceWidth}px`, transform: transform, transformOrigin: transformOrigin }}>
+                {/* Device Area boundary indicator (yellow) */}
+                <div className="absolute inset-0 border-2 border-yellow-400 border-dashed opacity-60" />
+                
+                {/* Content Area boundary indicator (blue) */}
+                <div 
+                  className="absolute top-0 bottom-0 border-2 border-blue-400 border-dashed opacity-70 bg-blue-50/10"
+                  style={{ 
+                    left: '50%',
+                    transform: `translateX(-50%)`,
+                    width: `${Math.min(contentWidth, deviceWidth)}px`
+                  }}
+                />
+                
+                {/* Overflow indicator (green) when content exceeds device width */}
+                {contentWidth > deviceWidth && (
+                  <div 
+                    className="absolute top-0 bottom-0 border-2 border-green-500 border-dashed opacity-70 bg-green-50/10"
+                    style={{ 
+                      left: '50%',
+                      transform: `translateX(-50%)`,
+                      width: `${contentWidth}px`
+                    }}
+                  />
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Warning indicator for constrained custom width */}
+          {isCustomModeConstrained && (
+            <div className="absolute top-16 left-1/2 transform -translate-x-1/2 z-30">
+              <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 px-3 py-2 rounded text-xs shadow-lg">
+                Content width {contentWidth}px constrained to {deviceWidth}px (device maximum)
+              </div>
+            </div>
+          )}
+
+          {/* Device Area - Fixed width container */}          <div 
+            className={cn(
+              "transition-all duration-300 bg-white shadow-lg border border-gray-200 rounded-lg relative z-20",
+              ui.preferences.showDeviceFrame && "border-2 border-gray-400"
+            )}
+            style={{ 
+              width: `${deviceWidth}px`,
+              transform: transform,
+              transformOrigin: transformOrigin,
+              backgroundColor: canvasBackgroundColor
+            }}
+          >
+            {/* Content Area - Variable width area where blocks live */}            <div 
+              className="mx-auto transition-all duration-300 overflow-visible"
+              style={{ 
+                width: `${Math.min(contentWidth, deviceWidth)}px`,
+                maxWidth: '100%'
+              }}
+            >
+              <div className="p-3 overflow-visible">
+              {document.rows.length === 0 && (
             <div 
               className={cn(
                 "flex flex-col items-center justify-center h-[calc(100vh-200px)] border-2 border-dashed transition-all duration-300 p-8 rounded-lg",
@@ -284,10 +385,12 @@ const Canvas: React.FC = () => {
                 </Button>
               )}
             </div>
-          )}
-          {document.rows.map((row) => (
-             <RowComponent key={row.id} row={row} />
-          ))}
+          )}              {document.rows.map((row) => (
+                 <RowComponent key={row.id} row={row} />
+              ))}
+              </div>
+            </div>
+          </div>
         </div>
       </ScrollArea>
     </main>

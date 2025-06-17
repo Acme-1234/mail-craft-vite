@@ -10,11 +10,14 @@ import type {
 } from '@/lib/types';
 import { useEditorStore } from '@/hooks/useEditorStore';
 import { useWindowEditorAPI } from '@/hooks/useWindowEditorAPI';
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import Toolbar from './Toolbar';
 import Canvas from './Canvas';
 import SettingsPanel from './SettingsPanel';
 import HeaderBranding from './HeaderBranding';
 import DragPreview from './dnd/DragPreview';
+import PanelToggleButtons from './PanelToggleButtons';
+import DevicePreviewControls from './DevicePreviewControls';
 import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import type { DragEndEvent } from '@dnd-kit/core';
 import { DragDropProvider } from '@/components/editor/dnd/FriendlyDndProvider';
@@ -28,6 +31,7 @@ import {
 import { importJsonToDocument, importHtmlToDocument } from '@/lib/import';
 import { extractLinksFromDocument } from '@/lib/link-extraction';
 import PreviewModal from './PreviewModal'; // Import PreviewModal
+import { cn } from '@/lib/utils';
 
 const EmailEditor = React.forwardRef<EmailEditorRef, EmailEditorProps>(  ({ placeholders, onImageSelect, initialDocument }, ref) => {    const {
       document,
@@ -37,9 +41,13 @@ const EmailEditor = React.forwardRef<EmailEditorRef, EmailEditorProps>(  ({ plac
       setOnImageSelect,
       addRow,
       addBlock: storeAddBlock,
+      ui,
     } = useEditorStore();    const { getButtonConfig, configure, getBranding } = useWindowEditorAPI();
     const configureRef = useRef(configure);
     const [currentBranding, setCurrentBranding] = useState(getBranding());
+    
+    // Initialize keyboard shortcuts
+    useKeyboardShortcuts();
     
     configureRef.current = configure;
     
@@ -314,46 +322,78 @@ const EmailEditor = React.forwardRef<EmailEditorRef, EmailEditorProps>(  ({ plac
 
     return (
       <DndContext id="mailcraft-dnd-context-editor" sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-        <DragDropProvider>
-          <div className="flex flex-col h-screen bg-background text-foreground">            <header className="p-4 border-b border-border flex justify-between items-center" style={{ backgroundColor: 'var(--header-bg, hsl(var(--background)))', color: 'var(--header-text, hsl(var(--foreground)))' }}>
-              <HeaderBranding branding={currentBranding} />              <div className="flex gap-2">
+        <DragDropProvider>          <div className="flex flex-col h-screen bg-gray-50 text-foreground">
+            <header className="px-6 py-4 border-b border-gray-200 bg-white shadow-sm flex justify-between items-center">
+              <HeaderBranding branding={currentBranding} />
+              <div className="flex gap-2">
                 {getButtonConfig('preview').isVisible && (
-                  <Button variant="outline" size="sm" onClick={handlePreview}>
+                  <Button variant="outline" size="sm" onClick={handlePreview} className="shadow-sm">
                     <Eye className="mr-2 h-4 w-4" /> Preview
                   </Button>
                 )}
                 {getButtonConfig('importJson').isVisible && (
-                  <Button variant="outline" size="sm" onClick={handleImportJson}>
+                  <Button variant="outline" size="sm" onClick={handleImportJson} className="shadow-sm">
                     <FileUp className="mr-2 h-4 w-4" /> Import JSON
                   </Button>
                 )}
                 {getButtonConfig('exportJson').isVisible && (
-                  <Button variant="outline" size="sm" onClick={handleExportJson}>
+                  <Button variant="outline" size="sm" onClick={handleExportJson} className="shadow-sm">
                     <Upload className="mr-2 h-4 w-4" /> Export JSON
                   </Button>
                 )}
                 {getButtonConfig('exportHtml').isVisible && (
-                  <Button variant="outline" size="sm" onClick={handleExportHtml}>
+                  <Button variant="outline" size="sm" onClick={handleExportHtml} className="shadow-sm">
                     <Download className="mr-2 h-4 w-4" /> Export HTML
                   </Button>
                 )}
                 {getButtonConfig('clear').isVisible && (
-                  <Button variant="destructive" size="sm" onClick={handleClearDocument}>
+                  <Button variant="destructive" size="sm" onClick={handleClearDocument} className="shadow-sm">
                     <Trash2 className="mr-2 h-4 w-4" /> Clear
                   </Button>
                 )}
                 {getButtonConfig('getLinks').isVisible && (
-                  <Button variant="outline" size="sm" onClick={handleGetLinks}>
+                  <Button variant="outline" size="sm" onClick={handleGetLinks} className="shadow-sm">
                     <ListChecks className="mr-2 h-4 w-4" /> Get Links
                   </Button>
                 )}
               </div>
-            </header>
-            <div className="flex flex-1 overflow-hidden">
-              <Toolbar />
-              <Canvas />
-              <SettingsPanel />
-            </div>             {isClient && typeof window !== 'undefined' && window.document && window.document.body && createPortal(
+            </header>            <div className="flex flex-1 overflow-hidden relative">
+              {/* Left Toolbar Panel */}
+              <div 
+                className={cn(
+                  "transition-all duration-300 ease-in-out border-r border-gray-200 bg-white shadow-sm relative",
+                  ui.leftPanel.isCollapsed ? "w-16" : "w-72"
+                )}
+              >
+                {/* Panel Toggle Button - positioned within the panel */}
+                <div className="absolute top-4 -right-4 z-20">
+                  <PanelToggleButtons />
+                </div>
+                <Toolbar isCollapsed={ui.leftPanel.isCollapsed} />
+              </div>
+              
+              {/* Main Canvas Area */}
+              <div className="flex-1 relative flex flex-col min-w-0">
+                {/* Device Preview Controls */}
+                <div className="p-4 border-b border-gray-200 flex justify-center bg-white shadow-sm">
+                  <DevicePreviewControls />
+                </div>
+                
+                {/* Canvas Container */}
+                <div className="flex-1 overflow-auto bg-gray-50">
+                  <Canvas />
+                </div>
+              </div>
+              
+              {/* Right Settings Panel */}
+              {ui.rightPanel.isVisible && (
+                <div 
+                  className="w-96 border-l border-gray-200 bg-white shadow-sm transition-all duration-300 ease-in-out flex-shrink-0"
+                >
+                  <SettingsPanel />
+                </div>
+              )}
+            </div>{isClient && typeof window !== 'undefined' && window.document && window.document.body && createPortal(
               <DragOverlay>
                 {activeDragItem ? (
                   <DragPreview item={activeDragItem} />
