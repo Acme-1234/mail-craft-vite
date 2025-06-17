@@ -30,7 +30,7 @@ import {
 } from '@/lib/export';
 import { importJsonToDocument, importHtmlToDocument } from '@/lib/import';
 import { extractLinksFromDocument } from '@/lib/link-extraction';
-import PreviewModal from './PreviewModal'; // Import PreviewModal
+import EnhancedPreviewModal from './EnhancedPreviewModal'; // Import EnhancedPreviewModal
 import { cn } from '@/lib/utils';
 
 const EmailEditor = React.forwardRef<EmailEditorRef, EmailEditorProps>(  ({ placeholders, onImageSelect, initialDocument }, ref) => {    const {
@@ -402,9 +402,8 @@ const EmailEditor = React.forwardRef<EmailEditorRef, EmailEditorProps>(  ({ plac
               window.document.body
             )}
           </div>
-        </DragDropProvider>
-        {isPreviewModalOpen && (
-          <PreviewModal
+        </DragDropProvider>        {isPreviewModalOpen && (
+          <EnhancedPreviewModal
             isOpen={isPreviewModalOpen}
             onClose={() => setIsPreviewModalOpen(false)}
             document={document}

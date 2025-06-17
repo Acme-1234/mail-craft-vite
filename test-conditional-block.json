@@ -1,0 +1,110 @@
+{
+  "rows": [
+    {
+      "id": "row-1",
+      "columns": [
+        {
+          "id": "col-1",
+          "width": 100,
+          "blocks": [
+            {
+              "id": "heading-test",
+              "type": "heading",
+              "content": "Welcome to Mail Craft",
+              "level": 1,
+              "align": "center",
+              "styles": {
+                "padding": "20px",
+                "margin": "10px 0"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "row-conditional",
+      "columns": [
+        {
+          "id": "col-conditional",
+          "width": 100,
+          "blocks": [
+            {
+              "id": "conditional-test",
+              "type": "conditionalLayout",
+              "condition": "is_premium",
+              "rows": [
+                {
+                  "id": "inner-row-1",
+                  "columns": [
+                    {
+                      "id": "inner-col-1", 
+                      "width": 100,
+                      "blocks": [
+                        {
+                          "id": "premium-heading",
+                          "type": "heading",
+                          "content": "🎉 Premium User Content",
+                          "level": 2,
+                          "align": "center",
+                          "styles": {
+                            "padding": "15px",
+                            "margin": "5px 0"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "inner-row-2",
+                  "columns": [
+                    {
+                      "id": "inner-col-2",
+                      "width": 100,
+                      "blocks": [
+                        {
+                          "id": "premium-text",
+                          "type": "text",
+                          "content": "This content is only visible to premium users!",
+                          "styles": {
+                            "padding": "10px"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "styles": {
+                "padding": "20px",
+                "backgroundColor": "#f0f8ff",
+                "border": "2px solid #4169e1",
+                "borderRadius": "8px"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "row-3",
+      "columns": [
+        {
+          "id": "col-3",
+          "width": 100,
+          "blocks": [
+            {
+              "id": "text-test",
+              "type": "text",
+              "content": "This text always shows regardless of conditions.",
+              "styles": {
+                "padding": "10px"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
