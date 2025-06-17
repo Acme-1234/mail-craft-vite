@@ -6,6 +6,18 @@ body {
   @apply font-body antialiased;
 }
 
+/* Custom styles for contentEditable placeholder */
+[contenteditable]:empty:before {
+  content: attr(data-placeholder);
+  color: #9ca3af;
+  pointer-events: none;
+  font-style: italic;
+}
+
+[contenteditable]:focus:before {
+  display: none;
+}
+
 @layer base {  :root {
     --background: 210 25% 95%; /* Light gray (#F0F4F8) */
     --foreground: 210 10% 23%; /* Darker gray for text */
