@@ -1,141 +1,144 @@
 {
-  "name": "Company Announcement",
-  "description": "Professional template for company news, updates, and announcements",
-  "thumbnail": "company-announcement.png",
-  "category": "Business",
-  "blocks": [
-    {
-      "id": "header-logo",
-      "type": "image",
-      "data": {
-        "src": "https://via.placeholder.com/200x80/0066cc/ffffff?text=LOGO",
-        "alt": "Company Logo",
-        "width": "200",
-        "alignment": "center",
-        "padding": {
-          "top": "20",
-          "bottom": "20",
-          "left": "20",
-          "right": "20"
-        }
-      }
-    },    {
-      "id": "announcement-header",
-      "type": "heading",      "content": "Important Company Announcement",
-      "level": 1,
-      "styles": {
-        "color": "#0066cc",
-        "fontSize": "28px",
-        "fontFamily": "Arial, sans-serif",
-        "textAlign": "center",
-        "padding": "10px 20px 20px 20px"
-      }
-    },
-    {
-      "id": "announcement-date",
-      "type": "text",
-      "data": {
-        "content": "<p style='text-align: center; color: #666; font-size: 14px; margin: 0;'><em>December 15, 2024</em></p>",
-        "fontSize": "14",
-        "color": "#666666",
-        "alignment": "center",
-        "padding": {
-          "top": "0",
-          "bottom": "30",
-          "left": "20",
-          "right": "20"
-        }
-      }
-    },
-    {
-      "id": "announcement-content",
-      "type": "text",
-      "data": {
-        "content": "<p>Dear Team and Valued Partners,</p><p>We are excited to share some important news about our company's growth and future direction. After months of planning and preparation, we are proud to announce the launch of our new product line that will revolutionize how we serve our customers.</p><p><strong>Key highlights of this announcement:</strong></p><ul><li>Launch of three new innovative products</li><li>Expansion into two new markets</li><li>25% increase in our development team</li><li>Enhanced customer support services</li></ul><p>This milestone represents our commitment to continuous innovation and excellence. We couldn't have achieved this without the dedication of our team and the trust of our customers.</p><p>Stay tuned for more details in the coming weeks as we roll out these exciting changes.</p>",
-        "fontSize": "16",
-        "color": "#333333",
-        "fontFamily": "Arial, sans-serif",
-        "lineHeight": "1.6",
-        "padding": {
-          "top": "0",
-          "bottom": "30",
-          "left": "20",
-          "right": "20"
-        }
-      }
-    },
-    {
-      "id": "cta-section",
-      "type": "button",
-      "data": {
-        "text": "Learn More About Our Growth",
-        "url": "https://company.com/announcement",
-        "backgroundColor": "#0066cc",
-        "textColor": "#ffffff",
-        "borderRadius": "5",
-        "padding": "15px 30px",
-        "fontSize": "16",
-        "fontWeight": "bold",
-        "alignment": "center",
-        "containerPadding": {
-          "top": "20",
-          "bottom": "30",
-          "left": "20",
-          "right": "20"
-        }
-      }
-    },
-    {
-      "id": "contact-info",
-      "type": "text",
-      "data": {
-        "content": "<p style='text-align: center; color: #666; font-size: 14px;'>For questions or more information, contact us at <a href='mailto:info@company.com' style='color: #0066cc;'>info@company.com</a></p>",
-        "fontSize": "14",
-        "color": "#666666",
-        "alignment": "center",
-        "padding": {
-          "top": "0",
-          "bottom": "20",
-          "left": "20",
-          "right": "20"
-        }
-      }
-    },
-    {
-      "id": "divider-line",
-      "type": "divider",
-      "data": {
-        "height": "1",
-        "color": "#e0e0e0",
-        "padding": {
-          "top": "20",
-          "bottom": "20",
-          "left": "20",
-          "right": "20"
-        }
-      }
-    },
-    {
-      "id": "footer-signature",
-      "type": "text",
-      "data": {
-        "content": "<p style='text-align: center; color: #999; font-size: 12px;'>Best regards,<br><strong>The Leadership Team</strong><br>Company Name</p><p style='text-align: center; color: #999; font-size: 11px; margin-top: 20px;'>This email was sent to inform you of important company updates. If you have any questions, please don't hesitate to reach out.</p>",
-        "fontSize": "12",
-        "color": "#999999",
-        "alignment": "center",
-        "padding": {
-          "top": "0",
-          "bottom": "20",
-          "left": "20",
-          "right": "20"
-        }
-      }
+  "document": {
+    "settings": {
+      "contentWidth": "600px",
+      "backgroundColor": "#ffffff",
+      "fontFamily": "Arial, sans-serif"
     }
-  ],
-  "settings": {
-    "width": "600",
-    "backgroundColor": "#ffffff",
-    "fontFamily": "Arial, sans-serif",
-    "previewText": "Important company announcement - exciting growth ahead!"
-  }
+  },
+  "rows": [
+    {
+      "id": "header-row",
+      "columns": [
+        {
+          "id": "header-col",
+          "width": "100%",
+          "blocks": [            {
+              "id": "header-logo",
+              "type": "image",
+              "content": "",
+              "styles": {
+                "textAlign": "center",
+                "padding": "20px"
+              },
+              "properties": {
+                "src": "https://via.placeholder.com/200x80/0066cc/ffffff?text=LOGO",
+                "alt": "Company Logo",
+                "width": "200",
+                "height": "auto"
+              }
+            },
+            {
+              "id": "announcement-header",
+              "type": "heading",
+              "content": "Important Company Announcement",
+              "level": 1,
+              "styles": {
+                "color": "#0066cc",
+                "fontSize": "28px",
+                "fontFamily": "Arial, sans-serif",
+                "textAlign": "center",
+                "padding": "10px 20px 20px 20px"
+              }
+            },
+            {
+              "id": "announcement-date",
+              "type": "text",
+              "content": "<p style='text-align: center; color: #666; font-size: 14px; margin: 0;'><em>December 15, 2024</em></p>",
+              "styles": {
+                "fontSize": "14px",
+                "color": "#666666",
+                "textAlign": "center",
+                "padding": "0 20px 30px 20px"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "content-row",
+      "columns": [
+        {
+          "id": "content-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "announcement-content",
+              "type": "text",
+              "content": "<p>Dear Team and Valued Partners,</p><p>We are excited to share some important news about our company's growth and future direction. After months of planning and preparation, we are proud to announce the launch of our new product line that will revolutionize how we serve our customers.</p><p><strong>Key highlights of this announcement:</strong></p><ul><li>Launch of three new innovative products</li><li>Expansion into two new markets</li><li>25% increase in our development team</li><li>Enhanced customer support services</li></ul><p>This milestone represents our commitment to continuous innovation and excellence. We couldn't have achieved this without the dedication of our team and the trust of our customers.</p><p>Stay tuned for more details in the coming weeks as we roll out these exciting changes.</p>",
+              "styles": {
+                "fontSize": "16px",
+                "color": "#333333",
+                "fontFamily": "Arial, sans-serif",
+                "lineHeight": "1.6",
+                "padding": "0 20px 30px 20px"
+              }
+            },            {
+              "id": "cta-section",
+              "type": "button",
+              "content": "Learn More About Our Growth",
+              "styles": {
+                "padding": "20px 20px 30px 20px",
+                "textAlign": "center",
+                "backgroundColor": "#0066cc",
+                "color": "#ffffff",
+                "borderRadius": "5px",
+                "fontSize": "16px",
+                "fontWeight": "bold",
+                "display": "inline-block",
+                "margin": "0 auto"
+              },
+              "properties": {
+                "href": "https://company.com/announcement"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "footer-row",
+      "columns": [
+        {
+          "id": "footer-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "contact-info",
+              "type": "text",
+              "content": "<p style='text-align: center; color: #666; font-size: 14px;'>For questions or more information, contact us at <a href='mailto:info@company.com' style='color: #0066cc;'>info@company.com</a></p>",
+              "styles": {
+                "fontSize": "14px",
+                "color": "#666666",
+                "textAlign": "center",
+                "padding": "0 20px 20px 20px"
+              }
+            },            {
+              "id": "divider-line",
+              "type": "divider",
+              "content": "",
+              "styles": {
+                "padding": "20px",
+                "borderTop": "1px solid #e0e0e0",
+                "width": "100%",
+                "textAlign": "center"
+              }
+            },
+            {
+              "id": "footer-signature",
+              "type": "text",
+              "content": "<p style='text-align: center; color: #999; font-size: 12px;'>Best regards,<br><strong>The Leadership Team</strong><br>Company Name</p><p style='text-align: center; color: #999; font-size: 11px; margin-top: 20px;'>This email was sent to inform you of important company updates. If you have any questions, please don't hesitate to reach out.</p>",
+              "styles": {
+                "fontSize": "12px",
+                "color": "#999999",
+                "textAlign": "center",
+                "padding": "0 20px 20px 20px"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

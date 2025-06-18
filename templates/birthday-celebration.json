@@ -1,158 +1,181 @@
 {
-  "name": "Birthday Celebration",
-  "description": "Warm and festive template for birthday wishes and special occasion greetings",
-  "thumbnail": "birthday-celebration.png",
-  "category": "Personal",
-  "blocks": [
-    {
-      "id": "birthday-header",
-      "type": "image",
-      "data": {
-        "src": "https://via.placeholder.com/400x200/ff6b6b/ffffff?text=🎉+Happy+Birthday!+🎂",
-        "alt": "Happy Birthday Banner",
-        "width": "400",
-        "alignment": "center",
-        "padding": {
-          "top": "20",
-          "bottom": "20",
-          "left": "20",
-          "right": "20"
-        }
-      }
-    },    {
-      "id": "birthday-greeting",
-      "type": "heading",      "content": "It's Your Special Day!",
-      "level": 1,
-      "styles": {
-        "color": "#ff6b6b",
-        "fontSize": "32px",
-        "fontFamily": "Georgia, serif",
-        "textAlign": "center",
-        "padding": "10px 20px 20px 20px"
-      }
-    },
-    {
-      "id": "personal-message",
-      "type": "text",
-      "data": {
-        "content": "<p style='text-align: center; font-size: 18px; color: #333;'>Dear [Name],</p><p>🎈 Another year of wonderful memories, achievements, and joy! Today we celebrate YOU and all the amazing things you bring to our lives.</p><p>Whether it's your infectious smile, your incredible talent, or your kind heart - you make the world a brighter place just by being in it.</p><p><strong>Here's to another year of:</strong></p><ul style='color: #ff6b6b; font-weight: bold;'><li>Adventures and discoveries</li><li>Laughter and happiness</li><li>Dreams coming true</li><li>Creating beautiful memories</li></ul><p>We hope your birthday is filled with everything that makes you smile and that the year ahead brings you endless happiness!</p>",
-        "fontSize": "16",
-        "color": "#333333",
-        "fontFamily": "Georgia, serif",
-        "lineHeight": "1.7",
-        "padding": {
-          "top": "0",
-          "bottom": "30",
-          "left": "20",
-          "right": "20"
-        }
-      }
-    },
-    {
-      "id": "birthday-cake",
-      "type": "image",
-      "data": {
-        "src": "https://via.placeholder.com/300x200/ffd93d/333333?text=🎂+Birthday+Cake+🎂",
-        "alt": "Birthday Cake",
-        "width": "300",
-        "alignment": "center",
-        "padding": {
-          "top": "20",
-          "bottom": "20",
-          "left": "20",
-          "right": "20"
-        }
-      }
-    },
-    {
-      "id": "birthday-wish",
-      "type": "text",
-      "data": {
-        "content": "<p style='text-align: center; font-size: 20px; color: #ff6b6b; font-style: italic; font-weight: bold;'>\"May all your birthday wishes come true!\"</p>",
-        "fontSize": "20",
-        "color": "#ff6b6b",
-        "fontFamily": "Georgia, serif",
-        "alignment": "center",
-        "padding": {
-          "top": "20",
-          "bottom": "30",
-          "left": "20",
-          "right": "20"
-        }
-      }
-    },
-    {
-      "id": "celebration-cta",
-      "type": "button",
-      "data": {
-        "text": "Join the Celebration! 🎉",
-        "url": "https://example.com/birthday-party",
-        "backgroundColor": "#ff6b6b",
-        "textColor": "#ffffff",
-        "borderRadius": "25",
-        "padding": "15px 30px",
-        "fontSize": "16",
-        "fontWeight": "bold",
-        "alignment": "center",
-        "containerPadding": {
-          "top": "20",
-          "bottom": "30",
-          "left": "20",
-          "right": "20"
-        }
-      }
-    },
-    {
-      "id": "party-details",
-      "type": "text",
-      "data": {
-        "content": "<div style='background-color: #fff5f5; padding: 20px; border-radius: 10px; border-left: 4px solid #ff6b6b;'><h3 style='color: #ff6b6b; margin-top: 0;'>🎊 Party Details</h3><p><strong>Date:</strong> Saturday, December 16th</p><p><strong>Time:</strong> 7:00 PM - 10:00 PM</p><p><strong>Location:</strong> [Venue Name & Address]</p><p><strong>Dress Code:</strong> Come as you are - just bring your smile!</p><p style='margin-bottom: 0;'><em>Light refreshments and birthday cake will be provided</em></p></div>",
-        "fontSize": "14",
-        "color": "#333333",
-        "fontFamily": "Arial, sans-serif",
-        "padding": {
-          "top": "0",
-          "bottom": "30",
-          "left": "20",
-          "right": "20"
-        }
-      }
-    },
-    {
-      "id": "birthday-divider",
-      "type": "divider",
-      "data": {
-        "height": "2",
-        "color": "#ff6b6b",
-        "padding": {
-          "top": "20",
-          "bottom": "20",
-          "left": "20",
-          "right": "20"
-        }
-      }
-    },
-    {
-      "id": "birthday-footer",
-      "type": "text",
-      "data": {
-        "content": "<p style='text-align: center; color: #666; font-size: 14px;'>With love and best wishes,</p><p style='text-align: center; color: #ff6b6b; font-size: 16px; font-weight: bold;'>Your Friends & Family 💕</p><p style='text-align: center; color: #999; font-size: 12px; margin-top: 20px;'>P.S. Get ready for an amazing year ahead! 🌟</p>",
-        "fontSize": "14",
-        "color": "#666666",
-        "alignment": "center",
-        "padding": {
-          "top": "0",
-          "bottom": "20",
-          "left": "20",
-          "right": "20"
-        }
-      }
+  "document": {
+    "settings": {
+      "contentWidth": "600px",
+      "backgroundColor": "#ffffff",
+      "fontFamily": "Georgia, serif"
     }
-  ],
-  "settings": {
-    "width": "600",
-    "backgroundColor": "#ffffff",
-    "fontFamily": "Georgia, serif",
-    "previewText": "🎉 It's your special day! Join us in celebrating another amazing year! 🎂"
-  }
+  },
+  "rows": [
+    {
+      "id": "birthday-header-row",
+      "columns": [
+        {
+          "id": "header-col",
+          "width": "100%",
+          "blocks": [            {
+              "id": "birthday-header",
+              "type": "image",
+              "content": "",
+              "styles": {
+                "padding": "20px",
+                "textAlign": "center"
+              },
+              "properties": {
+                "src": "https://via.placeholder.com/400x200/ff6b6b/ffffff?text=🎉+Happy+Birthday!+🎂",
+                "alt": "Happy Birthday Banner",
+                "width": "400",
+                "height": "auto"
+              }
+            },
+            {
+              "id": "birthday-greeting",
+              "type": "heading",
+              "content": "It's Your Special Day!",
+              "level": 1,
+              "styles": {
+                "color": "#ff6b6b",
+                "fontSize": "32px",
+                "fontFamily": "Georgia, serif",
+                "textAlign": "center",
+                "padding": "10px 20px 20px 20px"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "personal-message-row",
+      "columns": [
+        {
+          "id": "message-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "personal-message",
+              "type": "text",
+              "content": "<p style='text-align: center; font-size: 18px; color: #333;'>Dear [Name],</p><p>🎈 Another year of wonderful memories, achievements, and joy! Today we celebrate YOU and all the amazing things you bring to our lives.</p><p>Whether it's your infectious smile, your incredible talent, or your kind heart - you make the world a brighter place just by being in it.</p><p><strong>Here's to another year of:</strong></p><ul style='color: #ff6b6b; font-weight: bold;'><li>Adventures and discoveries</li><li>Laughter and happiness</li><li>Dreams coming true</li><li>Creating beautiful memories</li></ul><p>We hope your birthday is filled with everything that makes you smile and that the year ahead brings you endless happiness!</p>",
+              "styles": {
+                "padding": "0 20px 30px 20px",
+                "fontSize": "16px",
+                "color": "#333333",
+                "fontFamily": "Georgia, serif",
+                "lineHeight": "1.7"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cake-row",
+      "columns": [
+        {
+          "id": "cake-col",
+          "width": "100%",
+          "blocks": [            {
+              "id": "birthday-cake",
+              "type": "image",
+              "content": "",
+              "styles": {
+                "padding": "20px",
+                "textAlign": "center"
+              },
+              "properties": {
+                "src": "https://via.placeholder.com/300x200/ffd93d/333333?text=🎂+Birthday+Cake+🎂",
+                "alt": "Birthday Cake",
+                "width": "300",
+                "height": "auto"
+              }
+            },
+            {
+              "id": "birthday-wish",
+              "type": "text",
+              "content": "<p style='text-align: center; font-size: 20px; color: #ff6b6b; font-style: italic; font-weight: bold;'>\"May all your birthday wishes come true!\"</p>",
+              "styles": {
+                "padding": "20px 20px 30px 20px",
+                "fontSize": "20px",
+                "color": "#ff6b6b",
+                "fontFamily": "Georgia, serif",
+                "textAlign": "center"
+              }
+            },            {
+              "id": "celebration-cta",
+              "type": "button",
+              "content": "Join the Celebration! 🎉",
+              "styles": {
+                "padding": "20px 20px 30px 20px",
+                "backgroundColor": "#ff6b6b",
+                "color": "#ffffff",
+                "borderRadius": "25px",
+                "textAlign": "center",
+                "fontSize": "16px",
+                "fontWeight": "bold",
+                "display": "inline-block",
+                "margin": "0 auto"
+              },
+              "properties": {
+                "href": "https://example.com/birthday-party"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "details-row",
+      "columns": [
+        {
+          "id": "details-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "party-details",
+              "type": "text",
+              "content": "<div style='background-color: #fff5f5; padding: 20px; border-radius: 10px; border-left: 4px solid #ff6b6b;'><h3 style='color: #ff6b6b; margin-top: 0;'>🎊 Party Details</h3><p><strong>Date:</strong> Saturday, December 16th</p><p><strong>Time:</strong> 7:00 PM - 10:00 PM</p><p><strong>Location:</strong> [Venue Name & Address]</p><p><strong>Dress Code:</strong> Come as you are - just bring your smile!</p><p style='margin-bottom: 0;'><em>Light refreshments and birthday cake will be provided</em></p></div>",
+              "styles": {
+                "padding": "0 20px 30px 20px",
+                "fontSize": "14px",
+                "color": "#333333",
+                "fontFamily": "Arial, sans-serif"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "footer-row",
+      "columns": [
+        {
+          "id": "footer-col",
+          "width": "100%",
+          "blocks": [            {
+              "id": "birthday-divider",
+              "type": "divider",
+              "content": "",
+              "styles": {
+                "padding": "20px",
+                "borderTop": "2px solid #ff6b6b",
+                "width": "100%",
+                "textAlign": "center"
+              }
+            },
+            {
+              "id": "birthday-footer",
+              "type": "text",
+              "content": "<p style='text-align: center; color: #666; font-size: 14px;'>With love and best wishes,</p><p style='text-align: center; color: #ff6b6b; font-size: 16px; font-weight: bold;'>Your Friends & Family 💕</p><p style='text-align: center; color: #999; font-size: 12px; margin-top: 20px;'>P.S. Get ready for an amazing year ahead! 🌟</p>",
+              "styles": {
+                "padding": "0 20px 20px 20px",
+                "fontSize": "14px",
+                "color": "#666666",
+                "textAlign": "center"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
