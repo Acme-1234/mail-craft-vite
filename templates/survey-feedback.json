@@ -1,178 +1,185 @@
 {
-  "id": "survey-feedback",
-  "name": "Survey & Feedback Request",
-  "description": "Engage customers with feedback requests and surveys to improve your services",
-  "category": "engagement",
-  "thumbnail": "/templates/thumbnails/survey-feedback.png",
-  "blocks": [
+  "document": {
+    "settings": {
+      "contentWidth": "600px",
+      "backgroundColor": "#ffffff",
+      "fontFamily": "'Inter', sans-serif"
+    }
+  },
+  "rows": [
     {
-      "id": "header",
-      "type": "container",
-      "config": {
-        "backgroundColor": "#667eea",
-        "padding": "40px 20px",
-        "textAlign": "center"
-      },
-      "children": [
+      "id": "header-row",
+      "columns": [
         {
-          "id": "logo",
-          "type": "image",
-          "config": {
-            "src": "{{company_logo}}",
-            "alt": "{{company_name}}",
-            "width": "120px",
-            "height": "auto",
-            "alignment": "center"
-          }
-        },        {
-          "id": "main-heading",
-          "type": "heading",
-          "content": "Your Opinion Matters!",
-          "level": 1,
-          "styles": {
-            "color": "#ffffff",
-            "fontSize": "28px",
-            "fontWeight": "600",
-            "textAlign": "center",
-            "padding": "20px 0 0 0"
-          }
-        },
-        {
-          "id": "subheading",
-          "type": "text",
-          "config": {
-            "content": "<p style=\"color: #e0e7ff; font-size: 16px; margin: 10px 0 0 0;\">Help us improve by sharing your experience</p>",
-            "color": "#e0e7ff",
-            "fontSize": "16px",
-            "textAlign": "center"
-          }
+          "id": "header-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "logo",
+              "type": "image",
+              "content": "",
+              "styles": {
+                "backgroundColor": "#667eea",
+                "padding": "40px 20px 10px 20px",
+                "textAlign": "center"
+              },
+              "properties": {
+                "src": "https://via.placeholder.com/120x48/667eea/ffffff?text=LOGO",
+                "alt": "Company Logo",
+                "width": "120",
+                "height": "auto"
+              }
+            },
+            {
+              "id": "main-heading",
+              "type": "heading",
+              "content": "Your Opinion Matters!",
+              "level": 1,
+              "styles": {
+                "color": "#ffffff",
+                "fontSize": "28px",
+                "fontWeight": "600",
+                "textAlign": "center",
+                "padding": "10px 20px 10px 20px",
+                "backgroundColor": "#667eea"
+              }
+            },            {
+              "id": "subheading",
+              "type": "text",
+              "content": "<p style=\"color: #e0e7ff; font-size: 16px; margin: 10px 0 0 0;\">Help us improve by sharing your experience</p>",
+              "styles": {
+                "color": "#e0e7ff",
+                "fontSize": "16px",
+                "textAlign": "center",
+                "padding": "0px 20px 40px 20px",
+                "backgroundColor": "#667eea"
+              }
+            }
+          ]
         }
       ]
     },
     {
-      "id": "main-content",
-      "type": "container",
-      "config": {
-        "backgroundColor": "#ffffff",
-        "padding": "40px 30px",
-        "maxWidth": "600px",
-        "margin": "0 auto"
-      },
-      "children": [
+      "id": "main-content-row",
+      "columns": [
         {
-          "id": "greeting",
-          "type": "text",
-          "config": {
-            "content": "<p style=\"font-size: 16px; color: #374151; line-height: 1.5; margin-bottom: 20px;\">Hi {{customer_name}},</p>",
-            "fontSize": "16px",
-            "color": "#374151"
-          }
-        },
-        {
-          "id": "survey-intro",
-          "type": "text",
-          "config": {
-            "content": "<p style=\"font-size: 16px; color: #374151; line-height: 1.6; margin-bottom: 25px;\">We hope you're enjoying your recent {{product_service}} experience with us! Your feedback is incredibly valuable in helping us continue to improve our services.</p><p style=\"font-size: 16px; color: #374151; line-height: 1.6; margin-bottom: 25px;\">Would you mind taking just <strong>2 minutes</strong> to share your thoughts with us?</p>",
-            "fontSize": "16px",
-            "color": "#374151",
-            "lineHeight": "1.6"
-          }
-        },
-        {
-          "id": "rating-section",
-          "type": "text",
-          "config": {
-            "content": "<div style=\"background-color: #f9fafb; border-radius: 8px; padding: 25px; margin: 25px 0; text-align: center;\"><h3 style=\"font-size: 18px; color: #1f2937; margin: 0 0 15px 0;\">How would you rate your overall experience?</h3><div style=\"display: flex; justify-content: center; gap: 10px; margin: 20px 0;\"><a href=\"{{survey_url}}?rating=5\" style=\"text-decoration: none; font-size: 32px; transition: transform 0.2s;\">⭐</a><a href=\"{{survey_url}}?rating=4\" style=\"text-decoration: none; font-size: 32px; transition: transform 0.2s;\">⭐</a><a href=\"{{survey_url}}?rating=3\" style=\"text-decoration: none; font-size: 32px; transition: transform 0.2s;\">⭐</a><a href=\"{{survey_url}}?rating=2\" style=\"text-decoration: none; font-size: 32px; transition: transform 0.2s;\">⭐</a><a href=\"{{survey_url}}?rating=1\" style=\"text-decoration: none; font-size: 32px; transition: transform 0.2s;\">⭐</a></div><p style=\"font-size: 12px; color: #6b7280; margin: 10px 0 0 0;\">Click a star to rate us!</p></div>",
-            "textAlign": "center"
-          }
-        },
-        {
-          "id": "survey-button",
-          "type": "button",
-          "config": {
-            "text": "Take Our Quick Survey",
-            "url": "{{survey_url}}",
-            "backgroundColor": "#667eea",
-            "textColor": "#ffffff",
-            "borderRadius": "6px",
-            "padding": "14px 28px",
-            "fontSize": "16px",
-            "fontWeight": "600",
-            "alignment": "center",
-            "marginTop": "20px",
-            "marginBottom": "25px"
-          }
-        },
-        {
-          "id": "incentive-text",
-          "type": "text",
-          "config": {
-            "content": "<div style=\"background-color: #ecfdf5; border-left: 4px solid #10b981; padding: 15px; margin: 25px 0; border-radius: 4px;\"><p style=\"font-size: 14px; color: #047857; margin: 0; font-weight: 500;\">🎁 As a thank you, you'll receive a {{incentive_offer}} after completing the survey!</p></div>",
-            "fontSize": "14px"
-          }
-        },
-        {
-          "id": "additional-feedback",
-          "type": "text",
-          "config": {
-            "content": "<p style=\"font-size: 14px; color: #6b7280; line-height: 1.5; margin-bottom: 20px;\">The survey covers topics like:</p><ul style=\"font-size: 14px; color: #6b7280; line-height: 1.5; margin-left: 20px;\"><li>Product/Service quality</li><li>Customer support experience</li><li>Suggestions for improvement</li><li>Overall satisfaction</li></ul>",
-            "fontSize": "14px",
-            "color": "#6b7280"
-          }
-        },
-        {
-          "id": "alternative-contact",
-          "type": "text",
-          "config": {
-            "content": "<p style=\"font-size: 14px; color: #6b7280; line-height: 1.5; margin-top: 30px;\">Prefer to share your thoughts directly? Feel free to reply to this email or contact us at <a href=\"mailto:{{feedback_email}}\" style=\"color: #667eea;\">{{feedback_email}}</a></p>",
-            "fontSize": "14px",
-            "color": "#6b7280"
-          }
+          "id": "main-content-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "greeting",
+              "type": "text",
+              "content": "<p>Hi {{customer_name}},</p>",
+              "styles": {
+                "fontSize": "16px",
+                "color": "#374151",
+                "lineHeight": "1.5",
+                "padding": "40px 30px 0 30px"
+              }
+            },            {
+              "id": "survey-intro",
+              "type": "text",
+              "content": "<p>We hope you're enjoying your recent {{product_service}} experience with us! Your feedback is incredibly valuable in helping us continue to improve our services.</p><p>Would you mind taking just <strong>2 minutes</strong> to share your thoughts with us?</p>",
+              "styles": {
+                "fontSize": "16px",
+                "color": "#374151",
+                "lineHeight": "1.6",
+                "padding": "20px 30px"
+              }
+            },
+            {
+              "id": "rating-section",
+              "type": "text",
+              "content": "<div style=\"background-color: #f9fafb; border-radius: 8px; padding: 25px; margin: 25px 0; text-align: center;\"><h3 style=\"font-size: 18px; color: #1f2937; margin: 0 0 15px 0;\">How would you rate your overall experience?</h3><div style=\"display: flex; justify-content: center; gap: 10px; margin: 20px 0;\"><a href=\"{{survey_url}}?rating=5\" style=\"text-decoration: none; font-size: 32px; transition: transform 0.2s;\">⭐</a><a href=\"{{survey_url}}?rating=4\" style=\"text-decoration: none; font-size: 32px; transition: transform 0.2s;\">⭐</a><a href=\"{{survey_url}}?rating=3\" style=\"text-decoration: none; font-size: 32px; transition: transform 0.2s;\">⭐</a><a href=\"{{survey_url}}?rating=2\" style=\"text-decoration: none; font-size: 32px; transition: transform 0.2s;\">⭐</a><a href=\"{{survey_url}}?rating=1\" style=\"text-decoration: none; font-size: 32px; transition: transform 0.2s;\">⭐</a></div><p style=\"font-size: 12px; color: #6b7280; margin: 10px 0 0 0;\">Click a star to rate us!</p></div>",
+              "styles": {
+                "textAlign": "center",
+                "padding": "0 30px"
+              }
+            },            {
+              "id": "survey-button",
+              "type": "button",
+              "content": "Take Our Quick Survey",
+              "styles": {
+                "backgroundColor": "#667eea",
+                "color": "#ffffff",
+                "borderRadius": "6px",
+                "padding": "14px 28px",
+                "fontSize": "16px",
+                "fontWeight": "600",
+                "textAlign": "center",
+                "margin": "20px auto 25px auto",
+                "display": "inline-block"
+              },
+              "properties": {
+                "href": "{{survey_url}}"
+              }
+            },
+            {
+              "id": "incentive-text",
+              "type": "text",
+              "content": "<div style=\"background-color: #ecfdf5; border-left: 4px solid #10b981; padding: 15px; margin: 25px 0; border-radius: 4px;\"><p style=\"font-size: 14px; color: #047857; margin: 0; font-weight: 500;\">🎁 As a thank you, you'll receive a {{incentive_offer}} after completing the survey!</p></div>",
+              "styles": {
+                "fontSize": "14px",
+                "padding": "0 30px"
+              }
+            },            {
+              "id": "additional-feedback",
+              "type": "text",
+              "content": "<p style=\"font-size: 14px; color: #6b7280; line-height: 1.5; margin-bottom: 20px;\">The survey covers topics like:</p><ul style=\"font-size: 14px; color: #6b7280; line-height: 1.5; margin-left: 20px;\"><li>Product/Service quality</li><li>Customer support experience</li><li>Suggestions for improvement</li><li>Overall satisfaction</li></ul>",
+              "styles": {
+                "fontSize": "14px",
+                "color": "#6b7280",
+                "padding": "20px 30px 0 30px"
+              }
+            },
+            {
+              "id": "alternative-contact",
+              "type": "text",
+              "content": "<p>Prefer to share your thoughts directly? Feel free to reply to this email or contact us at <a href=\"mailto:{{feedback_email}}\" style=\"color: #667eea;\">{{feedback_email}}</a></p>",
+              "styles": {
+                "fontSize": "14px",
+                "color": "#6b7280",
+                "lineHeight": "1.5",
+                "padding": "30px 30px 40px 30px"
+              }
+            }
+          ]
         }
       ]
     },
     {
-      "id": "footer",
-      "type": "container",
-      "config": {
-        "backgroundColor": "#f3f4f6",
-        "padding": "30px 20px",
-        "textAlign": "center"
-      },
-      "children": [
+      "id": "footer-row",
+      "columns": [
         {
-          "id": "thank-you-note",
-          "type": "text",
-          "config": {
-            "content": "<p style=\"color: #1f2937; font-size: 16px; font-weight: 500; margin: 0 0 15px 0;\">Thank you for being a valued customer!</p><p style=\"color: #6b7280; font-size: 14px; margin: 0 0 10px 0;\">{{company_name}} Team</p>",
-            "textAlign": "center"
-          }
-        },
-        {
-          "id": "footer-links",
-          "type": "text",
-          "config": {
-            "content": "<p style=\"color: #9ca3af; font-size: 12px; margin: 15px 0 0 0;\">{{company_address}}</p><p style=\"color: #9ca3af; font-size: 12px; margin: 10px 0 0 0;\"><a href=\"{{unsubscribe_url}}\" style=\"color: #6b7280;\">Unsubscribe</a> | <a href=\"{{privacy_url}}\" style=\"color: #6b7280;\">Privacy Policy</a></p>",
-            "fontSize": "12px",
-            "color": "#9ca3af",
-            "textAlign": "center"
-          }
+          "id": "footer-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "thank-you-note",
+              "type": "text",
+              "content": "<p style=\"color: #1f2937; font-size: 16px; font-weight: 500; margin: 0 0 15px 0;\">Thank you for being a valued customer!</p><p style=\"color: #6b7280; font-size: 14px; margin: 0 0 10px 0;\">{{company_name}} Team</p>",
+              "styles": {
+                "textAlign": "center",
+                "backgroundColor": "#f3f4f6",
+                "padding": "30px 20px 0 20px"
+              }
+            },            {
+              "id": "footer-links",
+              "type": "text",
+              "content": "<p style=\"color: #9ca3af; font-size: 12px; margin: 15px 0 0 0;\">{{company_address}}</p><p style=\"color: #9ca3af; font-size: 12px; margin: 10px 0 0 0;\"><a href=\"{{unsubscribe_url}}\" style=\"color: #6b7280;\">Unsubscribe</a> | <a href=\"{{privacy_url}}\" style=\"color: #6b7280;\">Privacy Policy</a></p>",
+              "styles": {
+                "fontSize": "12px",
+                "color": "#9ca3af",
+                "textAlign": "center",
+                "backgroundColor": "#f3f4f6",
+                "padding": "10px 20px 30px 20px"
+              }
+            }
+          ]
         }
       ]
     }
   ],
-  "variables": {
-    "company_name": "Your Company",
-    "company_logo": "https://via.placeholder.com/120x48/667eea/ffffff?text=LOGO",
-    "company_address": "789 Feedback Street, Survey City, SC 98765",
-    "customer_name": "Jane Smith",
-    "product_service": "purchase",
-    "survey_url": "https://yourcompany.com/survey?id=abc123",
-    "incentive_offer": "10% discount on your next order",
-    "feedback_email": "feedback@yourcompany.com",
-    "unsubscribe_url": "{{unsubscribe_link}}",
-    "privacy_url": "https://yourcompany.com/privacy"
-  },
   "metadata": {
     "version": "1.0",
     "createdAt": "2024-01-15T10:45:00Z",
@@ -181,3 +188,4 @@
     "previewText": "Your opinion matters! Share your experience and get 10% off your next order."
   }
 }
+
