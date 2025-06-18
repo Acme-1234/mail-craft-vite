@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template Tester</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f7f7f7;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin-top: 0;
+            color: #333;
+        }
+        .template-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .template-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .template-card:hover {
+            background-color: #f0f9ff;
+            border-color: #0066cc;
+        }
+        .template-card h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .template-card.selected {
+            background-color: #e6f4ff;
+            border-color: #0066cc;
+        }
+        .button {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        .button:hover {
+            background-color: #0055aa;
+        }
+        .results {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f5f5f5;
+            min-height: 100px;
+        }
+        .success {
+            color: #00aa00;
+        }
+        .error {
+            color: #cc0000;
+        }
+        pre {
+            white-space: pre-wrap;
+            font-family: monospace;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            max-height: 400px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Email Template Tester</h1>
+        <p>Click on a template below to load and parse it to verify it works correctly.</p>
+
+        <h2>Available Templates</h2>
+        <div class="template-list" id="templateList">
+            <!-- Templates will be dynamically loaded here -->
+        </div>
+
+        <div>
+            <button class="button" id="testAllButton">Test All Templates</button>
+            <button class="button" id="clearButton">Clear Results</button>
+        </div>
+
+        <h2>Results</h2>
+        <div class="results" id="results">
+            <p>No templates tested yet.</p>
+        </div>
+    </div>
+
+    <script>
+        // List of template files
+        const templates = [
+            { name: 'Welcome Email', file: 'welcome-email.json' },
+            { name: 'Newsletter', file: 'newsletter.json' },
+            { name: 'Order Confirmation', file: 'order-confirmation.json' },
+            { name: 'Event Invitation', file: 'event-invitation.json' },
+            { name: 'Product Announcement', file: 'product-announcement.json' },
+            { name: 'Password Reset', file: 'password-reset.json' },
+            { name: 'Seasonal Promotion', file: 'seasonal-promotion.json' },
+            { name: 'Survey Feedback', file: 'survey-feedback.json' },
+            { name: 'Company Announcement', file: 'company-announcement.json' },
+            { name: 'Birthday Celebration', file: 'birthday-celebration.json' }
+        ];
+
+        // Function to verify heading blocks have level property
+        function verifyHeadingBlocks(data, templateName) {
+            const results = {
+                success: true,
+                message: `Template ${templateName} is valid.`,
+                errors: []
+            };
+
+            // Function to recursively check objects for heading blocks
+            function checkForHeadingBlocks(obj, path = '') {
+                if (!obj || typeof obj !== 'object') return;
+                
+                // Check if this is a heading block
+                if (obj.type === 'heading') {
+                    if (!obj.level && obj.level !== 0) {
+                        results.success = false;
+                        results.errors.push(`Missing 'level' property in heading block at ${path}`);
+                    }
+                }
+                
+                // Recursively check all properties
+                for (const key in obj) {
+                    const value = obj[key];
+                    if (Array.isArray(value)) {
+                        // Check array items
+                        value.forEach((item, index) => {
+                            checkForHeadingBlocks(item, `${path}/${key}[${index}]`);
+                        });
+                    } else if (typeof value === 'object' && value !== null) {
+                        // Check nested object
+                        checkForHeadingBlocks(value, `${path}/${key}`);
+                    }
+                }
+            }
+
+            try {
+                // Start checking from the root
+                checkForHeadingBlocks(data, 'root');
+                
+                if (!results.success) {
+                    results.message = `Template ${templateName} has errors.`;
+                }
+                
+                return results;
+            } catch (error) {
+                return {
+                    success: false,
+                    message: `Error analyzing template ${templateName}`,
+                    errors: [error.message]
+                };
+            }
+        }
+
+        // Function to load and test a template
+        async function testTemplate(templateFile) {
+            try {
+                const response = await fetch(`/templates/${templateFile}`);
+                
+                if (!response.ok) {
+                    return {
+                        success: false,
+                        message: `Failed to load template ${templateFile}`,
+                        errors: [`HTTP Error: ${response.status}`]
+                    };
+                }
+                
+                const data = await response.json();
+                return verifyHeadingBlocks(data, templateFile);
+            } catch (error) {
+                return {
+                    success: false,
+                    message: `Error loading template ${templateFile}`,
+                    errors: [error.message]
+                };
+            }
+        }
+
+        // Setup UI
+        const templateList = document.getElementById('templateList');
+        const resultsDiv = document.getElementById('results');
+        const testAllButton = document.getElementById('testAllButton');
+        const clearButton = document.getElementById('clearButton');
+
+        // Create template cards
+        templates.forEach(template => {
+            const card = document.createElement('div');
+            card.className = 'template-card';
+            card.innerHTML = `
+                <h3>${template.name}</h3>
+                <p>${template.file}</p>
+            `;
+            card.addEventListener('click', async () => {
+                await testSingleTemplate(template.file);
+            });
+            templateList.appendChild(card);
+        });
+
+        // Test a single template and display results
+        async function testSingleTemplate(templateFile) {
+            addResult(`Testing template: ${templateFile}...`);
+            const result = await testTemplate(templateFile);
+            
+            if (result.success) {
+                addResult(`✅ <span class="success">${result.message}</span>`);
+            } else {
+                addResult(`❌ <span class="error">${result.message}</span>`);
+                result.errors.forEach(err => {
+                    addResult(`• <span class="error">${err}</span>`);
+                });
+            }
+            addResult(''); // Add empty line for spacing
+        }
+
+        // Test all templates
+        async function testAllTemplates() {
+            clearResults();
+            addResult('Testing all templates...');
+            addResult('');
+            
+            for (const template of templates) {
+                await testSingleTemplate(template.file);
+            }
+            
+            addResult('Testing completed.');
+        }
+
+        // Utility to add result text
+        function addResult(text) {
+            const p = document.createElement('p');
+            p.innerHTML = text;
+            resultsDiv.appendChild(p);
+        }
+
+        // Clear results
+        function clearResults() {
+            resultsDiv.innerHTML = '';
+        }
+
+        // Button event listeners
+        testAllButton.addEventListener('click', testAllTemplates);
+        clearButton.addEventListener('click', clearResults);
+    </script>
+</body>
+</html>

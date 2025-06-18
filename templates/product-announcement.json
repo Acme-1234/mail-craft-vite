@@ -1,0 +1,228 @@
+{
+  "document": {
+    "settings": {
+      "contentWidth": "600px",
+      "backgroundColor": "#f7f7f7",
+      "fontFamily": "'Helvetica', Arial, sans-serif"
+    }
+  },
+  "rows": [
+    {
+      "id": "header-section-row",
+      "columns": [
+        {
+          "id": "header-section-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "logo",
+              "type": "image",
+              "content": "",
+              "styles": {
+                "padding": "40px 20px 10px 20px",
+                "backgroundColor": "#1a365d",
+                "textAlign": "center"
+              },
+              "properties": {
+                "src": "https://via.placeholder.com/150x60/1a365d/ffffff?text=LOGO",
+                "alt": "Company Logo",
+                "width": "150",
+                "height": "auto"
+              }
+            },
+            {
+              "id": "announcement-heading",
+              "type": "heading",
+              "content": "Introducing Our Latest Innovation",
+              "level": 1,
+              "styles": {
+                "color": "#ffffff",
+                "fontSize": "32px",
+                "fontWeight": "bold",
+                "textAlign": "center",
+                "padding": "10px 20px 40px 20px",
+                "backgroundColor": "#1a365d"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hero-section-row",
+      "columns": [
+        {
+          "id": "hero-section-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "product-image",
+              "type": "image",
+              "content": "",
+              "styles": {
+                "padding": "40px 20px 20px 20px",
+                "textAlign": "center",
+                "backgroundColor": "#f7fafc"
+              },
+              "properties": {
+                "src": "https://via.placeholder.com/500x300/f7fafc/2d3748?text=Product+Image",
+                "alt": "Product Image",
+                "width": "500",
+                "height": "auto"
+              }
+            },
+            {
+              "id": "product-name",
+              "type": "heading",
+              "content": "Revolutionary Product",
+              "level": 2,
+              "styles": {
+                "color": "#2d3748",
+                "fontSize": "28px",
+                "fontWeight": "600",
+                "textAlign": "center",
+                "padding": "30px 20px 0 20px",
+                "backgroundColor": "#f7fafc"
+              }
+            },
+            {
+              "id": "product-description",
+              "type": "text",
+              "content": "<p>Experience the future with our groundbreaking Revolutionary Product. Designed with cutting-edge technology and user-centric features, this product will revolutionize the way you work and play.</p>",
+              "styles": {
+                "fontSize": "18px",
+                "color": "#4a5568",
+                "textAlign": "center",
+                "padding": "20px 30px 40px 30px",
+                "backgroundColor": "#f7fafc",
+                "lineHeight": "1.6"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "features-section-row",
+      "columns": [
+        {
+          "id": "features-section-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "features-heading",
+              "type": "heading",
+              "content": "Key Features",
+              "level": 2,
+              "styles": {
+                "color": "#2d3748",
+                "fontSize": "24px",
+                "fontWeight": "600",
+                "textAlign": "center",
+                "padding": "40px 20px 20px 20px",
+                "backgroundColor": "#ffffff"
+              }
+            },
+            {
+              "id": "features-list",
+              "type": "text",
+              "content": "<div style=\"max-width: 600px; margin: 0 auto;\"><div style=\"display: flex; align-items: center; margin-bottom: 20px;\"><div style=\"width: 8px; height: 8px; background-color: #3182ce; border-radius: 50%; margin-right: 15px;\"></div><span style=\"font-size: 16px; color: #2d3748;\">Advanced AI-powered functionality</span></div><div style=\"display: flex; align-items: center; margin-bottom: 20px;\"><div style=\"width: 8px; height: 8px; background-color: #3182ce; border-radius: 50%; margin-right: 15px;\"></div><span style=\"font-size: 16px; color: #2d3748;\">Seamless integration with existing tools</span></div><div style=\"display: flex; align-items: center; margin-bottom: 20px;\"><div style=\"width: 8px; height: 8px; background-color: #3182ce; border-radius: 50%; margin-right: 15px;\"></div><span style=\"font-size: 16px; color: #2d3748;\">Enterprise-grade security and privacy</span></div><div style=\"display: flex; align-items: center; margin-bottom: 20px;\"><div style=\"width: 8px; height: 8px; background-color: #3182ce; border-radius: 50%; margin-right: 15px;\"></div><span style=\"font-size: 16px; color: #2d3748;\">24/7 customer support</span></div></div>",
+              "styles": {
+                "fontSize": "16px",
+                "color": "#2d3748",
+                "padding": "0 20px 40px 20px",
+                "backgroundColor": "#ffffff"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cta-section-row",
+      "columns": [
+        {
+          "id": "cta-section-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "cta-heading",
+              "type": "heading",
+              "content": "Ready to Get Started?",
+              "level": 2,
+              "styles": {
+                "color": "#ffffff",
+                "fontSize": "24px",
+                "fontWeight": "600",
+                "textAlign": "center",
+                "padding": "40px 20px 10px 20px",
+                "backgroundColor": "#3182ce"
+              }
+            },
+            {
+              "id": "cta-text",
+              "type": "text",
+              "content": "<p>Join thousands of satisfied customers who have already made the switch.</p>",
+              "styles": {
+                "color": "#e2e8f0",
+                "fontSize": "16px",
+                "textAlign": "center",
+                "padding": "10px 20px 30px 20px",
+                "backgroundColor": "#3182ce"
+              }
+            },
+            {
+              "id": "cta-button",
+              "type": "button",
+              "content": "Learn More",
+              "styles": {
+                "backgroundColor": "#ffffff",
+                "color": "#3182ce",
+                "borderRadius": "6px",
+                "padding": "12px 24px",
+                "fontSize": "16px",
+                "fontWeight": "600",
+                "margin": "0 auto 40px auto",
+                "display": "inline-block",
+                "textAlign": "center"
+              },
+              "properties": {
+                "href": "https://yourcompany.com/products/new"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "footer-row",
+      "columns": [
+        {
+          "id": "footer-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "footer-text",
+              "type": "text",
+              "content": "<p>Your Company | 123 Innovation Street, Tech City, TC 12345</p><p style=\"font-size: 12px; margin: 10px 0 0 0;\">You received this email because you're subscribed to our product updates. <a href=\"#\" style=\"color: #63b3ed;\">Unsubscribe</a></p>",
+              "styles": {
+                "fontSize": "14px",
+                "color": "#a0aec0",
+                "textAlign": "center",
+                "padding": "30px 20px",
+                "backgroundColor": "#2d3748"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "version": "1.0",
+    "createdAt": "2024-01-15T10:00:00Z",
+    "tags": ["product", "announcement", "marketing", "launch"],
+    "estimatedWidth": "600px",
+    "previewText": "Introducing our latest innovation - experience the future today!"
+  }
+}

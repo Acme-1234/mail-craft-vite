@@ -1,0 +1,203 @@
+{
+  "document": {
+    "settings": {
+      "contentWidth": "600px",
+      "backgroundColor": "#ffffff",
+      "fontFamily": "'Georgia', serif"
+    }
+  },
+  "rows": [
+    {
+      "id": "newsletter-header",
+      "columns": [
+        {
+          "id": "header-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "newsletter-title",
+              "type": "heading",
+              "content": "{{ newsletter.title }}",
+               "level": 2,
+              "styles": {
+                "padding": "40px 20px 20px 20px",
+                "textAlign": "center",
+                "fontSize": "28px",
+                "fontWeight": "bold",
+                "color": "#1a202c",
+                "backgroundColor": "#f7fafc"
+              }
+            },
+            {
+              "id": "issue-info",
+              "type": "text",
+              "content": "<p style='text-align: center; color: #718096; font-size: 14px;'>Issue #{{ newsletter.issueNumber }} • {{ newsletter.date }}</p>",
+              "styles": {
+                "padding": "0 20px 20px 20px",
+                "backgroundColor": "#f7fafc"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "featured-article",
+      "columns": [
+        {
+          "id": "featured-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "featured-image",
+              "type": "image",
+              "content": "",
+              "styles": {
+                "padding": "30px 20px 20px 20px",
+                "textAlign": "center"
+              },
+              "properties": {
+                "src": "https://via.placeholder.com/560x200/2d3748/ffffff?text=Featured+Article",
+                "alt": "Featured Article",
+                "width": "560",
+                "height": "200"
+              }
+            },
+            {
+              "id": "featured-title",
+              "type": "heading",
+              "content": "{{ featured.title }}",
+               "level": 2,
+              "styles": {
+                "padding": "20px 40px 10px 40px",
+                "fontSize": "24px",
+                "fontWeight": "bold",
+                "color": "#2d3748"
+              }
+            },
+            {
+              "id": "featured-excerpt",
+              "type": "text",
+              "content": "<p>{{ featured.excerpt }}</p>",
+              "styles": {
+                "padding": "10px 40px 20px 40px",
+                "fontSize": "16px",
+                "lineHeight": "1.6",
+                "color": "#4a5568"
+              }
+            },
+            {
+              "id": "read-more-btn",
+              "type": "button",
+              "content": "Read Full Article",
+              "styles": {
+                "padding": "20px 40px",
+                "textAlign": "left"
+              },
+              "properties": {
+                "href": "{{ featured.url }}",
+                "backgroundColor": "#2d3748",
+                "textColor": "#ffffff",
+                "borderRadius": "4px",
+                "padding": "12px 24px",
+                "fontSize": "14px",
+                "fontWeight": "600"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "articles-section",
+      "columns": [
+        {
+          "id": "article-1",
+          "width": "50%",
+          "blocks": [
+            {
+              "id": "article-1-title",
+              "type": "heading",
+              "content": "{{ article1.title }}",
+               "level": 2,
+              "styles": {
+                "padding": "30px 20px 10px 20px",
+                "fontSize": "18px",
+                "fontWeight": "bold",
+                "color": "#2d3748"
+              }
+            },
+            {
+              "id": "article-1-text",
+              "type": "text",
+              "content": "<p>{{ article1.excerpt }}</p><p><a href='{{ article1.url }}' style='color: #4299e1; text-decoration: none;'>Read more →</a></p>",
+              "styles": {
+                "padding": "10px 20px",
+                "fontSize": "14px",
+                "lineHeight": "1.5",
+                "color": "#4a5568"
+              }
+            }
+          ]
+        },
+        {
+          "id": "article-2",
+          "width": "50%",
+          "blocks": [
+            {
+              "id": "article-2-title",
+              "type": "heading",
+              "content": "{{ article2.title }}",
+               "level": 2,
+              "styles": {
+                "padding": "30px 20px 10px 20px",
+                "fontSize": "18px",
+                "fontWeight": "bold",
+                "color": "#2d3748"
+              }
+            },
+            {
+              "id": "article-2-text",
+              "type": "text",
+              "content": "<p>{{ article2.excerpt }}</p><p><a href='{{ article2.url }}' style='color: #4299e1; text-decoration: none;'>Read more →</a></p>",
+              "styles": {
+                "padding": "10px 20px",
+                "fontSize": "14px",
+                "lineHeight": "1.5",
+                "color": "#4a5568"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "newsletter-footer",
+      "columns": [
+        {
+          "id": "footer-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "footer-divider",
+              "type": "divider",
+              "styles": {
+                "padding": "30px 20px 20px 20px",
+                "borderColor": "#e2e8f0",
+                "borderWidth": "1px"
+              }
+            },
+            {
+              "id": "unsubscribe-text",
+              "type": "text",
+              "content": "<p style='text-align: center; color: #a0aec0; font-size: 12px;'>You're receiving this email because you subscribed to {{ newsletter.name }}.</p><p style='text-align: center; color: #a0aec0; font-size: 12px;'><a href='{{ unsubscribe.url }}' style='color: #a0aec0;'>Unsubscribe</a> | <a href='{{ preferences.url }}' style='color: #a0aec0;'>Update Preferences</a></p>",
+              "styles": {
+                "padding": "20px 40px 40px 40px"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

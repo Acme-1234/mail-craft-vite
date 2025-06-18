@@ -1,0 +1,216 @@
+{
+  "document": {
+    "settings": {
+      "contentWidth": "600px",
+      "backgroundColor": "#1a1a2e",
+      "fontFamily": "'Montserrat', sans-serif"
+    }
+  },
+  "rows": [
+    {
+      "id": "event-hero",
+      "columns": [
+        {
+          "id": "hero-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "hero-image",
+              "type": "image",
+              "content": "",
+              "styles": {
+                "padding": "0",
+                "textAlign": "center"
+              },
+              "properties": {
+                "src": "https://via.placeholder.com/600x300/16213e/ffffff?text=EVENT+BANNER",
+                "alt": "Event Banner",
+                "width": "600",
+                "height": "300"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "event-details",
+      "columns": [
+        {
+          "id": "details-col",
+          "width": "100%",
+          "blocks": [            {
+              "id": "event-title",
+              "type": "heading",
+              "content": "{{ event.title }}",
+              "level": 1,
+              "styles": {
+                "padding": "40px 30px 20px 30px",
+                "textAlign": "center",
+                "fontSize": "32px",
+                "fontWeight": "bold",
+                "color": "#ffffff"
+              }
+            },
+            {
+              "id": "event-subtitle",
+              "type": "text",
+              "content": "<p style='text-align: center; font-size: 18px; color: #a0a0a0;'>{{ event.subtitle }}</p>",
+              "styles": {
+                "padding": "0 30px 30px 30px"
+              }
+            },
+            {
+              "id": "event-description",
+              "type": "text",
+              "content": "<p>{{ event.description }}</p>",
+              "styles": {
+                "padding": "20px 40px",
+                "fontSize": "16px",
+                "lineHeight": "1.6",
+                "color": "#e0e0e0"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "event-info",
+      "columns": [
+        {
+          "id": "date-time-col",
+          "width": "50%",
+          "blocks": [
+            {
+              "id": "date-icon",
+              "type": "text",
+              "content": "<div style='text-align: center; margin-bottom: 15px;'><span style='font-size: 40px; color: #ff6b6b;'>📅</span></div>",
+              "styles": {
+                "padding": "30px 20px 0 20px"
+              }
+            },
+            {
+              "id": "date-info",
+              "type": "text",
+              "content": "<p style='text-align: center; color: #ffffff; font-size: 16px; font-weight: 600; margin: 0;'>{{ event.date }}</p><p style='text-align: center; color: #a0a0a0; font-size: 14px; margin: 5px 0 0 0;'>{{ event.time }}</p>",
+              "styles": {
+                "padding": "10px 20px 30px 20px"
+              }
+            }
+          ]
+        },
+        {
+          "id": "location-col",
+          "width": "50%",
+          "blocks": [
+            {
+              "id": "location-icon",
+              "type": "text",
+              "content": "<div style='text-align: center; margin-bottom: 15px;'><span style='font-size: 40px; color: #4ecdc4;'>📍</span></div>",
+              "styles": {
+                "padding": "30px 20px 0 20px"
+              }
+            },
+            {
+              "id": "location-info",
+              "type": "text",
+              "content": "<p style='text-align: center; color: #ffffff; font-size: 16px; font-weight: 600; margin: 0;'>{{ event.venue }}</p><p style='text-align: center; color: #a0a0a0; font-size: 14px; margin: 5px 0 0 0;'>{{ event.address }}</p>",
+              "styles": {
+                "padding": "10px 20px 30px 20px"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rsvp-section",
+      "columns": [
+        {
+          "id": "rsvp-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "rsvp-text",
+              "type": "text",
+              "content": "<p style='text-align: center; font-size: 18px; color: #ffffff; margin-bottom: 10px;'>Save the date and join us!</p>",
+              "styles": {
+                "padding": "30px 40px 20px 40px"
+              }
+            },
+            {
+              "id": "rsvp-buttons",
+              "type": "html",
+              "content": "<div style='text-align: center;'><a href='{{ rsvp.acceptUrl }}' style='display: inline-block; background-color: #4ecdc4; color: #1a1a2e; padding: 15px 30px; margin: 0 10px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px;'>I'll be there!</a><a href='{{ rsvp.declineUrl }}' style='display: inline-block; background-color: transparent; color: #ffffff; padding: 15px 30px; margin: 0 10px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; border: 2px solid #ffffff;'>Can't make it</a></div>",
+              "styles": {
+                "padding": "20px 40px 40px 40px"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "conditional-section",
+      "columns": [
+        {
+          "id": "conditional-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "agenda-conditional",
+              "type": "conditional",
+              "content": "",
+              "properties": {
+                "condition": "event.showAgenda == true",
+                "ifTrue": [                  {
+                    "id": "agenda-heading",
+                    "type": "heading",
+                    "content": "Event Agenda",
+                    "level": 2,
+                    "styles": {
+                      "padding": "30px 40px 20px 40px",
+                      "fontSize": "24px",
+                      "fontWeight": "600",
+                      "color": "#ffffff",
+                      "textAlign": "center"
+                    }
+                  },
+                  {
+                    "id": "agenda-content",
+                    "type": "text",
+                    "content": "<div style='background-color: #16213e; padding: 20px; margin: 0 20px; border-radius: 8px;'>{{ event.agenda }}</div>",
+                    "styles": {
+                      "padding": "20px 40px 40px 40px"
+                    }
+                  }
+                ],
+                "ifFalse": []
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "event-footer",
+      "columns": [
+        {
+          "id": "footer-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "organizer-info",
+              "type": "text",
+              "content": "<p style='text-align: center; color: #a0a0a0; font-size: 14px;'>Organized by {{ organizer.name }}</p><p style='text-align: center; color: #a0a0a0; font-size: 14px;'>Questions? Contact us at <a href='mailto:{{ organizer.email }}' style='color: #4ecdc4;'>{{ organizer.email }}</a></p>",
+              "styles": {
+                "padding": "30px 40px 40px 40px"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

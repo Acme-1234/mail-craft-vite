@@ -1,0 +1,261 @@
+{
+  "document": {
+    "settings": {
+      "contentWidth": "600px",
+      "backgroundColor": "#f8fafc",
+      "fontFamily": "'Inter', sans-serif"
+    }
+  },
+  "rows": [
+    {
+      "id": "header-banner-row",
+      "columns": [
+        {
+          "id": "header-banner-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "announcement-bar",
+              "type": "text",
+              "content": "<p style=\"color: #ffffff; font-size: 14px; font-weight: 600; margin: 0; text-transform: uppercase; letter-spacing: 1px;\">🎉 {{season_name}} Sale - Up to {{discount_percentage}}% Off!</p>",
+              "styles": {
+                "color": "#ffffff",
+                "fontSize": "14px",
+                "fontWeight": "600",
+                "textAlign": "center",
+                "backgroundColor": "#d69e2e",
+                "padding": "15px 20px"
+              }
+            }
+          ]
+        }
+      ]
+    },    {
+      "id": "header-section-row",
+      "columns": [
+        {
+          "id": "header-section-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "logo",
+              "type": "image",
+              "content": "",
+              "styles": {
+                "padding": "30px 20px 20px 20px",
+                "textAlign": "center",
+                "backgroundColor": "#1a202c"
+              },
+              "properties": {
+                "src": "https://via.placeholder.com/140x48/1a202c/ffffff?text=LOGO",
+                "alt": "Company Logo",
+                "width": "140",
+                "height": "auto"
+              }
+            },
+            {
+              "id": "main-headline",
+              "type": "heading",
+              "content": "{{season_name}} Spectacular Sale",
+              "level": 1,
+              "styles": {
+                "color": "#ffffff",
+                "fontSize": "36px",
+                "fontWeight": "bold",
+                "textAlign": "center",
+                "padding": "20px 0 0 0",
+                "backgroundColor": "#1a202c"
+              }
+            },            {
+              "id": "subheadline",
+              "type": "text",
+              "content": "<p>Don't miss out on our biggest sale of the season!</p>",
+              "styles": {
+                "color": "#e2e8f0",
+                "fontSize": "18px",
+                "textAlign": "center",
+                "padding": "15px 20px 30px 20px",
+                "backgroundColor": "#1a202c"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "countdown-row",
+      "columns": [
+        {
+          "id": "countdown-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "countdown-heading",
+              "type": "heading",
+              "content": "⏰ Sale Ends Soon!",
+              "level": 2,
+              "styles": {
+                "color": "#c53030",
+                "fontSize": "24px",
+                "fontWeight": "600",
+                "textAlign": "center",
+                "backgroundColor": "#fed7d7",
+                "padding": "30px 20px 10px 20px"
+              }
+            },            {
+              "id": "countdown-timer",
+              "type": "text",
+              "content": "<div style=\"display: flex; justify-content: center; gap: 20px; margin: 20px 0;\"><div style=\"text-align: center;\"><div style=\"background-color: #c53030; color: white; padding: 15px 20px; border-radius: 8px; font-size: 24px; font-weight: bold; min-width: 60px;\">{{days_left}}</div><div style=\"color: #744210; font-size: 12px; margin-top: 5px; font-weight: 600;\">DAYS</div></div><div style=\"text-align: center;\"><div style=\"background-color: #c53030; color: white; padding: 15px 20px; border-radius: 8px; font-size: 24px; font-weight: bold; min-width: 60px;\">{{hours_left}}</div><div style=\"color: #744210; font-size: 12px; margin-top: 5px; font-weight: 600;\">HOURS</div></div><div style=\"text-align: center;\"><div style=\"background-color: #c53030; color: white; padding: 15px 20px; border-radius: 8px; font-size: 24px; font-weight: bold; min-width: 60px;\">{{minutes_left}}</div><div style=\"color: #744210; font-size: 12px; margin-top: 5px; font-weight: 600;\">MINUTES</div></div></div>",
+              "styles": {
+                "textAlign": "center",
+                "backgroundColor": "#fed7d7",
+                "padding": "10px 20px 30px 20px"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "products-row",
+      "columns": [
+        {
+          "id": "products-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "products-heading",
+              "type": "heading",
+              "content": "Featured Sale Items",
+              "level": 2,
+              "styles": {
+                "color": "#2d3748",
+                "fontSize": "28px",
+                "fontWeight": "600",
+                "textAlign": "center",
+                "padding": "50px 20px 20px 20px",
+                "backgroundColor": "#ffffff"
+              }
+            },            {
+              "id": "product-grid",
+              "type": "text",
+              "content": "<div style=\"display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; max-width: 800px; margin: 0 auto;\"><div style=\"text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; background-color: #ffffff;\"><img src=\"https://via.placeholder.com/250x180/f7fafc/2d3748?text=Product+1\" alt=\"Product 1\" style=\"width: 100%; height: 180px; object-fit: cover; border-radius: 6px; margin-bottom: 15px;\"><h3 style=\"font-size: 18px; color: #2d3748; margin: 0 0 10px 0;\">Winter Jacket</h3><div style=\"margin: 10px 0;\"><span style=\"font-size: 20px; color: #c53030; font-weight: bold;\">$89.99</span><span style=\"font-size: 16px; color: #718096; text-decoration: line-through; margin-left: 10px;\">$149.99</span></div><a href=\"#\" style=\"background-color: #3182ce; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; display: inline-block; font-weight: 600;\">Shop Now</a></div><div style=\"text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; background-color: #ffffff;\"><img src=\"https://via.placeholder.com/250x180/f7fafc/2d3748?text=Product+2\" alt=\"Product 2\" style=\"width: 100%; height: 180px; object-fit: cover; border-radius: 6px; margin-bottom: 15px;\"><h3 style=\"font-size: 18px; color: #2d3748; margin: 0 0 10px 0;\">Holiday Gift Set</h3><div style=\"margin: 10px 0;\"><span style=\"font-size: 20px; color: #c53030; font-weight: bold;\">$59.99</span><span style=\"font-size: 16px; color: #718096; text-decoration: line-through; margin-left: 10px;\">$99.99</span></div><a href=\"#\" style=\"background-color: #3182ce; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; display: inline-block; font-weight: 600;\">Shop Now</a></div></div>",
+              "styles": {
+                "textAlign": "center",
+                "padding": "20px 20px 50px 20px",
+                "backgroundColor": "#ffffff"
+              }
+            }
+          ]
+        }
+      ]
+    },    {
+      "id": "cta-row",
+      "columns": [
+        {
+          "id": "cta-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "cta-heading",
+              "type": "heading",
+              "content": "Shop All Sale Items",
+              "level": 2,
+              "styles": {
+                "color": "#ffffff",
+                "fontSize": "28px",
+                "fontWeight": "600",
+                "textAlign": "center",
+                "backgroundColor": "#3182ce",
+                "padding": "50px 20px 10px 20px"
+              }
+            },            {
+              "id": "cta-text",
+              "type": "text",
+              "content": "<p>Browse our complete collection of discounted items before time runs out!</p>",
+              "styles": {
+                "color": "#e2e8f0",
+                "fontSize": "16px",
+                "textAlign": "center",
+                "backgroundColor": "#3182ce",
+                "padding": "15px 20px"
+              }
+            },
+            {
+              "id": "cta-button",
+              "type": "button",
+              "content": "Browse All Deals",
+              "styles": {
+                "backgroundColor": "#d69e2e",
+                "color": "#ffffff",
+                "borderRadius": "6px",
+                "padding": "15px 30px",
+                "fontSize": "18px",
+                "fontWeight": "600",
+                "textAlign": "center",
+                "margin": "0 auto 50px auto",
+                "display": "inline-block"
+              },
+              "properties": {
+                "href": "https://example.com/sale"
+              }
+            }
+          ]
+        }
+      ]
+    },    {
+      "id": "footer-row",
+      "columns": [
+        {
+          "id": "footer-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "footer-text",
+              "type": "text",
+              "content": "<p style=\"color: #a0aec0; font-size: 14px; margin: 0 0 10px 0;\">Your Company | 123 Main Street, City, State 12345</p><p style=\"color: #718096; font-size: 12px; margin: 0;\">Sale prices valid until December 31, 2025. Cannot be combined with other offers.</p><p style=\"color: #718096; font-size: 12px; margin: 10px 0 0 0;\"><a href=\"#\" style=\"color: #63b3ed;\">Unsubscribe</a> | <a href=\"#\" style=\"color: #63b3ed;\">Email Preferences</a></p>",
+              "styles": {
+                "fontSize": "14px",
+                "color": "#a0aec0",
+                "textAlign": "center",
+                "backgroundColor": "#2d3748",
+                "padding": "30px 20px"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variables": {
+    "company_name": "Your Store",
+    "company_logo": "https://via.placeholder.com/140x56/1a202c/ffffff?text=STORE",
+    "company_address": "456 Shopping Mall, Retail City, RC 54321",
+    "season_name": "Holiday",
+    "discount_percentage": "50",
+    "days_left": "03",
+    "hours_left": "12",
+    "minutes_left": "45",
+    "product1_name": "Premium Headphones",
+    "product1_image": "https://via.placeholder.com/250x180/f7fafc/2d3748?text=Headphones",
+    "product1_original_price": "199.99",
+    "product1_sale_price": "99.99",
+    "product1_url": "https://yourstore.com/products/headphones",
+    "product2_name": "Smart Watch",
+    "product2_image": "https://via.placeholder.com/250x180/f7fafc/2d3748?text=Smart+Watch",
+    "product2_original_price": "299.99",
+    "product2_sale_price": "149.99",
+    "product2_url": "https://yourstore.com/products/smartwatch",
+    "sale_page_url": "https://yourstore.com/sale",
+    "sale_end_date": "December 31, 2024",
+    "unsubscribe_url": "{{unsubscribe_link}}",
+    "preferences_url": "{{preferences_link}}"
+  },
+  "metadata": {
+    "version": "1.0",
+    "createdAt": "2024-01-15T10:30:00Z",
+    "tags": ["seasonal", "sale", "promotion", "countdown", "ecommerce"],
+    "estimatedWidth": "600px",
+    "previewText": "Holiday Spectacular Sale - Up to 50% off! Limited time offer ending soon."
+  }
+}

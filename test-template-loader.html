@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template Tester - Mail Craft</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f7fa;
+        }
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            width: 280px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .content {
+            flex: 1;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 20px;
+            margin: 0 0 20px 0;
+            color: #1a202c;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .template-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .template-item {
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #f7fafc;
+            border: 1px solid #edf2f7;
+        }
+        .template-item:hover {
+            background: #ebf8ff;
+            border-color: #bee3f8;
+        }
+        .template-item.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #2563eb;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            display: none;
+        }
+        .status.success {
+            background-color: #def7ec;
+            color: #046c4e;
+            border: 1px solid #bcf0da;
+            display: block;
+        }
+        .status.error {
+            background-color: #fde8e8;
+            color: #c81e1e;
+            border: 1px solid #f8b4b4;
+            display: block;
+        }
+        .status.loading {
+            background-color: #e6f2ff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+            display: block;
+        }
+        .controls {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        button.secondary {
+            background: #e5e7eb;
+            color: #4b5563;
+        }
+        button.secondary:hover {
+            background: #d1d5db;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>📧 Template Tester</h1>
+            <div id="status" class="status">Select a template to test</div>
+            
+            <h2 style="font-size: 16px; margin: 20px 0 10px;">Templates</h2>
+            <ul id="template-list" class="template-list">
+                <!-- Templates will be loaded here -->
+            </ul>
+            
+            <div class="controls">
+                <button id="test-all">Test All Templates</button>
+                <button id="verify-levels" class="secondary">Verify Heading Levels</button>
+            </div>
+        </div>
+        <div class="content">
+            <iframe id="editor-frame" src="/"></iframe>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const iframe = document.getElementById('editor-frame');
+            const templateList = document.getElementById('template-list');
+            const statusEl = document.getElementById('status');
+            let templates = [];
+            let currentTemplate = null;
+            
+            // Load template list
+            fetch('/templates/index.json')
+                .catch(() => {
+                    // If index.json doesn't exist, scan for templates 
+                    return Promise.all([
+                        'welcome-email',
+                        'newsletter',
+                        'order-confirmation',
+                        'event-invitation',
+                        'product-announcement',
+                        'password-reset',
+                        'seasonal-promotion',
+                        'survey-feedback',
+                        'company-announcement',
+                        'birthday-celebration'
+                    ].map(name => 
+                        fetch(`/templates/${name}.json`)
+                            .then(res => res.ok ? { name, path: `/templates/${name}.json` } : null)
+                            .catch(() => null)
+                    )).then(results => results.filter(Boolean));
+                })
+                .then(templatesData => {
+                    templates = Array.isArray(templatesData) ? 
+                        templatesData : 
+                        Object.entries(templatesData).map(([name, path]) => ({ name, path }));
+                    
+                    templates.forEach(template => {
+                        const li = document.createElement('li');
+                        li.className = 'template-item';
+                        li.textContent = template.name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                        li.addEventListener('click', () => loadTemplate(template));
+                        templateList.appendChild(li);
+                    });
+                    
+                    updateStatus('Ready! Select a template to test');
+                })
+                .catch(error => {
+                    console.error('Error loading templates:', error);
+                    updateStatus('Error loading templates', 'error');
+                });
+            
+            // Load template function
+            function loadTemplate(template) {
+                currentTemplate = template;
+                
+                // Update UI
+                document.querySelectorAll('.template-item').forEach(el => {
+                    el.classList.remove('active');
+                });
+                document.querySelector(`.template-item:nth-child(${templates.indexOf(template) + 1})`).classList.add('active');
+                
+                updateStatus(`Loading ${template.name}...`, 'loading');
+                
+                // Fetch template JSON
+                fetch(template.path)
+                    .then(res => res.json())
+                    .then(data => {
+                        // Wait for editor to be ready
+                        whenEditorReady().then(() => {
+                            // Check template format
+                            if (!validateTemplate(data)) {
+                                throw new Error('Invalid template format');
+                            }
+                            
+                            // Check if template has heading blocks with level property
+                            const hasHeadingBlocks = findHeadingBlocks(data);
+                            
+                            // Load template into editor
+                            iframe.contentWindow.editor.setJson(data);
+                            
+                            updateStatus(
+                                `Template "${template.name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}" loaded successfully! ${
+                                hasHeadingBlocks.length > 0 ? `Found ${hasHeadingBlocks.length} heading blocks, all have level properties.` : 'No heading blocks found.'
+                                }`, 
+                                'success'
+                            );
+                        });
+                    })
+                    .catch(error => {
+                        console.error(`Error loading template ${template.name}:`, error);
+                        updateStatus(`Error loading template ${template.name}: ${error.message}`, 'error');
+                    });
+            }
+            
+            // Test all templates in sequence
+            document.getElementById('test-all').addEventListener('click', function() {
+                testAllTemplates();
+            });
+            
+            // Verify heading levels in all templates
+            document.getElementById('verify-levels').addEventListener('click', function() {
+                verifyAllHeadingLevels();
+            });
+            
+            function testAllTemplates() {
+                updateStatus('Testing all templates...', 'loading');
+                
+                let index = 0;
+                const results = [];
+                
+                function testNext() {
+                    if (index >= templates.length) {
+                        // All templates tested
+                        const successful = results.filter(r => r.success).length;
+                        updateStatus(`Testing complete: ${successful}/${templates.length} templates loaded successfully.`, 
+                            successful === templates.length ? 'success' : 'error');
+                        return;
+                    }
+                    
+                    const template = templates[index++];
+                    
+                    // Update UI
+                    document.querySelectorAll('.template-item').forEach(el => {
+                        el.classList.remove('active');
+                    });
+                    document.querySelector(`.template-item:nth-child(${templates.indexOf(template) + 1})`).classList.add('active');
+                    
+                    fetch(template.path)
+                        .then(res => res.json())
+                        .then(data => {
+                            return whenEditorReady().then(() => {
+                                iframe.contentWindow.editor.setJson(data);
+                                results.push({ template: template.name, success: true });
+                                updateStatus(`Testing ${index}/${templates.length}: ${template.name} loaded successfully`, 'loading');
+                                
+                                // Wait a bit before loading the next template
+                                setTimeout(testNext, 1000);
+                            });
+                        })
+                        .catch(error => {
+                            console.error(`Error with template ${template.name}:`, error);
+                            results.push({ template: template.name, success: false, error: error.message });
+                            updateStatus(`Testing ${index}/${templates.length}: ${template.name} failed to load`, 'loading');
+                            
+                            // Continue with next template
+                            setTimeout(testNext, 1000);
+                        });
+                }
+                
+                // Start testing templates
+                testNext();
+            }
+            
+            function verifyAllHeadingLevels() {
+                updateStatus('Verifying heading levels in all templates...', 'loading');
+                
+                Promise.all(templates.map(template => 
+                    fetch(template.path)
+                        .then(res => res.json())
+                        .then(data => {
+                            const headingBlocks = findHeadingBlocks(data);
+                            const missingLevels = headingBlocks.filter(block => !('level' in block));
+                            
+                            return {
+                                template: template.name,
+                                totalHeadings: headingBlocks.length,
+                                missingLevels: missingLevels.length,
+                                blocks: missingLevels
+                            };
+                        })
+                        .catch(error => ({
+                            template: template.name,
+                            error: error.message
+                        }))
+                )).then(results => {
+                    const withMissingLevels = results.filter(r => r.missingLevels > 0);
+                    const withErrors = results.filter(r => r.error);
+                    
+                    if (withMissingLevels.length === 0 && withErrors.length === 0) {
+                        updateStatus(`All templates have proper heading levels! Found headings in ${
+                            results.filter(r => r.totalHeadings > 0).length
+                        } templates.`, 'success');
+                    } else {
+                        let message = '';
+                        
+                        if (withMissingLevels.length > 0) {
+                            message += `Found ${withMissingLevels.length} templates with missing heading levels: ${
+                                withMissingLevels.map(r => r.template).join(', ')
+                            }. `;
+                        }
+                        
+                        if (withErrors.length > 0) {
+                            message += `Errors in ${withErrors.length} templates: ${
+                                withErrors.map(r => r.template).join(', ')
+                            }`;
+                        }
+                        
+                        updateStatus(message, 'error');
+                    }
+                });
+            }
+            
+            function validateTemplate(data) {
+                return data && data.rows && Array.isArray(data.rows);
+            }
+            
+            function findHeadingBlocks(data) {
+                const headingBlocks = [];
+                
+                function processBlocks(blocks) {
+                    if (!blocks || !Array.isArray(blocks)) return;
+                    
+                    blocks.forEach(block => {
+                        if (block && block.type === 'heading') {
+                            headingBlocks.push(block);
+                        }
+                        
+                        // Check for nested blocks in conditional layouts
+                        if (block && block.type === 'conditionalLayout' && block.rows) {
+                            block.rows.forEach(row => {
+                                if (row.columns) {
+                                    row.columns.forEach(col => {
+                                        processBlocks(col.blocks);
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+                
+                // Process all rows and columns
+                if (data && data.rows) {
+                    data.rows.forEach(row => {
+                        if (row.columns) {
+                            row.columns.forEach(col => {
+                                processBlocks(col.blocks);
+                            });
+                        }
+                    });
+                }
+                
+                return headingBlocks;
+            }
+            
+            function updateStatus(message, type = '') {
+                statusEl.textContent = message;
+                statusEl.className = 'status';
+                if (type) {
+                    statusEl.classList.add(type);
+                }
+            }
+            
+            function whenEditorReady() {
+                return new Promise(resolve => {
+                    function checkEditor() {
+                        if (iframe.contentWindow && iframe.contentWindow.editor) {
+                            resolve();
+                        } else {
+                            setTimeout(checkEditor, 500);
+                        }
+                    }
+                    checkEditor();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
