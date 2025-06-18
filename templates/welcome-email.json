@@ -1,0 +1,117 @@
+{
+  "document": {
+    "settings": {
+      "contentWidth": "600px",
+      "backgroundColor": "#f8fafc",
+      "fontFamily": "'Inter', sans-serif"
+    }
+  },
+  "rows": [
+    {
+      "id": "header-row",
+      "columns": [
+        {
+          "id": "header-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "logo-block",
+              "type": "image",
+              "content": "",
+              "styles": {
+                "padding": "40px 20px 20px 20px",
+                "textAlign": "center"
+              },
+              "properties": {
+                "src": "https://via.placeholder.com/200x60/4f46e5/ffffff?text=LOGO",
+                "alt": "Company Logo",
+                "width": "200",
+                "height": "60"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "main-content-row",
+      "columns": [
+        {
+          "id": "main-col",
+          "width": "100%",
+          "blocks": [            {
+              "id": "welcome-heading",
+              "type": "heading",
+              "content": "Welcome to {{ company.name }}!",
+              "level": 1,
+              "styles": {
+                "padding": "20px",
+                "textAlign": "center",
+                "fontSize": "32px",
+                "fontWeight": "bold",
+                "color": "#1f2937"
+              }
+            },
+            {
+              "id": "welcome-text",
+              "type": "text",
+              "content": "<p>Hi {{ user.firstName }},</p><p>Welcome to our platform! We're excited to have you join our community of innovators and creators.</p><p>Your account has been successfully created and you're ready to get started.</p>",
+              "styles": {
+                "padding": "20px 40px",
+                "fontSize": "16px",
+                "lineHeight": "1.6",
+                "color": "#374151"
+              }
+            },
+            {
+              "id": "cta-button",
+              "type": "button",
+              "content": "Get Started",
+              "styles": {
+                "padding": "30px",
+                "textAlign": "center"
+              },
+              "properties": {
+                "href": "{{ app.baseUrl }}/dashboard",
+                "backgroundColor": "#4f46e5",
+                "textColor": "#ffffff",
+                "borderRadius": "8px",
+                "padding": "15px 30px",
+                "fontSize": "16px",
+                "fontWeight": "600"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "footer-row",
+      "columns": [
+        {
+          "id": "footer-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "divider",
+              "type": "divider",
+              "styles": {
+                "padding": "20px 40px",
+                "borderColor": "#e5e7eb",
+                "borderWidth": "1px"
+              }
+            },
+            {
+              "id": "footer-text",
+              "type": "text",
+              "content": "<p style='text-align: center; color: #6b7280; font-size: 14px;'>{{ company.name }} | {{ company.address }}</p><p style='text-align: center; color: #6b7280; font-size: 14px;'>If you have any questions, feel free to <a href='mailto:{{ support.email }}' style='color: #4f46e5;'>contact us</a></p>",
+              "styles": {
+                "padding": "20px 40px 40px 40px"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

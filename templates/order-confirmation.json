@@ -1,0 +1,196 @@
+{
+  "document": {
+    "settings": {
+      "contentWidth": "600px",
+      "backgroundColor": "#f9fafb",
+      "fontFamily": "'Helvetica', Arial, sans-serif"
+    }
+  },
+  "rows": [
+    {
+      "id": "order-header",
+      "columns": [
+        {
+          "id": "header-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "store-logo",
+              "type": "image",
+              "content": "",
+              "styles": {
+                "padding": "40px 20px 20px 20px",
+                "textAlign": "center",
+                "backgroundColor": "#ffffff"
+              },
+              "properties": {
+                "src": "https://via.placeholder.com/180x50/059669/ffffff?text=STORE",
+                "alt": "Store Logo",
+                "width": "180",
+                "height": "50"
+              }
+            },            {
+              "id": "order-title",
+              "type": "heading",
+              "content": "Order Confirmation",
+              "level": 1,
+              "styles": {
+                "padding": "20px 20px 10px 20px",
+                "textAlign": "center",
+                "fontSize": "28px",
+                "fontWeight": "bold",
+                "color": "#111827",
+                "backgroundColor": "#ffffff"
+              }
+            },
+            {
+              "id": "order-number",
+              "type": "text",
+              "content": "<p style='text-align: center; font-size: 16px; color: #6b7280;'>Order #{{ order.number }}</p>",
+              "styles": {
+                "padding": "0 20px 30px 20px",
+                "backgroundColor": "#ffffff"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "customer-info",
+      "columns": [
+        {
+          "id": "billing-col",
+          "width": "50%",
+          "blocks": [            {
+              "id": "billing-heading",
+              "type": "heading",
+              "content": "Billing Address",
+              "level": 2,
+              "styles": {
+                "padding": "30px 20px 15px 20px",
+                "fontSize": "18px",
+                "fontWeight": "600",
+                "color": "#374151"
+              }
+            },
+            {
+              "id": "billing-address",
+              "type": "text",
+              "content": "<p>{{ billing.name }}<br>{{ billing.address1 }}<br>{{ billing.city }}, {{ billing.state }} {{ billing.zip }}<br>{{ billing.country }}</p>",
+              "styles": {
+                "padding": "0 20px 20px 20px",
+                "fontSize": "14px",
+                "lineHeight": "1.5",
+                "color": "#6b7280"
+              }
+            }
+          ]
+        },
+        {
+          "id": "shipping-col",
+          "width": "50%",
+          "blocks": [            {
+              "id": "shipping-heading",
+              "type": "heading",
+              "content": "Shipping Address",
+              "level": 2,
+              "styles": {
+                "padding": "30px 20px 15px 20px",
+                "fontSize": "18px",
+                "fontWeight": "600",
+                "color": "#374151"
+              }
+            },
+            {
+              "id": "shipping-address",
+              "type": "text",
+              "content": "<p>{{ shipping.name }}<br>{{ shipping.address1 }}<br>{{ shipping.city }}, {{ shipping.state }} {{ shipping.zip }}<br>{{ shipping.country }}</p>",
+              "styles": {
+                "padding": "0 20px 20px 20px",
+                "fontSize": "14px",
+                "lineHeight": "1.5",
+                "color": "#6b7280"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "order-items",
+      "columns": [
+        {
+          "id": "items-col",
+          "width": "100%",
+          "blocks": [            {
+              "id": "items-heading",
+              "type": "heading",
+              "content": "Order Items",
+              "level": 2,
+              "styles": {
+                "padding": "30px 20px 20px 20px",
+                "fontSize": "20px",
+                "fontWeight": "600",
+                "color": "#111827"
+              }
+            },
+            {
+              "id": "items-table",
+              "type": "html",
+              "content": "<table style='width: 100%; border-collapse: collapse; font-size: 14px;'><thead><tr style='background-color: #f3f4f6;'><th style='padding: 12px; text-align: left; border-bottom: 1px solid #e5e7eb;'>Item</th><th style='padding: 12px; text-align: center; border-bottom: 1px solid #e5e7eb;'>Qty</th><th style='padding: 12px; text-align: right; border-bottom: 1px solid #e5e7eb;'>Price</th></tr></thead><tbody>{% for item in order.items %}<tr><td style='padding: 12px; border-bottom: 1px solid #e5e7eb;'>{{ item.name }}</td><td style='padding: 12px; text-align: center; border-bottom: 1px solid #e5e7eb;'>{{ item.quantity }}</td><td style='padding: 12px; text-align: right; border-bottom: 1px solid #e5e7eb;'>${{ item.price }}</td></tr>{% endfor %}</tbody></table>",
+              "styles": {
+                "padding": "20px"
+              }
+            },
+            {
+              "id": "order-total",
+              "type": "text",
+              "content": "<div style='background-color: #f9fafb; padding: 20px; margin: 20px; border-radius: 8px;'><p style='margin: 0; display: flex; justify-content: space-between; font-size: 14px; color: #6b7280;'><span>Subtotal:</span><span>${{ order.subtotal }}</span></p><p style='margin: 8px 0 0 0; display: flex; justify-content: space-between; font-size: 14px; color: #6b7280;'><span>Shipping:</span><span>${{ order.shipping }}</span></p><p style='margin: 8px 0 0 0; display: flex; justify-content: space-between; font-size: 14px; color: #6b7280;'><span>Tax:</span><span>${{ order.tax }}</span></p><hr style='margin: 12px 0; border: none; border-top: 1px solid #e5e7eb;'><p style='margin: 8px 0 0 0; display: flex; justify-content: space-between; font-size: 18px; font-weight: 600; color: #111827;'><span>Total:</span><span>${{ order.total }}</span></p></div>",
+              "styles": {
+                "padding": "0 20px 20px 20px"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tracking-info",
+      "columns": [
+        {
+          "id": "tracking-col",
+          "width": "100%",
+          "blocks": [
+            {
+              "id": "tracking-button",
+              "type": "button",
+              "content": "Track Your Order",
+              "styles": {
+                "padding": "30px",
+                "textAlign": "center"
+              },
+              "properties": {
+                "href": "{{ tracking.url }}",
+                "backgroundColor": "#059669",
+                "textColor": "#ffffff",
+                "borderRadius": "8px",
+                "padding": "15px 30px",
+                "fontSize": "16px",
+                "fontWeight": "600"
+              }
+            },
+            {
+              "id": "support-text",
+              "type": "text",
+              "content": "<p style='text-align: center; color: #6b7280; font-size: 14px;'>Questions about your order? <a href='mailto:{{ support.email }}' style='color: #059669;'>Contact us</a></p>",
+              "styles": {
+                "padding": "20px 40px 40px 40px"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
