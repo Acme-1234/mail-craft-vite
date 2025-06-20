@@ -76,15 +76,8 @@ export const useWindowEditorAPI = () => {
     setPlaceholders,
     setOnImageSelect,
   } = useEditorStore();
-    const [config, setConfig] = useState<WindowEditorConfig>({
-    // Default configuration - all buttons shown
-    showExportHtml: true,
-    showExportJson: true,
-    showImportJson: true,
-    showPreview: true,
-    showClear: true,
-    showGetLinks: true,
-  });
+    // Start with empty config - will be populated from window.editor
+  const [config, setConfig] = useState<WindowEditorConfig>({});
   
   const configRef = useRef<WindowEditorConfig>(config);
   
@@ -92,6 +85,122 @@ export const useWindowEditorAPI = () => {
   useEffect(() => {
     configRef.current = config;
   }, [config]);
+
+  // Initialize from window.editor if it exists
+  useEffect(() => {
+    const initializeFromWindow = () => {
+      if (window.editor && typeof window.editor === 'object') {
+        // Extract config from existing window.editor
+        const externalConfig: WindowEditorConfig = {
+          showExportHtml: window.editor.showExportHtml,
+          showExportJson: window.editor.showExportJson,
+          showImportJson: window.editor.showImportJson,
+          showPreview: window.editor.showPreview,
+          showClear: window.editor.showClear,
+          showGetLinks: window.editor.showGetLinks,
+          exportHtml: window.editor.exportHtml,
+          exportJson: window.editor.exportJson,
+          importJson: window.editor.importJson,
+          preview: window.editor.preview,
+          clear: window.editor.clear,
+          getLinks: window.editor.getLinks,
+          imageBrowser: window.editor.imageBrowser,
+          loadMergeFiles: window.editor.loadMergeFiles,
+          branding: window.editor.branding,
+          theme: window.editor.theme,
+        };
+          // Filter out undefined values
+        const cleanConfig = Object.fromEntries(
+          Object.entries(externalConfig).filter(([_, value]) => value !== undefined)
+        ) as WindowEditorConfig;
+          console.log('cleanConfig.imageBrowser:', typeof cleanConfig.imageBrowser, cleanConfig.imageBrowser?.toString().substring(0, 200));
+        setConfig(cleanConfig);
+        
+        // Apply initial configuration
+        // Don't wrap the imageBrowser function, just keep the original
+        
+        if (cleanConfig.loadMergeFiles) {
+          Promise.resolve(cleanConfig.loadMergeFiles())
+            .then((mergeFiles) => {
+              if (Array.isArray(mergeFiles)) {
+                setPlaceholders(mergeFiles);
+              }
+            })
+            .catch((error) => {
+              console.error('Error loading merge files:', error);
+            });
+        }
+          if (cleanConfig.theme) {
+          applyTheme(cleanConfig.theme);
+        }
+      } else {
+        // No external config, use defaults    
+        setConfig({
+          showExportHtml: true,
+          showExportJson: true,
+          showImportJson: true,
+          showPreview: true,
+          showClear: true,
+          showGetLinks: true,
+        });
+      }
+    };
+
+    // Try to initialize immediately
+    initializeFromWindow();
+    
+    // Also listen for delayed initialization
+    const timeoutId = setTimeout(initializeFromWindow, 100);
+      return () => clearTimeout(timeoutId);
+  }, [setOnImageSelect, setPlaceholders]); // Remove applyTheme dependency for now
+
+  // Theme application function
+  const applyTheme = useCallback((theme: NonNullable<WindowEditorConfig['theme']>) => {
+    const root = document.documentElement;
+    
+    // Handle theme mode
+    if (theme.mode === 'dark') {
+      root.classList.add('dark');
+    } else if (theme.mode === 'light') {
+      root.classList.remove('dark');
+    } else if (theme.mode === 'auto') {
+      // Auto mode: follow system preference
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (prefersDark) {
+        root.classList.add('dark');
+      } else {
+        root.classList.remove('dark');
+      }
+    }
+    
+    // Apply custom colors via CSS variables
+    if (theme.primaryColor) {
+      root.style.setProperty('--color-primary', theme.primaryColor);
+    }
+    if (theme.backgroundColor) {
+      root.style.setProperty('--color-bg', theme.backgroundColor);
+    }
+    if (theme.headerBackgroundColor) {
+      root.style.setProperty('--header-bg', theme.headerBackgroundColor);
+    }
+    if (theme.headerTextColor) {
+      root.style.setProperty('--header-text', theme.headerTextColor);
+    }
+    if (theme.borderColor) {
+      root.style.setProperty('--color-border', theme.borderColor);
+    }
+    
+    // Apply custom CSS
+    if (theme.customCSS) {
+      let customStyleElement = document.getElementById('mailcraft-custom-styles');
+      if (!customStyleElement) {
+        customStyleElement = document.createElement('style');
+        customStyleElement.id = 'mailcraft-custom-styles';
+        document.head.appendChild(customStyleElement);
+      }
+      customStyleElement.textContent = theme.customCSS;
+    }
+  }, []);
   // Get current HTML
   const getHtml = useCallback(() => {
     return exportDocumentAsHtml(editorDocument);
@@ -145,21 +254,20 @@ export const useWindowEditorAPI = () => {
       
       return updatedConfig;
     });
-    
-    // If a new image browser is provided, update the onImageSelect handler
-    if (newConfig.imageBrowser) {
-      setOnImageSelect((callback) => {
-        newConfig.imageBrowser!()
-          .then((imageUrl) => {
-            if (imageUrl) {
-              callback(imageUrl);
-            }
-          })
-          .catch((error) => {
-            console.error('Image browser error:', error);
-          });
-      });
-    }
+      // If a new image browser is provided, don't wrap it
+    // if (newConfig.imageBrowser) {
+    //   setOnImageSelect((callback) => {
+    //     newConfig.imageBrowser!()
+    //       .then((imageUrl) => {
+    //         if (imageUrl) {
+    //           callback(imageUrl);
+    //         }
+    //       })
+    //       .catch((error) => {
+    //         console.error('Image browser error:', error);
+    //       });
+    //   });
+    // }
     
     // If loadMergeFiles is provided, load placeholders
     if (newConfig.loadMergeFiles) {
@@ -172,60 +280,14 @@ export const useWindowEditorAPI = () => {
         .catch((error) => {
           console.error('Error loading merge files:', error);
         });
-    }
-  }, [setOnImageSelect, setPlaceholders]);
-  
-  // Theme application function
-  const applyTheme = useCallback((theme: NonNullable<WindowEditorConfig['theme']>) => {
-    const root = document.documentElement;
+    }  }, [setOnImageSelect, setPlaceholders, applyTheme]);  // Initialize window.editor API
+  useEffect(() => {
+    // Save the original window.editor before we modify it
+    const originalEditor = window.editor ? { ...window.editor } : {};
     
-    // Handle theme mode
-    if (theme.mode === 'dark') {
-      root.classList.add('dark');
-    } else if (theme.mode === 'light') {
-      root.classList.remove('dark');
-    } else if (theme.mode === 'auto') {
-      // Auto mode: follow system preference
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (prefersDark) {
-        root.classList.add('dark');
-      } else {
-        root.classList.remove('dark');
-      }
-    }
-    
-    // Apply custom colors via CSS variables
-    if (theme.primaryColor) {
-      root.style.setProperty('--primary', theme.primaryColor);
-    }
-    if (theme.backgroundColor) {
-      root.style.setProperty('--background', theme.backgroundColor);
-    }
-    if (theme.headerBackgroundColor) {
-      root.style.setProperty('--header-bg', theme.headerBackgroundColor);
-    }
-    if (theme.headerTextColor) {
-      root.style.setProperty('--header-text', theme.headerTextColor);
-    }
-    if (theme.borderColor) {
-      root.style.setProperty('--border', theme.borderColor);
-    }
-    
-    // Apply custom CSS
-    if (theme.customCSS) {
-      let customStyleElement = document.getElementById('mailcraft-custom-styles');
-      if (!customStyleElement) {
-        customStyleElement = document.createElement('style');
-        customStyleElement.id = 'mailcraft-custom-styles';
-        document.head.appendChild(customStyleElement);
-      }
-      customStyleElement.textContent = theme.customCSS;
-    }
-  }, []);
-
-  // Initialize window.editor API
-  useEffect(() => {    const api: WindowEditorAPI = {
-      // Configuration
+    const api: WindowEditorAPI = {
+      // Configuration - preserve original config and overlay our current config
+      ...originalEditor,
       ...config,
       
       // Core methods
@@ -236,29 +298,47 @@ export const useWindowEditorAPI = () => {
       clearDocument,
       getAllLinks,
       configure,
-    };
-
+    };    // Set the complete API
     window.editor = api;
+
+    console.log('Window.editor API initialized:', Object.keys(window.editor));
+    console.log('imageBrowser function exists:', typeof window.editor.imageBrowser);
+    console.log('originalEditor had imageBrowser:', typeof (originalEditor as any).imageBrowser);
 
     // Cleanup on unmount
     return () => {
-      delete window.editor;
+      // Don't delete window.editor completely as external code might rely on it
+      // Just remove our methods
+      if (window.editor && typeof window.editor === 'object') {
+        delete (window.editor as any).getHtml;
+        delete (window.editor as any).setHtml;
+        delete (window.editor as any).getJson;
+        delete (window.editor as any).setJson;
+        delete (window.editor as any).clearDocument;
+        delete (window.editor as any).getAllLinks;
+        delete (window.editor as any).configure;
+      }
     };
-  }, [getHtml, setHtml, getJson, setJson, clearDocument, getAllLinks, configure, config]);  // Helper functions for components to check configuration and get handlers
-  const getButtonConfig = useCallback((buttonType: keyof WindowEditorConfig) => {
+  }, [getHtml, setHtml, getJson, setJson, clearDocument, getAllLinks, configure, config]);// Helper functions for components to check configuration and get handlers
+  const getButtonConfig = useCallback((buttonType: string) => {
+    // Fix the property name mapping
     const showKey = `show${buttonType.charAt(0).toUpperCase() + buttonType.slice(1)}` as keyof WindowEditorConfig;
-    // Default to true if not explicitly set to false
+    
+    // Default to true if not explicitly set to false, but respect false values
     const isVisible = config[showKey] !== false;
-    const customHandler = config[buttonType] as (() => void | Promise<void>) | undefined;
+    
+    // Get custom handler
+    const handlerKey = buttonType as keyof WindowEditorConfig;
+    const customHandler = config[handlerKey] as (() => void | Promise<void>) | undefined;
     
     return {
       isVisible,
       customHandler,
     };
-  }, [config]);
-  const getImageBrowser = useCallback(() => {
-    return config.imageBrowser;
-  }, [config]);
+  }, [config]);  const getImageBrowser = useCallback(() => {
+    console.log('getImageBrowser called, using window.editor.imageBrowser directly');
+    return window.editor?.imageBrowser;
+  }, []);
   const getConfig = useCallback(() => {
     return { ...config };
   }, [config]);

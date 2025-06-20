@@ -78,8 +78,8 @@ const EmailEditor = React.forwardRef<EmailEditorRef, EmailEditorProps>(  ({ plac
     }, [onImageSelect, setOnImageSelect]);    // Initialize window.editor with props-based configuration
     useEffect(() => {
       const initialConfig = {
-        // Set up default image browser if onImageSelect is provided
-        ...(onImageSelect && { imageBrowser: () => new Promise<string | null>((resolve) => {
+        // Only set up default image browser if onImageSelect is provided AND no custom imageBrowser exists
+        ...(onImageSelect && !window.editor?.imageBrowser && { imageBrowser: () => new Promise<string | null>((resolve) => {
           onImageSelect((imageUrl: string) => resolve(imageUrl));
         })}),
         // Set up placeholders

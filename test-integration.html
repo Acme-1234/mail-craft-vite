@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MailCraft - Fixed Integration</title>
+    
+    <!-- Required: Google Fonts for proper typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+    
+    <!-- MailCraft CSS - Now with stable filename -->
+    <link href="emaileditor/main.css" rel="stylesheet" />
+    
+    <style>
+        .w-screen {
+            width: 99vw !important;
+        }
+        /* Ensure full height */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #root {
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Configure MailCraft BEFORE loading the main script -->
+    <script>
+        // Global variables for promise handling
+        var promiseOx = null;
+        var promisePp = null;
+        
+        // Configure MailCraft Editor
+        window.editor = {
+            showExportHtml: true,   // Show/hide Export HTML button
+            showExportJson: false,  // Show/hide Export JSON button
+            showImportJson: true,   // Show/hide Import JSON button
+            showPreview: true,      // Show/hide Preview button
+            showClear: false,       // Show/hide Clear button
+            showGetLinks: true,     // Show/hide Get Links button
+            
+            imageBrowser: function() {
+                console.log('imageBrowser called');
+                return new Promise((resolve, reject) => {
+                    promiseOx = { resolve, reject };
+                    promisePp = popupIframe({
+                        title: 'Select Image',
+                        html: `<iframe src="/assets/" style="width:100%;height:400px;border:0;"></iframe>`,
+                    });
+                });
+            }
+        };
+        
+        function popupIframe(options = {}) {
+            return new Promise((resolve, reject) => {
+                Swal.fire(Object.assign({
+                    title: 'Select Image',
+                    html: `<iframe src="/assets/" style="width:100%;height:400px;border:0;"></iframe>`,
+                    width: 800,
+                    showCancelButton: true,
+                    confirmButtonText: 'OK',
+                    cancelButtonText: 'Cancel',
+                    allowOutsideClick: false,
+                    preConfirm: () => true
+                }, options)).then(result => {
+                    if (result.isConfirmed) {
+                        resolve(result.value);
+                    } else {
+                        // Cancel button or outside click
+                        if (promiseOx) {
+                            promiseOx.reject(new Error('Popup cancelled by user'));
+                        }
+                        reject(new Error('Popup cancelled by user'));
+                    }
+                });
+            });
+        }
+
+        // Listen for messages from the asset browser iframe
+        window.addEventListener('message', event => {
+            console.log('Received message:', event.data);
+            
+            // Security: ensure it's from the expected origin
+            if (event.origin !== window.origin) return;
+
+            // Handle the selected file
+            const { file } = event.data || {};
+            if (file && promiseOx) {
+                console.log('Resolving with file:', file);
+                promiseOx.resolve(file);
+                promiseOx = null;
+                
+                // Close the popup
+                Swal.close();
+                if (promisePp) {
+                    promisePp.then(() => {}).catch(() => {});
+                    promisePp = null;
+                }
+            }
+        });
+
+        // Handle editor events
+        window.addEventListener('message', (event) => {
+            const { type, data } = event.data || {};
+            
+            switch (type) {
+                case 'EDITOR_READY':
+                    console.log('MailCraft Editor is ready!');
+                    break;
+                    
+                case 'EDITOR_HTML_RESULT':
+                    console.log('HTML export result:', data);
+                    // Handle the exported HTML
+                    break;
+                    
+                case 'EDITOR_JSON_RESULT':
+                    console.log('JSON export result:', data);
+                    // Handle the exported JSON
+                    break;
+                    
+                case 'EDITOR_LINKS_RESULT':
+                    console.log('Links extraction result:', data);
+                    // Handle the extracted links
+                    break;
+            }
+        });
+
+        // Debug: Log window.editor after script loads
+        setTimeout(() => {
+            console.log('Final window.editor:', window.editor);
+            if (window.editor && window.editor.getHtml) {
+                console.log('API methods available:', {
+                    getHtml: typeof window.editor.getHtml,
+                    setHtml: typeof window.editor.setHtml,
+                    getJson: typeof window.editor.getJson,
+                    setJson: typeof window.editor.setJson,
+                    clearDocument: typeof window.editor.clearDocument,
+                    getAllLinks: typeof window.editor.getAllLinks,
+                    configure: typeof window.editor.configure
+                });
+            }
+        }, 1000);
+    </script>
+    
+    <!-- MailCraft Main Script - Now with stable filename -->
+    <script type="module" src="emaileditor/index.js"></script>
+</body>
+</html>

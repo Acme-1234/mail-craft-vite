@@ -58,16 +58,14 @@ const ImageSettings: React.FC<ImageSettingsProps> = ({ block, onUpdate, onImageS
         ...currentStyles, 
         border: e.target.value      } 
     });
-  };
-
-  const handleSelectImage = () => {
-    const imageBrowser = getImageBrowser();
-    
-    if (imageBrowser) {
-      // Use the window.editor image browser
-      imageBrowser()
+  };  const handleSelectImage = () => {
+    // Check if window.editor.imageBrowser exists directly
+    if (window.editor && typeof window.editor.imageBrowser === 'function') {
+      console.log('ImageSettings: Using window.editor.imageBrowser directly');
+      window.editor.imageBrowser()
         .then((imageUrl) => {
           if (imageUrl) {
+            console.log('ImageSettings: Image selected:', imageUrl);
             setLocalSrc(imageUrl);
             onUpdate({ src: imageUrl });
           }
@@ -75,15 +73,39 @@ const ImageSettings: React.FC<ImageSettingsProps> = ({ block, onUpdate, onImageS
         .catch((error) => {
           console.error('Image browser error:', error);
         });
-    } else if (onImageSelect) {
-      // Fallback to the legacy onImageSelect prop
-      onImageSelect((imageUrl: string) => {
-        setLocalSrc(imageUrl);
-        onUpdate({ src: imageUrl });
-      });
     } else {
-      // No image selection available
-      console.warn('No image browser configured');
+      // Fallback to the hook-based approach
+      const imageBrowser = getImageBrowser();
+      console.log('ImageSettings: Fallback - getImageBrowser() returned:', typeof imageBrowser, imageBrowser);
+      
+      if (imageBrowser) {
+        console.log('ImageSettings: Using hook-based image browser');
+        imageBrowser()
+          .then((imageUrl) => {
+            if (imageUrl) {
+              console.log('ImageSettings: Image selected:', imageUrl);
+              setLocalSrc(imageUrl);
+              onUpdate({ src: imageUrl });
+            }
+          })
+          .catch((error) => {
+            console.error('Image browser error:', error);
+          });
+      } else if (onImageSelect) {
+        console.log('ImageSettings: Using legacy onImageSelect prop');
+        onImageSelect((imageUrl: string) => {
+          setLocalSrc(imageUrl);
+          onUpdate({ src: imageUrl });
+        });
+      } else {
+        console.warn('ImageSettings: No image browser configured');
+        // Fallback to prompt
+        const imageUrl = prompt('Enter image URL:');
+        if (imageUrl) {
+          setLocalSrc(imageUrl);
+          onUpdate({ src: imageUrl });
+        }
+      }
     }
   };
 

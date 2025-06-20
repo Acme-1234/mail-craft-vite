@@ -10,4 +10,18 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: 'emaileditor/index.js',
+        chunkFileNames: 'emaileditor/[name].js',
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name?.endsWith('.css')) {
+            return 'emaileditor/main.css';
+          }
+          return 'assets/[name].[ext]';
+        }
+      }
+    }
+  }
 })

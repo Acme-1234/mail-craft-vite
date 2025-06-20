@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MailCraft - Email Template Builder</title>
+    
+    <!-- Google Fonts: Poppins for headings, Roboto for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+      <!-- MailCraft CSS -->
+    <link rel="stylesheet" crossorigin href="emaileditor/main.css">
+    
+    <style>
+        .w-screen {
+            width: 99vw !important;
+        }
+        /* Ensure full height */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #root {
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Configure MailCraft BEFORE loading the main script -->
+    <script>
+        // Global variables for promise handling
+        var promiseResolve = null;
+        var promiseReject = null;
+        var currentPopup = null;
+        
+        // Configure MailCraft Editor
+        window.editor = {
+            showExportHtml: true,   // Show/hide Export HTML button
+            showExportJson: false,  // Show/hide Export JSON button
+            showImportJson: true,   // Show/hide Import JSON button
+            showPreview: true,      // Show/hide Preview button
+            showClear: false,       // Show/hide Clear button
+            showGetLinks: true,     // Show/hide Get Links button
+            
+            // Image browser function
+            imageBrowser: function() {
+                return new Promise((resolve, reject) => {
+                    promiseResolve = resolve;
+                    promiseReject = reject;
+                    
+                    // Open your asset browser popup
+                    currentPopup = popupIframe({
+                        title: 'Select Image',
+                        html: `<iframe src="/assets/" style="width:100%;height:400px;border:0;"></iframe>`,
+                    });
+                });
+            }
+        };
+        
+        // Popup iframe function
+        function popupIframe(options = {}) {
+            return new Promise((resolve, reject) => {
+                Swal.fire(Object.assign({
+                    title: 'Preview',
+                    html: `<iframe src="/assets/" style="width:100%;height:400px;border:0;"></iframe>`,
+                    width: 800,
+                    showCancelButton: true,
+                    confirmButtonText: 'OK',
+                    cancelButtonText: 'Cancel',
+                    allowOutsideClick: false,
+                    preConfirm: () => true
+                }, options)).then(result => {
+                    if (result.isConfirmed) {
+                        resolve(result.value);
+                    } else {
+                        // Cancel button or outside click
+                        if (promiseReject) {
+                            promiseReject(new Error('Popup cancelled by user'));
+                        }
+                        reject(new Error('Popup cancelled by user'));
+                    }
+                });
+            });
+        }
+
+        // Listen for messages from the asset browser iframe
+        window.addEventListener('message', event => {
+            // Security: ensure it's from the expected origin
+            if (event.origin !== window.origin) return;
+
+            // Handle the selected file
+            const { file } = event.data || {};
+            if (file && promiseResolve) {
+                promiseResolve(file);
+                promiseResolve = null;
+                promiseReject = null;
+                
+                // Close the popup
+                if (currentPopup) {
+                    Swal.close();
+                    currentPopup = null;
+                }
+            }
+        });
+
+        // Handle editor events
+        window.addEventListener('message', (event) => {
+            const { type, data } = event.data || {};
+            
+            switch (type) {
+                case 'EDITOR_READY':
+                    console.log('MailCraft Editor is ready!');
+                    break;
+                    
+                case 'EDITOR_HTML_RESULT':
+                    console.log('HTML export result:', data.html);
+                    // Handle the exported HTML
+                    break;
+                    
+                case 'EDITOR_JSON_RESULT':
+                    console.log('JSON export result:', data.json);
+                    // Handle the exported JSON
+                    break;
+                    
+                case 'EDITOR_LINKS_RESULT':
+                    console.log('Links extraction result:', data.links);
+                    // Handle the extracted links
+                    break;
+            }
+        });
+    </script>
+      <!-- MailCraft Main Script -->
+    <script type="module" crossorigin src="emaileditor/index.js"></script>
+</body>
+</html>

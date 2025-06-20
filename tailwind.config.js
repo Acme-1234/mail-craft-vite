@@ -15,10 +15,26 @@ export default {
     },
     extend: {
       fontFamily: {
-        body: ['Poppins', 'system-ui', 'sans-serif'],
+        heading: ['Poppins', 'system-ui', 'sans-serif'],
+        body: ['Roboto', 'system-ui', 'sans-serif'],
         mono: ['Source Code Pro', 'monospace'],
       },
       colors: {
+        // Style Guide Design Tokens
+        'color-primary': 'var(--color-primary)',
+        'color-primary-light': 'var(--color-primary-light)',
+        'color-primary-dark': 'var(--color-primary-dark)',
+        'color-accent': 'var(--color-accent)',
+        'color-bg': 'var(--color-bg)',
+        'color-surface': 'var(--color-surface)',
+        'color-border': 'var(--color-border)',
+        'color-text-high': 'var(--color-text-high)',
+        'color-text-medium': 'var(--color-text-medium)',
+        'color-success': 'var(--color-success)',
+        'color-warning': 'var(--color-warning)',
+        'color-error': 'var(--color-error)',
+        
+        // Shadcn/UI compatibility layer
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -52,6 +68,25 @@ export default {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        sidebar: {
+          DEFAULT: 'hsl(var(--sidebar-background))',
+          foreground: 'hsl(var(--sidebar-foreground))',
+          primary: 'hsl(var(--sidebar-primary))',
+          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+          accent: 'hsl(var(--sidebar-accent))',
+          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+          border: 'hsl(var(--sidebar-border))',
+          ring: 'hsl(var(--sidebar-ring))',
+        },
+      },
+      spacing: {
+        'xs': 'var(--spacing-xs)',
+        'sm': 'var(--spacing-sm)', 
+        'md': 'var(--spacing-md)',
+        'lg': 'var(--spacing-lg)',
+        'xl': 'var(--spacing-xl)',
+        '2xl': 'var(--spacing-2xl)',
+        '3xl': 'var(--spacing-3xl)',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -72,7 +107,13 @@ export default {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
+      transitionDuration: {
+        'fast': 'var(--transition-fast)',
+        'normal': 'var(--transition-normal)', 
+        'slow': 'var(--transition-slow)',
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],
 }
+ 

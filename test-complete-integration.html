@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MailCraft - Complete Integration Test</title>
+    
+    <!-- Required: Google Fonts for proper typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+    
+    <!-- MailCraft CSS -->
+    <link href="emaileditor/main.css" rel="stylesheet" />
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Roboto', sans-serif;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .control-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .editor-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+            height: 80vh;
+        }
+        
+        #root {
+            height: 100%;
+        }
+        
+        .btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 0 4px 8px 0;
+            font-size: 14px;
+        }
+        
+        .btn:hover {
+            background: #2563eb;
+        }
+        
+        .btn-secondary {
+            background: #6b7280;
+        }
+        
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+        
+        .output {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 12px;
+            margin-top: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        h2 {
+            margin: 0 0 16px 0;
+            font-family: 'Poppins', sans-serif;
+            color: #1f2937;
+        }
+        
+        .group {
+            margin-bottom: 20px;
+        }
+        
+        .group h3 {
+            margin: 0 0 12px 0;
+            font-size: 16px;
+            color: #374151;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="control-panel">
+            <h2>MailCraft Integration Test Panel</h2>
+            
+            <div class="group">
+                <h3>Core API Methods</h3>
+                <button class="btn" onclick="testGetHtml()">Get HTML</button>
+                <button class="btn" onclick="testSetHtml()">Set HTML</button>
+                <button class="btn" onclick="testGetJson()">Get JSON</button>
+                <button class="btn" onclick="testSetJson()">Set JSON</button>
+                <button class="btn" onclick="testClearDocument()">Clear Document</button>
+                <button class="btn" onclick="testGetAllLinks()">Get All Links</button>
+            </div>
+            
+            <div class="group">
+                <h3>Configuration Tests</h3>
+                <button class="btn btn-secondary" onclick="testHideButtons()">Hide Export Buttons</button>
+                <button class="btn btn-secondary" onclick="testShowButtons()">Show All Buttons</button>
+                <button class="btn btn-secondary" onclick="testCustomTheme()">Apply Custom Theme</button>
+                <button class="btn btn-secondary" onclick="testBranding()">Apply Custom Branding</button>
+                <button class="btn btn-secondary" onclick="testResetTheme()">Reset Theme</button>
+            </div>
+            
+            <div class="group">
+                <h3>Advanced Features</h3>
+                <button class="btn btn-secondary" onclick="testImageBrowser()">Test Image Browser</button>
+                <button class="btn btn-secondary" onclick="testMergeFiles()">Load Merge Files</button>
+            </div>
+            
+            <div id="output" class="output">
+                Ready to test MailCraft integration...
+            </div>
+        </div>
+        
+        <div class="editor-container">
+            <div id="root"></div>
+        </div>
+    </div>
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Configure MailCraft BEFORE loading the main script -->
+    <script>
+        let imagePromiseResolve = null;
+        let imagePromiseReject = null;
+        
+        // Initialize MailCraft with full configuration
+        window.editor = {
+            // Button visibility
+            showExportHtml: true,
+            showExportJson: true,
+            showImportJson: true,
+            showPreview: true,
+            showClear: true,
+            showGetLinks: true,
+            
+            // Image browser implementation
+            imageBrowser: function() {
+                return new Promise((resolve, reject) => {
+                    imagePromiseResolve = resolve;
+                    imagePromiseReject = reject;
+                    
+                    Swal.fire({
+                        title: 'Select Image',
+                        html: `
+                            <div style="text-align: left;">
+                                <p>Choose an image URL:</p>
+                                <div style="margin: 10px 0;">
+                                    <button onclick="selectImage('https://picsum.photos/600/400?random=1')" style="display: block; width: 100%; margin: 5px 0; padding: 8px; text-align: left;">Sample Image 1 (600x400)</button>
+                                    <button onclick="selectImage('https://picsum.photos/800/600?random=2')" style="display: block; width: 100%; margin: 5px 0; padding: 8px; text-align: left;">Sample Image 2 (800x600)</button>
+                                    <button onclick="selectImage('https://picsum.photos/400/300?random=3')" style="display: block; width: 100%; margin: 5px 0; padding: 8px; text-align: left;">Sample Image 3 (400x300)</button>
+                                </div>
+                                <p>Or enter a custom URL:</p>
+                                <input type="url" id="customImageUrl" placeholder="https://example.com/image.jpg" style="width: 100%; padding: 8px; margin: 5px 0;">
+                                <button onclick="selectCustomImage()" style="width: 100%; padding: 8px; margin: 5px 0;">Use Custom URL</button>
+                            </div>
+                        `,
+                        width: 500,
+                        showCancelButton: true,
+                        showConfirmButton: false,
+                        cancelButtonText: 'Cancel',
+                        allowOutsideClick: false,
+                    }).then(result => {
+                        if (result.isDismissed) {
+                            reject(new Error('Image selection cancelled'));
+                        }
+                    });
+                });
+            },
+            
+            // Merge files (placeholders/variables)
+            loadMergeFiles: function() {
+                return [
+                    { name: 'firstName', label: 'First Name', type: 'text', defaultValue: 'John' },
+                    { name: 'lastName', label: 'Last Name', type: 'text', defaultValue: 'Doe' },
+                    { name: 'email', label: 'Email', type: 'email', defaultValue: 'john.doe@example.com' },
+                    { name: 'company', label: 'Company', type: 'text', defaultValue: 'Acme Corp' },
+                    { name: 'productName', label: 'Product Name', type: 'text', defaultValue: 'Amazing Product' },
+                    { name: 'discountCode', label: 'Discount Code', type: 'text', defaultValue: 'SAVE20' },
+                ];
+            },
+            
+            // Branding configuration
+            branding: {
+                title: 'Custom Email Builder',
+                logoUrl: 'https://via.placeholder.com/120x40/3b82f6/ffffff?text=LOGO',
+                logoAlt: 'Custom Logo',
+            },
+            
+            // Theme configuration
+            theme: {
+                mode: 'light',
+                primaryColor: '#3b82f6',
+                backgroundColor: '#ffffff',
+                headerBackgroundColor: '#1f2937',
+                headerTextColor: '#ffffff',
+                borderColor: '#e5e7eb',
+            }
+        };
+        
+        // Global functions for image selection
+        window.selectImage = function(url) {
+            if (imagePromiseResolve) {
+                imagePromiseResolve(url);
+                imagePromiseResolve = null;
+                imagePromiseReject = null;
+                Swal.close();
+            }
+        };
+        
+        window.selectCustomImage = function() {
+            const url = document.getElementById('customImageUrl').value;
+            if (url && imagePromiseResolve) {
+                imagePromiseResolve(url);
+                imagePromiseResolve = null;
+                imagePromiseReject = null;
+                Swal.close();
+            }
+        };
+        
+        // Utility function to log output
+        function logOutput(message) {
+            const output = document.getElementById('output');
+            const timestamp = new Date().toLocaleTimeString();
+            output.innerHTML += `[${timestamp}] ${message}\n`;
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        // Wait for editor to be ready
+        function waitForEditor() {
+            return new Promise((resolve) => {
+                if (window.editor && window.editor.getHtml) {
+                    resolve();
+                } else {
+                    setTimeout(() => waitForEditor().then(resolve), 100);
+                }
+            });
+        }
+        
+        // Test functions
+        async function testGetHtml() {
+            await waitForEditor();
+            try {
+                const html = window.editor.getHtml();
+                logOutput(`✅ Get HTML successful. Length: ${html.length} characters`);
+                console.log('HTML:', html);
+            } catch (error) {
+                logOutput(`❌ Get HTML failed: ${error.message}`);
+            }
+        }
+        
+        async function testSetHtml() {
+            await waitForEditor();
+            try {
+                const sampleHtml = `
+                    <div style="padding: 20px; background: #f0f9ff; border-radius: 8px; text-align: center;">
+                        <h1 style="color: #1e40af; margin: 0 0 16px 0;">Test HTML Content</h1>
+                        <p style="color: #64748b; margin: 0;">This content was set via the setHtml() API method.</p>
+                    </div>
+                `;
+                window.editor.setHtml(sampleHtml);
+                logOutput('✅ Set HTML successful');
+            } catch (error) {
+                logOutput(`❌ Set HTML failed: ${error.message}`);
+            }
+        }
+        
+        async function testGetJson() {
+            await waitForEditor();
+            try {
+                const json = window.editor.getJson();
+                logOutput(`✅ Get JSON successful. Blocks: ${json.blocks?.length || 0}`);
+                console.log('JSON:', json);
+            } catch (error) {
+                logOutput(`❌ Get JSON failed: ${error.message}`);
+            }
+        }
+        
+        async function testSetJson() {
+            await waitForEditor();
+            try {
+                const sampleJson = {
+                    blocks: [
+                        {
+                            id: 'test-block-1',
+                            type: 'heading',
+                            data: {
+                                text: 'JSON Test Content',
+                                level: 1,
+                                textAlign: 'center',
+                                color: '#1e40af'
+                            }
+                        },
+                        {
+                            id: 'test-block-2',
+                            type: 'text',
+                            data: {
+                                text: 'This content was loaded via the setJson() API method.',
+                                textAlign: 'center',
+                                color: '#64748b'
+                            }
+                        }
+                    ]
+                };
+                window.editor.setJson(sampleJson);
+                logOutput('✅ Set JSON successful');
+            } catch (error) {
+                logOutput(`❌ Set JSON failed: ${error.message}`);
+            }
+        }
+        
+        async function testClearDocument() {
+            await waitForEditor();
+            try {
+                window.editor.clearDocument();
+                logOutput('✅ Clear document successful');
+            } catch (error) {
+                logOutput(`❌ Clear document failed: ${error.message}`);
+            }
+        }
+        
+        async function testGetAllLinks() {
+            await waitForEditor();
+            try {
+                const links = window.editor.getAllLinks();
+                logOutput(`✅ Get all links successful. Found: ${links.length} links`);
+                console.log('Links:', links);
+            } catch (error) {
+                logOutput(`❌ Get all links failed: ${error.message}`);
+            }
+        }
+        
+        async function testHideButtons() {
+            await waitForEditor();
+            try {
+                window.editor.configure({
+                    showExportHtml: false,
+                    showExportJson: false,
+                    showImportJson: false,
+                });
+                logOutput('✅ Hide buttons configuration applied');
+            } catch (error) {
+                logOutput(`❌ Hide buttons failed: ${error.message}`);
+            }
+        }
+        
+        async function testShowButtons() {
+            await waitForEditor();
+            try {
+                window.editor.configure({
+                    showExportHtml: true,
+                    showExportJson: true,
+                    showImportJson: true,
+                    showPreview: true,
+                    showClear: true,
+                    showGetLinks: true,
+                });
+                logOutput('✅ Show all buttons configuration applied');
+            } catch (error) {
+                logOutput(`❌ Show buttons failed: ${error.message}`);
+            }
+        }
+        
+        async function testCustomTheme() {
+            await waitForEditor();
+            try {
+                window.editor.configure({
+                    theme: {
+                        mode: 'dark',
+                        primaryColor: '#10b981',
+                        backgroundColor: '#1f2937',
+                        headerBackgroundColor: '#059669',
+                        headerTextColor: '#ffffff',
+                        borderColor: '#374151',
+                    }
+                });
+                logOutput('✅ Custom dark theme applied');
+            } catch (error) {
+                logOutput(`❌ Custom theme failed: ${error.message}`);
+            }
+        }
+        
+        async function testBranding() {
+            await waitForEditor();
+            try {
+                window.editor.configure({
+                    branding: {
+                        title: 'My Custom Editor',
+                        logoUrl: 'https://via.placeholder.com/120x40/10b981/ffffff?text=CUSTOM',
+                        logoAlt: 'Custom Brand Logo',
+                    }
+                });
+                logOutput('✅ Custom branding applied');
+            } catch (error) {
+                logOutput(`❌ Custom branding failed: ${error.message}`);
+            }
+        }
+        
+        async function testResetTheme() {
+            await waitForEditor();
+            try {
+                window.editor.configure({
+                    theme: {
+                        mode: 'light',
+                        primaryColor: '#3b82f6',
+                        backgroundColor: '#ffffff',
+                        headerBackgroundColor: '#1f2937',
+                        headerTextColor: '#ffffff',
+                        borderColor: '#e5e7eb',
+                    },
+                    branding: {
+                        title: 'MailCraft',
+                        logoUrl: undefined,
+                        logoAlt: undefined,
+                    }
+                });
+                logOutput('✅ Theme and branding reset to default');
+            } catch (error) {
+                logOutput(`❌ Reset theme failed: ${error.message}`);
+            }
+        }
+        
+        async function testImageBrowser() {
+            await waitForEditor();
+            try {
+                logOutput('🔄 Testing image browser... (select an image from the popup)');
+                const imageUrl = await window.editor.imageBrowser();
+                logOutput(`✅ Image browser successful. Selected: ${imageUrl}`);
+            } catch (error) {
+                logOutput(`❌ Image browser failed: ${error.message}`);
+            }
+        }
+        
+        async function testMergeFiles() {
+            await waitForEditor();
+            try {
+                const mergeFiles = await window.editor.loadMergeFiles();
+                logOutput(`✅ Merge files loaded. Count: ${mergeFiles?.length || 0}`);
+                console.log('Merge files:', mergeFiles);
+            } catch (error) {
+                logOutput(`❌ Merge files failed: ${error.message}`);
+            }
+        }
+        
+        // Log when editor is ready
+        window.addEventListener('message', (event) => {
+            const { type, data } = event.data || {};
+            
+            if (type === 'EDITOR_READY') {
+                logOutput('🚀 MailCraft Editor initialized and ready!');
+            }
+        });
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            logOutput('📄 Page loaded, waiting for MailCraft to initialize...');
+        });
+    </script>
+    
+    <!-- MailCraft Main Script -->
+    <script type="module" src="emaileditor/index.js"></script>
+</body>
+</html>
